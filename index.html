@@ -1887,7 +1887,7 @@ var directionsUrl = 'https://www.google.com/maps/dir/?api=1&destination=' +
 
 var actions =
   '<div class="popup-actions">' +
-    '<a class="popup-link-btn" href="' + directionsUrl + '" target="_blank" rel="noopener noreferrer">Cómo llegar</a>' +
+    '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ',' + JSON.stringify(place.name) + ')">Ver ruta</button>' +
   '</div>';
 
 return '<div class="popup-card has-image" id="' + id + '">' +
