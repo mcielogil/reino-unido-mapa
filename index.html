@@ -877,24 +877,46 @@ var map = L.map('map', { zoomControl: false }).setView([51.505, -0.118], 13);
       'Barrios y Vida Local':'#4a6741',
       'Parques y Naturaleza':'#2d6a8a',
       'Oculto y Curioso':   '#7a4a9b'
+      'Baños Públicos': '#2f80ed'
     };
 
-    function createPin(category) {
-      var color = categoryColors[category] || '#888';
-      var svg =
-        '<svg width="26" height="38" viewBox="0 0 26 38" xmlns="http://www.w3.org/2000/svg">' +
-          '<path d="M13 0C5.82 0 0 5.82 0 13c0 9.75 13 25 13 25S26 22.75 26 13C26 5.82 20.18 0 13 0z" fill="' + color + '"/>' +
-          '<circle cx="13" cy="13" r="5.5" fill="white" opacity="0.95"/>' +
-          '<circle cx="13" cy="13" r="3" fill="' + color + '"/>' +
-        '</svg>';
-      return L.divIcon({
-        className: '',
-        html: svg,
-        iconSize: [26, 38],
-        iconAnchor: [13, 38],
-        popupAnchor: [0, -40]
-      });
-    }
+    /* 2) REEMPLAZAR completa la función createPin(category) por esta */
+
+function createPin(category) {
+  var color = categoryColors[category] || '#888';
+  var svg;
+
+  if (category === 'Baños Públicos') {
+    svg =
+      '<svg width="26" height="38" viewBox="0 0 26 38" xmlns="http://www.w3.org/2000/svg">' +
+        '<path d="M13 0C5.82 0 0 5.82 0 13c0 9.75 13 25 13 25S26 22.75 26 13C26 5.82 20.18 0 13 0z" fill="' + color + '"/>' +
+        '<circle cx="13" cy="13" r="7.2" fill="white" opacity="0.98"/>' +
+        '<g transform="translate(13 13)" fill="' + color + '">' +
+          '<circle cx="-2.8" cy="-2.5" r="1.3"/>' +
+          '<rect x="-3.7" y="-0.9" width="1.8" height="5.2" rx="0.7"/>' +
+          '<rect x="-5.1" y="4.1" width="1.3" height="3.3" rx="0.6"/>' +
+          '<rect x="-1.8" y="4.1" width="1.3" height="3.3" rx="0.6"/>' +
+          '<circle cx="3" cy="-2.5" r="1.3"/>' +
+          '<path d="M1.9 -0.9h2.2c1.2 0 2.1.9 2.1 2.1v2.3c0 .4-.3.7-.7.7h-1v3.3h-1.3V4.2H2.1c-.4 0-.7-.3-.7-.7V1.2c0-1.2.9-2.1 2.1-2.1z"/>' +
+        '</g>' +
+      '</svg>';
+  } else {
+    svg =
+      '<svg width="26" height="38" viewBox="0 0 26 38" xmlns="http://www.w3.org/2000/svg">' +
+        '<path d="M13 0C5.82 0 0 5.82 0 13c0 9.75 13 25 13 25S26 22.75 26 13C26 5.82 20.18 0 13 0z" fill="' + color + '"/>' +
+        '<circle cx="13" cy="13" r="5.5" fill="white" opacity="0.95"/>' +
+        '<circle cx="13" cy="13" r="3" fill="' + color + '"/>' +
+      '</svg>';
+  }
+
+  return L.divIcon({
+    className: '',
+    html: svg,
+    iconSize: [26, 38],
+    iconAnchor: [13, 38],
+    popupAnchor: [0, -40]
+  });
+}
 
     var allMarkers = [];
     var activeFilters = new Set(['Histórico','Cine y Cultura Pop','Barrios y Vida Local','Parques y Naturaleza','Oculto y Curioso']);
@@ -1801,91 +1823,169 @@ var map = L.map('map', { zoomControl: false }).setView([51.505, -0.118], 13);
   lat: 51.5136, lng: -0.1365
 },
 
+  /* 5) PEGAR estos baños dentro de var places = [ ... ];
+   idealmente al final, justo antes de ];
+*/
+
+{
+  name: "Baños públicos — St. James’s Park",
+  category: "Baños Públicos",
+  lugar: "Baño público bien ubicado si están entre Buckingham Palace, el parque y Westminster. Sirve más por timing que por épica.",
+  historia: "Suele ser de los más prácticos del centro porque queda en una zona de mucho paseo y relativamente poca improvisación.",
+  curiosidades: "<ul><li>Suele tener mejor lógica si ya están cruzando el parque que si vienen desde otro barrio.</li><li>En días de mucho movimiento puede haber algo de fila.</li><li>Conviene usarlo antes de seguir hacia el palacio o hacia Westminster.</li></ul>",
+  paraLasTres: "Queda bien si están viendo el Cambio de Guardia, caminando por el lago o yendo hacia Westminster.",
+  comoLlegar: "Está dentro de St. James’s Park. Si entran por The Mall, avancen hacia el lago y sigan los carteles del parque. Si ya están en el puente del lago, queda a pocos minutos caminando.",
+  lat: 51.5022, lng: -0.1324
+},
+
+{
+  name: "Baños públicos — Trafalgar Square",
+  category: "Baños Públicos",
+  lugar: "Útil en pleno centro. No es un hallazgo, es una solución. Y en esta zona eso vale bastante.",
+  historia: "Sirve sobre todo si están entre Charing Cross, National Gallery, Covent Garden o bajando hacia Whitehall.",
+  curiosidades: "<ul><li>Buena opción si el clima está feo y no quieren desviarse demasiado.</li><li>La plaza siempre tiene movimiento, así que no esperen vacío.</li><li>Resuelve rápido una zona donde casi todo parece más cerca de lo que realmente está.</li></ul>",
+  paraLasTres: "Ideal antes de entrar a la National Gallery o antes de caminar hacia Covent Garden.",
+  comoLlegar: "Ubíquenlo en el perímetro de Trafalgar Square. Si vienen desde Charing Cross, suben a la plaza y lo encuentran sin desvío grande. Si vienen desde la National Gallery, bajen hacia la plaza y queda a mano.",
+  lat: 51.5080, lng: -0.1281
+},
+
+{
+  name: "Baños públicos — Victoria Embankment",
+  category: "Baños Públicos",
+  lugar: "Muy útil si están caminando por la orilla del Támesis entre Westminster, Embankment y Waterloo.",
+  historia: "En esta parte del centro caminar parece fácil hasta que deja de serlo. Tener un baño marcado acá suma de verdad.",
+  curiosidades: "<ul><li>Buena parada si vienen cansadas de caminar por el río.</li><li>Conviene resolverlo acá antes de seguir puente arriba o puente abajo.</li><li>Menos lógico si están ya muy metidas en Soho o Covent Garden.</li></ul>",
+  paraLasTres: "Sirve si vienen de Westminster, si paran en Gordon’s Wine Bar o si siguen hacia Waterloo.",
+  comoLlegar: "Si están sobre Victoria Embankment, sigan la línea del río y no se metan hacia adentro de la ciudad antes de llegar. Está mejor encararlo desde el paseo junto al Támesis que desde calles interiores.",
+  lat: 51.5067, lng: -0.1228
+},
+
+{
+  name: "Baños públicos — Russell Square",
+  category: "Baños Públicos",
+  lugar: "Buena opción si están por Bloomsbury, el Museo Británico o haciendo pausa en esta parte más tranquila del centro.",
+  historia: "Funciona bien porque Russell Square está en una zona de museos, hoteles y caminatas largas entre puntos que parecen cerca en el mapa.",
+  curiosidades: "<ul><li>Más cómodo si ya están por Bloomsbury que si vienen desde Soho.</li><li>Puede servir como corte antes o después del Museo Británico.</li><li>Zona bastante simple para reubicarse después.</li></ul>",
+  paraLasTres: "Úsenlo si están por el Museo Británico, Brunswick Centre o descansando en la plaza.",
+  comoLlegar: "Si vienen del Museo Británico, caminen hacia Russell Square sin doblar de más. Una vez en la plaza, sigan el perímetro y los accesos del parque.",
+  lat: 51.5235, lng: -0.1244
+},
+
+{
+  name: "Baños públicos — Hyde Park South Carriage Drive",
+  category: "Baños Públicos",
+  lugar: "Práctico si están en Hyde Park y no quieren salir del parque para resolver algo básico.",
+  historia: "En parques grandes, el problema no es solo encontrar un baño sino evitar un rodeo inútil. Este punto ahorra eso.",
+  curiosidades: "<ul><li>Muy útil si alquilaron bici o bote y siguen moviéndose dentro del parque.</li><li>Conviene usarlo antes de cruzar hacia Kensington Gardens o bajar hacia Knightsbridge.</li><li>No siempre parece cerca hasta que lo ubicás en el mapa.</li></ul>",
+  paraLasTres: "Sirve si están en el Serpentine, después del bote o antes de seguir hacia Kensington.",
+  comoLlegar: "Muévanse por los senderos principales de Hyde Park y no corten por pasillos secundarios si no hace falta. Desde el lago, sigan el camino ancho hacia South Carriage Drive.",
+  lat: 51.5049, lng: -0.1716
+},
+
       
 
     
     ];
 
-    function buildPopup(place) {
-      var id = 'popup-' + Math.random().toString(36).substr(2,9);
-      var hasImage = !!place.imageTitle;
+    /* 3) REEMPLAZAR completa la función buildPopup(place) por esta */
 
-      var escapedLugar = place.lugar.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+function buildPopup(place) {
+  var id = 'popup-' + Math.random().toString(36).substr(2,9);
+  var isToilet = place.category === 'Baños Públicos';
+  var hasImage = !!place.imageTitle && !isToilet;
 
-      var header =
-        '<div class="popup-header">' +
-          '<div class="popup-header-text">' +
-            '<h3>' + place.name + '</h3>' +
-            '<div class="popup-header-sub">' +
-              '<div class="popup-category">' + place.category + '</div>' +
-            '</div>' +
-          '</div>' +
-          '<button class="audio-btn" onclick="toggleAudio(this, \'' + escapedLugar + '\')" title="Escuchar">' +
-            speakerIcon() +
-          '</button>' +
-        '</div>';
+  var escapedLugar = place.lugar.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
-      var tabs =
-        '<div class="popup-tabs">' +
-          '<div class="popup-tab active" onclick="switchTab(\'' + id + '\',\'lugar\')">El Lugar</div>' +
-          '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'historia\')">Lo que Pasó Aquí</div>' +
-          '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'curiosidades\')">Curiosidades</div>' +
-          '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'para3\')">Para las Tres</div>' +
-          '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'como\')">Cómo Vivirlo</div>' +
-        '</div>';
+  var header =
+    '<div class="popup-header">' +
+      '<div class="popup-header-text">' +
+        '<h3>' + place.name + '</h3>' +
+        '<div class="popup-header-sub">' +
+          '<div class="popup-category">' + place.category + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<button class="audio-btn" onclick="toggleAudio(this, \'' + escapedLugar + '\')" title="Escuchar">' +
+        speakerIcon() +
+      '</button>' +
+    '</div>';
 
-      var lugarContent;
-      if (hasImage) {
-        lugarContent =
-          '<div id="' + id + '-lugar" class="popup-tab-content active">' +
-            '<div class="popup-img-wrap">' +
-              '<img src="' + place.imageTitle.toLowerCase().replace(/[^a-z0-9]+/g,'-') + '.jpg" alt="' + place.imageTitle + '" onerror="this.parentElement.style.display=\'none\'">' +
-              '<div class="popup-img-caption">' + place.imageTitle + '</div>' +
-            '</div>' +
-            '<div class="popup-inner"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
-          '</div>';
-      } else {
-        lugarContent =
-          '<div id="' + id + '-lugar" class="popup-tab-content active">' +
-            '<div class="popup-inner popup-no-tabs"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
-          '</div>';
-      }
+  var tabs;
+  if (isToilet) {
+    tabs =
+      '<div class="popup-tabs">' +
+        '<div class="popup-tab active" onclick="switchTab(\'' + id + '\',\'lugar\')">El Lugar</div>' +
+        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'historia\')">Info útil</div>' +
+        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'curiosidades\')">Acceso</div>' +
+        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'para3\')">Cerca de acá</div>' +
+        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'como\')">Cómo llegar</div>' +
+      '</div>';
+  } else {
+    tabs =
+      '<div class="popup-tabs">' +
+        '<div class="popup-tab active" onclick="switchTab(\'' + id + '\',\'lugar\')">El Lugar</div>' +
+        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'historia\')">Lo que Pasó Aquí</div>' +
+        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'curiosidades\')">Curiosidades</div>' +
+        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'para3\')">Para las Tres</div>' +
+        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'como\')">Cómo Vivirlo</div>' +
+      '</div>';
+  }
 
-      var historiaContent =
-        '<div id="' + id + '-historia" class="popup-tab-content simple-content">' +
-          '<div class="tab-label">Lo que Pasó Aquí</div>' +
-          '<div class="tab-body"><p>' + place.historia + '</p></div>' +
-        '</div>';
+  var lugarContent;
+  if (hasImage) {
+    lugarContent =
+      '<div id="' + id + '-lugar" class="popup-tab-content active">' +
+        '<div class="popup-img-wrap">' +
+          '<img src="' + place.imageTitle.toLowerCase().replace(/[^a-z0-9]+/g,'-') + '.jpg" alt="' + place.imageTitle + '" onerror="this.parentElement.style.display=\'none\'">' +
+          '<div class="popup-img-caption">' + place.imageTitle + '</div>' +
+        '</div>' +
+        '<div class="popup-inner"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
+      '</div>';
+  } else {
+    lugarContent =
+      '<div id="' + id + '-lugar" class="popup-tab-content active">' +
+        '<div class="popup-inner popup-no-tabs"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
+      '</div>';
+  }
 
-      var curiosidadesContent =
-        '<div id="' + id + '-curiosidades" class="popup-tab-content simple-content">' +
-          '<div class="tab-label">Curiosidades</div>' +
-          '<div class="tab-body">' + place.curiosidades + '</div>' +
-        '</div>';
+  var historiaLabel = isToilet ? 'Info útil' : 'Lo que Pasó Aquí';
+  var curiosidadesLabel = isToilet ? 'Acceso' : 'Curiosidades';
+  var para3Label = isToilet ? 'Cerca de acá' : 'Para las Tres';
+  var comoLabel = isToilet ? 'Cómo llegar' : 'Cómo Vivirlo';
+  var comoTexto = isToilet ? place.comoLlegar : place.comoVivirlo;
 
-      var para3Content =
-        '<div id="' + id + '-para3" class="popup-tab-content simple-content">' +
-          '<div class="tab-label">Para las Tres</div>' +
-          '<div class="tab-body"><p>' + place.paraLasTres + '</p></div>' +
-        '</div>';
+  var historiaContent =
+    '<div id="' + id + '-historia" class="popup-tab-content simple-content">' +
+      '<div class="tab-label">' + historiaLabel + '</div>' +
+      '<div class="tab-body"><p>' + place.historia + '</p></div>' +
+    '</div>';
 
-     var comoContent =
-  '<div id="' + id + '-como" class="popup-tab-content simple-content">' +
-    '<div class="tab-label">Cómo Vivirlo</div>' +
-    '<div class="tab-body"><p>' + place.comoVivirlo + '</p></div>' +
-  '</div>';
+  var curiosidadesContent =
+    '<div id="' + id + '-curiosidades" class="popup-tab-content simple-content">' +
+      '<div class="tab-label">' + curiosidadesLabel + '</div>' +
+      '<div class="tab-body">' + place.curiosidades + '</div>' +
+    '</div>';
 
+  var para3Content =
+    '<div id="' + id + '-para3" class="popup-tab-content simple-content">' +
+      '<div class="tab-label">' + para3Label + '</div>' +
+      '<div class="tab-body"><p>' + place.paraLasTres + '</p></div>' +
+    '</div>';
 
-var actions =
-  '<div class="popup-actions">' +
-    '<button class="popup-link-btn" onclick="window.showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
-  '</div>';
+  var comoContent =
+    '<div id="' + id + '-como" class="popup-tab-content simple-content">' +
+      '<div class="tab-label">' + comoLabel + '</div>' +
+      '<div class="tab-body"><p>' + comoTexto + '</p></div>' +
+    '</div>';
 
-return '<div class="popup-card has-image" id="' + id + '">' +
-  header + tabs + lugarContent + historiaContent + curiosidadesContent + para3Content + comoContent + actions +
-  '</div>';
-      
-    }
+  var actions =
+    '<div class="popup-actions">' +
+      '<button class="popup-link-btn" onclick="window.showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
+    '</div>';
+
+  return '<div class="popup-card' + (hasImage ? ' has-image' : '') + '" id="' + id + '">' +
+    header + tabs + lugarContent + historiaContent + curiosidadesContent + para3Content + comoContent + actions +
+    '</div>';
+}
 
     window.switchTab = function(id, tab) {
       var card = document.getElementById(id);
@@ -1907,7 +2007,7 @@ return '<div class="popup-card has-image" id="' + id + '">' +
         btn.classList.add('active');
       }
       allMarkers.forEach(function(obj) {
-        var show = activeFilters.has(obj.place.category);
+        var show = obj.place.category === 'Baños Públicos' || activeFilters.has(obj.place.category);
         if (show && !map.hasLayer(obj.marker)) map.addLayer(obj.marker);
         if (!show && map.hasLayer(obj.marker)) map.removeLayer(obj.marker);
       });
