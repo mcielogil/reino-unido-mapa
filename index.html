@@ -26,10 +26,35 @@
     body { font-family: 'DM Sans', sans-serif; background: var(--black); overflow: hidden; }
 
     #map {
-      position: absolute;
-      top: 0; right: 0; bottom: 0;
-      left: var(--sidebar-w);
-    }
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  left: var(--sidebar-w);
+}
+
+@media (max-width: 768px) {
+  #map {
+    left: 0;
+  }
+  #sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+  }
+  #sidebar.open {
+    transform: translateX(0);
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+  .locate-btn {
+    bottom: 40px;
+    right: 16px;
+  }
+  .route-clear-btn {
+    bottom: 92px;
+    right: 16px;
+  }
+}
 
     .leaflet-tile-pane {
       filter: saturate(1.6) contrast(1.1) brightness(0.96) hue-rotate(-5deg);
@@ -676,6 +701,9 @@
 </div>
   </div>
 
+  <button class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')" style="display:none;position:fixed;top:16px;left:16px;z-index:1002;width:44px;height:44px;background:var(--black);border:none;cursor:pointer;align-items:center;justify-content:center;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
   <div id="map"></div>
 
     <button id="clear-route-btn" class="route-clear-btn" onclick="clearRoute()">
