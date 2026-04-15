@@ -751,41 +751,23 @@ function handleLocationError(error) {
   alert('No pude acceder a tu ubicación. Revisá permisos del navegador.');
 }
 
-var currentRouteLine = null;
-var currentDestinationMarker = null;
-
-function clearRoute() {
-  if (currentRouteLine) {
-    map.removeLayer(currentRouteLine);
-    currentRouteLine = null;
-  }
-  if (currentDestinationMarker) {
-    map.removeLayer(currentDestinationMarker);
-    currentDestinationMarker = null;
-  }
-  var btn = document.getElementById('clear-route-btn');
-  if (btn) btn.style.display = 'none';
-}
-
-window.showRouteToPlace = function(lat, lng) {
-  if (!userMarker) {
-    alert('Primero tocá el botón de localización.');
-    locateUser();
+function locateUser() {
+  if (!navigator.geolocation) {
+    alert('Tu navegador no soporta geolocalización.');
     return;
   }
-  clearRoute();
-  var userLatLng = userMarker.getLatLng();
-  var destinationLatLng = L.latLng(lat, lng);
-  currentRouteLine = L.polyline(
-    [userLatLng, destinationLatLng],
-    { color: '#d4321c', weight: 4, opacity: 0.9, dashArray: '10, 8' }
-  ).addTo(map);
-  currentDestinationMarker = L.circleMarker(destinationLatLng, {
-    radius: 7, color: '#d4321c', fillColor: '#d4321c', fillOpacity: 1, weight: 2
-  }).addTo(map);
-  map.fitBounds(currentRouteLine.getBounds(), { padding: [60, 60] });
-  var btn = document.getElementById('clear-route-btn');
-  if (btn) btn.style.display = 'block';
+  
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      updateUserLocation(position, true);
+    },
+    handleLocationError,
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    }
+  );
 }
 
 function locateUser() {
