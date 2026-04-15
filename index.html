@@ -774,7 +774,60 @@ function startWatchingUserLocation() {
     { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 }
   );
 }
+    function stopSpeech() {
+      window.speechSynthesis.cancel();
+      if (currentBtn) {
+        currentBtn.classList.remove('playing');
+        currentBtn.innerHTML = speakerIcon();
+        currentBtn = null;
+      }
+      currentUtterance = null;
+    }
 
+    function speakerIcon() {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>';
+    }
+
+    function pauseIcon() {
+      return '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>';
+    }
+
+    function playIcon() {
+      return '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>';
+    }
+
+    var isPaused = false;
+
+    function pickBestSpanishVoice() {
+      var voices = window.speechSynthesis.getVoices();
+      var preferredNames = ['Monica','Paulina','Jorge','Luciana','Google español','Microsoft Helena','Microsoft Laura'];
+      for (var i = 0; i < preferredNames.length; i++) {
+        var match = voices.find(function(v) { return v.name && v.name.toLowerCase().indexOf(preferredNames[i].toLowerCase()) !== -1; });
+        if (match) return match;
+      }
+      return voices.find(function(v) { return v.lang && v.lang.toLowerCase().startsWith('es'); }) || null;
+    }
+
+    function cleanSpeechText(text) {
+      return text.replace(/—/g, ', ').replace(/\s+/g, ' ').trim();
+    }
+
+    function toggleAudio(btn, text) {
+      if (currentBtn === btn) {
+        if (isPaused) { window.speechSynthesis.resume(); isPaused = false; btn.innerHTML = pauseIcon(); }
+        else { window.speechSynthesis.pause(); isPaused = true; btn.innerHTML = playIcon(); }
+        return;
+      }
+      stopSpeech();
+      isPaused = false;
+      var utterance = new SpeechSynthesisUtterance(cleanSpeechText(text));
+      utterance.rate = 0.98; utterance.pitch = 1;
+      var voice = pickBestS
+var map = L.map('map', { zoomControl: false }).setView([51.505, -0.118], 13);
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 19 }).addTo(map);
+
+    startWatchingUserLocation();
     startWatchingUserLocation();
 
     map.on('popupclose', function() { stopSpeech(); });
