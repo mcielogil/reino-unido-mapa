@@ -1967,7 +1967,7 @@ function toggleAudio(btn, text) {
 
 var actions =
   '<div class="popup-actions">' +
-    '<a class="popup-link-btn" href="javascript:void(0)" onclick="window.showRouteToPlace(' + place.lat + ',' + place.lng + '); return false;">Ver ruta</a>' +
+    '<button class="popup-link-btn route-trigger" data-lat="' + place.lat + '" data-lng="' + place.lng + '">Ver ruta</button>' +
   '</div>';
 
 return '<div class="popup-card has-image" id="' + id + '">' +
