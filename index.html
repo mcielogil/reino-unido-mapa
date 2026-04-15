@@ -774,7 +774,7 @@ function clearRoute() {
   if (btn) btn.style.display = 'none';
 }
 
-function showRouteToPlace(lat, lng, name) {
+function showRouteToPlace(lat, lng) {
   if (!userMarker) {
     alert('Primero necesito tu ubicación.');
     locateUser();
@@ -803,11 +803,6 @@ function showRouteToPlace(lat, lng, name) {
     fillOpacity: 1,
     weight: 2
   }).addTo(map);
-
-  currentDestinationMarker.bindTooltip(name, {
-    direction: 'top',
-    offset: [0, -8]
-  });
 
   map.fitBounds(currentRouteLine.getBounds(), {
     padding: [60, 60]
