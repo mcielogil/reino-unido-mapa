@@ -822,7 +822,17 @@ function startWatchingUserLocation() {
       isPaused = false;
       var utterance = new SpeechSynthesisUtterance(cleanSpeechText(text));
       utterance.rate = 0.98; utterance.pitch = 1;
-      var voice = pickBestS
+      var voice = pickBestSpanishVoice();
+      if (voice) { utterance.voice = voice; utterance.lang = voice.lang; }
+      utterance.onend = function() {
+        if (currentBtn) { currentBtn.classList.remove('playing'); currentBtn.innerHTML = speakerIcon(); currentBtn = null; }
+        isPaused = false;
+      };
+      btn.classList.add('playing');
+      btn.innerHTML = pauseIcon();
+      currentBtn = btn;
+      window.speechSynthesis.speak(utterance);
+    }
 var map = L.map('map', { zoomControl: false }).setView([51.505, -0.118], 13);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 19 }).addTo(map);
