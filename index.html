@@ -701,49 +701,31 @@
       setTimeout(function() { o.style.display = 'none'; }, 1000);
     }
 
-    var currentBtn = null;
-    var currentUtterance = null;
-
-    var userMarker = null;
+ var currentBtn = null;
+var currentUtterance = null;
+var userMarker = null;
 var userAccuracyCircle = null;
 var userWatchId = null;
+var currentRouteLine = null;
+var currentDestinationMarker = null;
 
 function userPin() {
-  return L.divIcon({
-    className: '',
-    html: '<div class="user-marker"></div>',
-    iconSize: [18, 18],
-    iconAnchor: [9, 9]
-  });
+  return L.divIcon({ className: '', html: '<div class="user-marker"></div>', iconSize: [18, 18], iconAnchor: [9, 9] });
 }
 
 function updateUserLocation(position, shouldCenter) {
   var lat = position.coords.latitude;
   var lng = position.coords.longitude;
   var accuracy = position.coords.accuracy || 0;
-
-  if (!userMarker) {
-    userMarker = L.marker([lat, lng], { icon: userPin() }).addTo(map);
-  } else {
-    userMarker.setLatLng([lat, lng]);
-  }
-
+  if (!userMarker) { userMarker = L.marker([lat, lng], { icon: userPin() }).addTo(map); }
+  else { userMarker.setLatLng([lat, lng]); }
   if (!userAccuracyCircle) {
-    userAccuracyCircle = L.circle([lat, lng], {
-      radius: accuracy,
-      color: '#1d4ed8',
-      weight: 1,
-      fillColor: '#1d4ed8',
-      fillOpacity: 0.08
-    }).addTo(map);
+    userAccuracyCircle = L.circle([lat, lng], { radius: accuracy, color: '#1d4ed8', weight: 1, fillColor: '#1d4ed8', fillOpacity: 0.08 }).addTo(map);
   } else {
     userAccuracyCircle.setLatLng([lat, lng]);
     userAccuracyCircle.setRadius(accuracy);
   }
-
-  if (shouldCenter) {
-    map.setView([lat, lng], 15);
-  }
+  if (shouldCenter) { map.setView([lat, lng], 15); }
 }
 
 function handleLocationError(error) {
@@ -751,229 +733,47 @@ function handleLocationError(error) {
   alert('No pude acceder a tu ubicación. Revisá permisos del navegador.');
 }
 
-function locateUser() {
-  if (!navigator.geolocation) {
-    alert('Tu navegador no soporta geolocalización.');
-    return;
-  }
-  
-  navigator.geolocation.getCurrentPosition(
-    function(position) {
-      updateUserLocation(position, true);
-    },
-    handleLocationError,
-    {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0
-    }
-  );
-}
-
-function locateUser() {
-  if (!navigator.geolocation) {
-    alert('Tu navegador no soporta geolocalización.');
-    return;
-  }
-var currentRouteLine = null;
-var currentDestinationMarker = null;
-
 function clearRoute() {
-  if (currentRouteLine) {
-    map.removeLayer(currentRouteLine);
-    currentRouteLine = null;
-  }
-
-  if (currentDestinationMarker) {
-    map.removeLayer(currentDestinationMarker);
-    currentDestinationMarker = null;
-  }
-
+  if (currentRouteLine) { map.removeLayer(currentRouteLine); currentRouteLine = null; }
+  if (currentDestinationMarker) { map.removeLayer(currentDestinationMarker); currentDestinationMarker = null; }
   var btn = document.getElementById('clear-route-btn');
   if (btn) btn.style.display = 'none';
 }
 
 window.showRouteToPlace = function(lat, lng) {
   if (!userMarker) {
-    alert('Primero necesito tu ubicación.');
+    alert('Primero tocá el botón de localización.');
     locateUser();
     return;
   }
-
   clearRoute();
-
   var userLatLng = userMarker.getLatLng();
   var destinationLatLng = L.latLng(lat, lng);
-
-  currentRouteLine = L.polyline(
-    [userLatLng, destinationLatLng],
-    {
-      color: '#d4321c',
-      weight: 4,
-      opacity: 0.9,
-      dashArray: '10, 8'
-    }
-  ).addTo(map);
-
-  currentDestinationMarker = L.circleMarker(destinationLatLng, {
-    radius: 7,
-    color: '#d4321c',
-    fillColor: '#d4321c',
-    fillOpacity: 1,
-    weight: 2
-  }).addTo(map);
-
-  map.fitBounds(currentRouteLine.getBounds(), {
-    padding: [60, 60]
-  });
-
+  currentRouteLine = L.polyline([userLatLng, destinationLatLng], { color: '#d4321c', weight: 4, opacity: 0.9, dashArray: '10, 8' }).addTo(map);
+  currentDestinationMarker = L.circleMarker(destinationLatLng, { radius: 7, color: '#d4321c', fillColor: '#d4321c', fillOpacity: 1, weight: 2 }).addTo(map);
+  map.fitBounds(currentRouteLine.getBounds(), { padding: [60, 60] });
   var btn = document.getElementById('clear-route-btn');
   if (btn) btn.style.display = 'block';
-}
-  
+};
+
+function locateUser() {
+  if (!navigator.geolocation) { alert('Tu navegador no soporta geolocalización.'); return; }
   navigator.geolocation.getCurrentPosition(
-    function(position) {
-      updateUserLocation(position, true);
-    },
+    function(position) { updateUserLocation(position, true); },
     handleLocationError,
-    {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0
-    }
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
   );
 }
 
 function startWatchingUserLocation() {
   if (!navigator.geolocation) return;
-
-  if (userWatchId !== null) {
-    navigator.geolocation.clearWatch(userWatchId);
-  }
-
+  if (userWatchId !== null) { navigator.geolocation.clearWatch(userWatchId); }
   userWatchId = navigator.geolocation.watchPosition(
-    function(position) {
-      updateUserLocation(position, false);
-    },
-    function(error) {
-      console.warn('watchPosition error:', error);
-    },
-    {
-      enableHighAccuracy: true,
-      maximumAge: 5000,
-      timeout: 15000
-    }
+    function(position) { updateUserLocation(position, false); },
+    function(error) { console.warn('watchPosition error:', error); },
+    { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 }
   );
 }
-
-    function stopSpeech() {
-      window.speechSynthesis.cancel();
-      if (currentBtn) {
-        currentBtn.classList.remove('playing');
-        currentBtn.innerHTML = speakerIcon();
-        currentBtn = null;
-      }
-      currentUtterance = null;
-    }
-
-    function speakerIcon() {
-      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>';
-    }
-
-    function pauseIcon() {
-      return '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>';
-    }
-
-    function playIcon() {
-      return '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>';
-    }
-
-    var isPaused = false;
-
- function pickBestSpanishVoice() {
-  var voices = window.speechSynthesis.getVoices();
-
-  var preferredNames = [
-    'Monica',
-    'Paulina',
-    'Jorge',
-    'Luciana',
-    'Google español',
-    'Microsoft Helena',
-    'Microsoft Laura'
-  ];
-
-  for (var i = 0; i < preferredNames.length; i++) {
-    var match = voices.find(function(v) {
-      return v.name && v.name.toLowerCase().indexOf(preferredNames[i].toLowerCase()) !== -1;
-    });
-    if (match) return match;
-  }
-
-  return voices.find(function(v) {
-    return v.lang && v.lang.toLowerCase().startsWith('es');
-  }) || null;
-}
-
-function cleanSpeechText(text) {
-  return text
-    .replace(/—/g, ', ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function toggleAudio(btn, text) {
-  if (currentBtn === btn) {
-    if (isPaused) {
-      window.speechSynthesis.resume();
-      isPaused = false;
-      btn.innerHTML = pauseIcon();
-    } else {
-      window.speechSynthesis.pause();
-      isPaused = true;
-      btn.innerHTML = playIcon();
-    }
-    return;
-  }
-
-  stopSpeech();
-  isPaused = false;
-
-  var utterance = new SpeechSynthesisUtterance(cleanSpeechText(text));
-  utterance.rate = 0.98;
-  utterance.pitch = 1;
-
-  var voice = pickBestSpanishVoice();
-  if (voice) {
-    utterance.voice = voice;
-    utterance.lang = voice.lang;
-  }
-
-  utterance.onend = function() {
-    if (currentBtn) {
-      currentBtn.classList.remove('playing');
-      currentBtn.innerHTML = speakerIcon();
-      currentBtn = null;
-    }
-    isPaused = false;
-  };
-
-  btn.classList.add('playing');
-  btn.innerHTML = pauseIcon();
-  currentBtn = btn;
-
-  window.speechSynthesis.speak(utterance);
-}
-
-    var map = L.map('map', { zoomControl: false }).setView([51.505, -0.118], 13);
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
-
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap &copy; CARTO',
-      maxZoom: 19
-    }).addTo(map);
-
-    startWatchingUserLocation();
 
     startWatchingUserLocation();
 
