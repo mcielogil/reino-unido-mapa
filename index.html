@@ -960,25 +960,7 @@ function toggleAudio(btn, text) {
 
     map.on('popupclose', function() { stopSpeech(); });
 
-    map.on('popupopen', function(e) {
-  var popupEl = e.popup.getElement();
-  if (!popupEl) return;
-
-  var routeBtn = popupEl.querySelector('.route-trigger');
-  if (!routeBtn) return;
-
-  routeBtn.addEventListener('click', function() {
-    console.log('CLICK FUNCIONA');
     
-    var lat = parseFloat(this.getAttribute('data-lat'));
-    var lng = parseFloat(this.getAttribute('data-lng'));
-
-    console.log('coords:', lat, lng);
-
-    window.showRouteToPlace(lat, lng);
-  });
-});
-
     var categoryColors = {
       'Histórico':          '#d4321c',
       'Cine y Cultura Pop': '#c8920a',
@@ -1986,7 +1968,7 @@ function toggleAudio(btn, text) {
 
 var actions =
   '<div class="popup-actions">' +
-    '<button class="popup-link-btn route-trigger" data-lat="' + place.lat + '" data-lng="' + place.lng + '">Ver ruta</button>' +
+    '<button class="popup-link-btn" onclick="window.showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
   '</div>';
 
 return '<div class="popup-card has-image" id="' + id + '">' +
