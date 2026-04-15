@@ -960,6 +960,20 @@ function toggleAudio(btn, text) {
 
     map.on('popupclose', function() { stopSpeech(); });
 
+    map.on('popupopen', function(e) {
+  var popupEl = e.popup.getElement();
+  if (!popupEl) return;
+
+  var routeBtn = popupEl.querySelector('.route-trigger');
+  if (!routeBtn) return;
+
+  routeBtn.addEventListener('click', function() {
+    var lat = parseFloat(this.getAttribute('data-lat'));
+    var lng = parseFloat(this.getAttribute('data-lng'));
+    window.showRouteToPlace(lat, lng);
+  });
+});
+
     var categoryColors = {
       'Histórico':          '#d4321c',
       'Cine y Cultura Pop': '#c8920a',
