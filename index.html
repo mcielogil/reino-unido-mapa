@@ -632,20 +632,80 @@
 
     var isPaused = false;
 
-    function toggleAudio(btn, text) {
-      // If this button is already playing/paused
-      if (currentBtn === btn) {
-        if (isPaused) {
-          // Resume
-          window.speechSynthesis.resume();
-          isPaused = false;
-          btn.innerHTML = pauseIcon();
-        } else {
-          // Pause
-          window.speechSynthesis.pause();
-          isPaused = true;
-          btn.innerHTML = playIcon();
-        }
+ function pickBestSpanishVoice() {
+  var voices = window.speechSynthesis.getVoices();
+
+  var preferredNames = [
+    'Monica',
+    'Paulina',
+    'Jorge',
+    'Luciana',
+    'Google español',
+    'Microsoft Helena',
+    'Microsoft Laura'
+  ];
+
+  for (var i = 0; i < preferredNames.length; i++) {
+    var match = voices.find(function(v) {
+      return v.name && v.name.toLowerCase().indexOf(preferredNames[i].toLowerCase()) !== -1;
+    });
+    if (match) return match;
+  }
+
+  return voices.find(function(v) {
+    return v.lang && v.lang.toLowerCase().startsWith('es');
+  }) || null;
+}
+
+function cleanSpeechText(text) {
+  return text
+    .replace(/—/g, ', ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function toggleAudio(btn, text) {
+  if (currentBtn === btn) {
+    if (isPaused) {
+      window.speechSynthesis.resume();
+      isPaused = false;
+      btn.innerHTML = pauseIcon();
+    } else {
+      window.speechSynthesis.pause();
+      isPaused = true;
+      btn.innerHTML = playIcon();
+    }
+    return;
+  }
+
+  stopSpeech();
+  isPaused = false;
+
+  var utterance = new SpeechSynthesisUtterance(cleanSpeechText(text));
+  utterance.rate = 0.98;
+  utterance.pitch = 1;
+
+  var voice = pickBestSpanishVoice();
+  if (voice) {
+    utterance.voice = voice;
+    utterance.lang = voice.lang;
+  }
+
+  utterance.onend = function() {
+    if (currentBtn) {
+      currentBtn.classList.remove('playing');
+      currentBtn.innerHTML = speakerIcon();
+      currentBtn = null;
+    }
+    isPaused = false;
+  };
+
+  btn.classList.add('playing');
+  btn.innerHTML = pauseIcon();
+  currentBtn = btn;
+
+  window.speechSynthesis.speak(utterance);
+}
         return;
       }
 
