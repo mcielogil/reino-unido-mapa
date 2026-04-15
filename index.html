@@ -729,7 +729,67 @@ function locateUser() {
     alert('Tu navegador no soporta geolocalización.');
     return;
   }
+var currentRouteLine = null;
+var currentDestinationMarker = null;
 
+function clearRoute() {
+  if (currentRouteLine) {
+    map.removeLayer(currentRouteLine);
+    currentRouteLine = null;
+  }
+
+  if (currentDestinationMarker) {
+    map.removeLayer(currentDestinationMarker);
+    currentDestinationMarker = null;
+  }
+
+  var btn = document.getElementById('clear-route-btn');
+  if (btn) btn.style.display = 'none';
+}
+
+function showRouteToPlace(lat, lng, name) {
+  if (!userMarker) {
+    alert('Primero necesito tu ubicación.');
+    locateUser();
+    return;
+  }
+
+  clearRoute();
+
+  var userLatLng = userMarker.getLatLng();
+  var destinationLatLng = L.latLng(lat, lng);
+
+  currentRouteLine = L.polyline(
+    [userLatLng, destinationLatLng],
+    {
+      color: '#d4321c',
+      weight: 4,
+      opacity: 0.9,
+      dashArray: '10, 8'
+    }
+  ).addTo(map);
+
+  currentDestinationMarker = L.circleMarker(destinationLatLng, {
+    radius: 7,
+    color: '#d4321c',
+    fillColor: '#d4321c',
+    fillOpacity: 1,
+    weight: 2
+  }).addTo(map);
+
+  currentDestinationMarker.bindTooltip(name, {
+    direction: 'top',
+    offset: [0, -8]
+  });
+
+  map.fitBounds(currentRouteLine.getBounds(), {
+    padding: [60, 60]
+  });
+
+  var btn = document.getElementById('clear-route-btn');
+  if (btn) btn.style.display = 'block';
+}
+  
   navigator.geolocation.getCurrentPosition(
     function(position) {
       updateUserLocation(position, true);
@@ -1882,8 +1942,6 @@ function toggleAudio(btn, text) {
     '<div class="tab-body"><p>' + place.comoVivirlo + '</p></div>' +
   '</div>';
 
-var directionsUrl = 'https://www.google.com/maps/dir/?api=1&destination=' +
-  encodeURIComponent(place.lat + ',' + place.lng);
 
 var actions =
   '<div class="popup-actions">' +
