@@ -774,7 +774,7 @@ function clearRoute() {
   if (btn) btn.style.display = 'none';
 }
 
-function showRouteToPlace(lat, lng) {
+window.showRouteToPlace = function(lat, lng) {
   if (!userMarker) {
     alert('Primero necesito tu ubicación.');
     locateUser();
