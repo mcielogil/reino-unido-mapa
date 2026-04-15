@@ -968,8 +968,13 @@ function toggleAudio(btn, text) {
   if (!routeBtn) return;
 
   routeBtn.addEventListener('click', function() {
+    console.log('CLICK FUNCIONA');
+    
     var lat = parseFloat(this.getAttribute('data-lat'));
     var lng = parseFloat(this.getAttribute('data-lng'));
+
+    console.log('coords:', lat, lng);
+
     window.showRouteToPlace(lat, lng);
   });
 });
