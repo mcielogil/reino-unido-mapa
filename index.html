@@ -706,47 +706,6 @@ function toggleAudio(btn, text) {
 
   window.speechSynthesis.speak(utterance);
 }
-        return;
-      }
-
-      // New audio — stop whatever is playing
-      stopSpeech();
-      isPaused = false;
-
-      var utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'es-ES';
-      utterance.rate = 0.88;
-      utterance.pitch = 1;
-
-      var voices = window.speechSynthesis.getVoices();
-      var preferred = voices.find(function(v) {
-        return v.lang === 'es-ES' && v.name.toLowerCase().includes('female');
-      }) || voices.find(function(v) {
-        return v.lang === 'es-ES';
-      }) || voices.find(function(v) {
-        return v.lang.startsWith('es');
-      });
-      if (preferred) utterance.voice = preferred;
-
-      utterance.onend = function() {
-        if (currentBtn) {
-          currentBtn.classList.remove('playing');
-          currentBtn.innerHTML = speakerIcon();
-          currentBtn = null;
-        }
-        isPaused = false;
-        currentUtterance = null;
-      };
-
-      utterance.onpause = function() { isPaused = true; };
-      utterance.onresume = function() { isPaused = false; };
-
-      btn.classList.add('playing');
-      btn.innerHTML = pauseIcon();
-      currentBtn = btn;
-      currentUtterance = utterance;
-      window.speechSynthesis.speak(utterance);
-    }
 
     var map = L.map('map', { zoomControl: false }).setView([51.505, -0.118], 13);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
