@@ -5091,7 +5091,52 @@ allMarkers.forEach(function(obj) {
 });
     var horasPlan = 0;
 var modoPlan = false;
+var desafiosLondres = [
+  'Tomar un desayuno inglés completo — huevos, bacon, beans, toast',
+  'Comer un fish & chips envuelto en papel',
+  'Tomar una pinta en un pub victoriano',
+  'Comprar algo en Borough Market',
+  'Probar un bagel en Beigel Bake de Brick Lane',
+  'Foto en el cruce de Abbey Road',
+  'Ver el Cambio de Guardia en Buckingham Palace',
+  'Subir a la Golden Gallery de St. Paul\'s — 528 escalones',
+  'Cruzar el Puente de Milenio',
+  'Ver Londres desde Primrose Hill al atardecer'
+];
 
+function cargarDesafios() {
+  var lista = document.getElementById('desafios-list');
+  if (!lista || lista.children.length > 0) return;
+  desafiosLondres.forEach(function(desafio, i) {
+    var key = 'desafio-londres-' + i;
+    var hecho = localStorage.getItem(key);
+    var item = document.createElement('div');
+    item.style.cssText = 'display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid #1e1d1a;cursor:pointer;';
+    item.innerHTML =
+      '<div style="width:20px;height:20px;border:1px solid ' + (hecho ? 'var(--olive)' : '#3a3934') + ';border-radius:2px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;color:' + (hecho ? '#4a6741' : 'transparent') + ';font-size:12px;">✓</div>' +
+      '<div style="font-family:\'Playfair Display\',serif;font-size:14px;color:' + (hecho ? '#4a4944' : 'var(--white)') + ';line-height:1.6;text-decoration:' + (hecho ? 'line-through' : 'none') + ';">' + desafio + '</div>';
+    item.onclick = function() {
+      if (localStorage.getItem(key)) {
+        localStorage.removeItem(key);
+      } else {
+        localStorage.setItem(key, '1');
+      }
+      lista.innerHTML = '';
+      cargarDesafios();
+    };
+    lista.appendChild(item);
+  });
+}
+
+function switchCityTab(tab) {
+  document.getElementById('city-content-historia').style.display = tab === 'historia' ? 'block' : 'none';
+  document.getElementById('city-content-desafios').style.display = tab === 'desafios' ? 'block' : 'none';
+  document.getElementById('city-tab-historia').style.borderBottomColor = tab === 'historia' ? 'var(--red)' : 'transparent';
+  document.getElementById('city-tab-historia').style.color = tab === 'historia' ? 'var(--white)' : '#4a4944';
+  document.getElementById('city-tab-desafios').style.borderBottomColor = tab === 'desafios' ? 'var(--red)' : 'transparent';
+  document.getElementById('city-tab-desafios').style.color = tab === 'desafios' ? 'var(--white)' : '#4a4944';
+  if (tab === 'desafios') cargarDesafios();
+}
 function activarModoPlan() {
   document.getElementById('plan-panel').style.display = 'block';
   document.getElementById('plan-step1').style.display = 'block';
