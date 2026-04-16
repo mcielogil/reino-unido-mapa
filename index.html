@@ -1024,6 +1024,7 @@ function createPin(category) {
         historia: "Guillermo el Conquistador empezó a construirla en 1066, justo después de invadir Inglaterra, para recordarle a los londinenses quién mandaba ahora. Durante los siguientes cinco siglos fue palacio real, prisión, arsenal, casa de la moneda y zoológico — sí, zoológico: hubo leones, osos polares y un elefante africano viviendo en estos patios hasta 1835. Pero lo que más la define es la sangre. Ana Bolena fue decapitada aquí en 1536, acusada de adulterio por un rey que simplemente quería deshacerse de ella. Lady Jane Grey tenía dieciséis años cuando la ejecutaron en 1554 por haber sido reina durante nueve días sin pedírselo. Walter Raleigh estuvo preso trece años, escribió una Historia del Mundo y igual lo decapitaron. La Torre vio pasar a casi todos los que cayeron en desgracia en la historia inglesa. El cuervo que camina por el patio norte lleva siglos viviendo aquí: la leyenda dice que si los cuervos abandonan la Torre, la monarquía caerá. Por eso hay un cuidador oficial de cuervos con sueldo del Estado.",
         curiosidades: "<ul><li>Los Beefeaters (guardias de la Torre) dan tours gratuitos cada media hora desde la entrada. Son ex militares con décadas de servicio y cuentan estas historias como si las hubieran vivido. No los saltees.</li><li>Las joyas de la corona incluyen el Cullinan I, el diamante tallado más grande del mundo — parte de un diamante original que pesaba 3.100 quilates y fue encontrado en Sudáfrica en 1905. Lo cortaron en nueve piezas principales. La más grande está en el cetro real.</li><li>En la capilla de St Peter ad Vincula, debajo del altar, están enterrados Ana Bolena, Catalina Howard y Lady Jane Grey — sin nombres en las lápidas durante siglos.</li><li>Hay un pub dentro del recinto de la Torre. Se llama The Keys y solo pueden entrar los Yeoman Warders y sus invitados.</li><li>La expresión &ldquo;sent to the Tower&rdquo; todavía se usa en inglés cuando alguien cae en desgracia política.</li></ul>",
         paraLasTres: "Lleguen el martes o miércoles a las 9 de la mañana, cuando abre. Los patios interiores están casi vacíos esa primera hora y podés pararte en el lugar exacto donde estaba el cadalso sin que nadie te esté empujando. Busquen a un Beefeater y únanse al tour — el de la mañana temprano suele ser el más tranquilo. Después de las joyas de la corona, suban a la muralla exterior y caminen el perímetro con el río a la derecha. Calculen tres horas mínimo. Salgan por el puente del rastrillo y paren a tomar algo en el Borough Market, que está a diez minutos caminando.",
+        personaje: "ana-bolena",
         comoVivirlo: "Las joyas de la corona generan la cola más larga — hacedlas apenas abren o dejadlas para el final cuando la gente ya se dispersó. El Bloody Tower (donde estuvieron presos los príncipes de la Torre y Walter Raleigh) se llena rápido: entrad apenas terminen el tour del Beefeater. Si llueve, el interior del White Tower tiene calefacción y la colección de armaduras es extraordinaria — hay una hecha para Enrique VIII de joven y otra de cuando ya era enorme. No son la misma.",
         lat: 51.5081, lng: -0.0759
       },
@@ -5136,6 +5137,72 @@ function switchCityTab(tab) {
   document.getElementById('city-tab-desafios').style.color = tab === 'desafios' ? 'var(--white)' : '#4a4944';
   if (tab === 'desafios') cargarDesafios();
 }
+    var personajes = {
+  'ana-bolena': {
+    nombre: 'Ana Bolena',
+    titulo: 'Reina de Inglaterra · 1501–1536',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Anne_Boleyn.jpg/400px-Anne_Boleyn.jpg',
+    texto: 'Me llaman la Gran Ramera. Me llaman bruja. Me llaman adúltera, conspiradora, monstruo. Enrique me llamó todas esas cosas — el mismo hombre que esperó siete años para tenerme, que rompió con Roma por mí, que me coronó con la corona más pesada de Inglaterra. El mismo que firmó mi sentencia de muerte un martes por la tarde y se comprometió con otra mujer al día siguiente.\n\nEstoy enterrada aquí, en la capilla de St. Peter ad Vincula, debajo del altar, sin nombre en la lápida durante siglos. Vine a este lugar en barca, por el río, esposada. Vi las mismas piedras que ven ustedes ahora. Caminé por estos mismos patios sabiendo que no iba a salir.\n\nTenía treinta y cinco años. Había sido la mujer más poderosa de Inglaterra. Había cambiado la historia de un país, la religión de un reino, el curso de una dinastía — y todo lo que me quedó fue esta capilla, este silencio, y una hija que se convirtió en la reina más grande que Inglaterra jamás tuvo.\n\nIsabel era mía. Eso nadie me lo puede quitar.',
+    porQueAqui: 'La Torre de Londres fue el último lugar donde Ana Bolena estuvo con vida. Fue arrestada, juzgada y ejecutada dentro de estos muros en mayo de 1536. Su cuerpo fue enterrado en la capilla de St. Peter ad Vincula, a metros del lugar donde fue decapitada.',
+    curiosidades: [
+      'Enrique VIII organizó un torneo de justas para celebrar su ejecución. Ese mismo día.',
+      'Fue la primera reina de Inglaterra en ser ejecutada públicamente — pero no la última. Catalina Howard, su prima, corrió la misma suerte seis años después, en el mismo lugar.',
+      'Su hija Isabel I nunca habló públicamente de su madre. Pero siempre llevó un anillo con el retrato de Ana escondido adentro. Lo encontraron cuando murió.'
+    ]
+  }
+};
+
+function abrirPersonaje(id) {
+  var p = personajes[id];
+  if (!p) return;
+  var desbloqueado = localStorage.getItem('visited-Torre de Londres') || localStorage.getItem('test-unlock-' + id);
+  var panel = document.getElementById('personaje-panel');
+  var content = document.getElementById('personaje-content');
+  if (!desbloqueado) {
+    content.innerHTML =
+      '<div style="text-align:center;padding:60px 24px;">' +
+      '<div style="font-size:48px;margin-bottom:16px;">🔒</div>' +
+      '<div style="font-family:\'Playfair Display\',serif;font-size:20px;color:var(--white);margin-bottom:12px;">' + p.nombre + '</div>' +
+      '<div style="font-family:\'DM Sans\',sans-serif;font-size:12px;color:#4a4944;line-height:1.8;">Este personaje se desbloquea cuando<br>marcás la Torre de Londres como visitada.</div>' +
+      '</div>';
+  } else {
+    content.innerHTML =
+      '<div style="position:relative;height:280px;flex-shrink:0;overflow:hidden;">' +
+        '<img src="' + p.foto + '" style="width:100%;height:100%;object-fit:cover;object-position:top;opacity:0.85;">' +
+        '<div style="position:absolute;inset:0;background:linear-gradient(transparent 30%, var(--black));"></div>' +
+        '<div style="position:absolute;bottom:20px;left:24px;">' +
+          '<div style="font-family:\'Playfair Display\',serif;font-size:28px;font-weight:700;color:var(--white);">' + p.nombre + '</div>' +
+          '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);margin-top:4px;">' + p.titulo + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="padding:28px 24px;">' +
+        '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:15px;line-height:2;color:#ccc;margin-bottom:32px;white-space:pre-line;">' + p.texto + '</div>' +
+        '<div style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);font-family:\'DM Sans\',sans-serif;margin-bottom:12px;">Por qué se desbloquea aquí</div>' +
+        '<div style="font-family:\'Playfair Display\',serif;font-size:13px;line-height:1.8;color:#6a6860;margin-bottom:32px;">' + p.porQueAqui + '</div>' +
+        '<div style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);font-family:\'DM Sans\',sans-serif;margin-bottom:16px;">Curiosidades</div>' +
+        p.curiosidades.map(function(c) {
+          return '<div style="font-family:\'Playfair Display\',serif;font-size:13px;line-height:1.8;color:#6a6860;padding:12px 0;border-bottom:1px solid #1e1d1a;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--red);">—</span>' + c + '</div>';
+        }).join('') +
+        '<div style="margin-top:32px;padding:16px;border:1px solid #2a2926;text-align:center;cursor:pointer;" onclick="localStorage.setItem(\'test-unlock-ana-bolena\',\'1\');abrirPersonaje(\'ana-bolena\')">' +
+          '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#3a3934;">🔧 Test — borrar este botón después</div>' +
+        '</div>' +
+      '</div>';
+  }
+  panel.style.display = 'flex';
+}
+
+window.abrirPersonaje = abrirPersonaje;
+```
+
+Después buscá esto:
+```
+<div id="map"></div>
+    <div id="personaje-panel" style="display:none;position:fixed;inset:0;z-index:3500;background:var(--black);flex-direction:column;overflow-y:auto;">
+  <div style="position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;padding:16px;background:var(--black);">
+    <button onclick="document.getElementById('personaje-panel').style.display='none'" style="background:transparent;border:1px solid #2a2926;color:#6a6860;cursor:pointer;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Cerrar</button>
+  </div>
+  <div id="personaje-content"></div>
+</div>
 function activarModoPlan() {
   document.getElementById('plan-panel').style.display = 'block';
   document.getElementById('plan-step1').style.display = 'block';
