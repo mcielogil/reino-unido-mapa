@@ -844,16 +844,16 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-window.abrirSobre = function() {
-  document.getElementById('envelope-screen').style.display = 'none';
-  var carta = document.getElementById('carta-screen');
-  carta.style.display = 'flex';
-
-    function enterMap() {
+     function enterMap() {
       var o = document.getElementById('opening');
       o.classList.add('fade-out');
       setTimeout(function() { o.style.display = 'none'; }, 1000);
     }
+window.abrirSobre = function() {
+  document.getElementById('envelope-screen').style.display = 'none';
+  var carta = document.getElementById('carta-screen');
+  carta.style.display = 'flex';
+  };
 
  var currentBtn = null;
 var currentUtterance = null;
