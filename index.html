@@ -4982,10 +4982,20 @@ function buildPopup(place) {
     };
 
     places.forEach(function(place) {
-      var marker = L.marker([place.lat, place.lng], { icon: createPin(place.category) }).addTo(map);
-      marker.bindPopup(buildPopup(place), { maxWidth: 560, minWidth: 460 });
-      allMarkers.push({ marker: marker, place: place });
+  var marker = L.marker([place.lat, place.lng], { icon: createPin(place.category) }).addTo(map);
+  marker.bindPopup(buildPopup(place), { maxWidth: 560, minWidth: 460 });
+  allMarkers.push({ marker: marker, place: place });
+  if (place.personaje) {
+    var personajeIcon = L.divIcon({
+      className: '',
+      html: '<div onclick="abrirPersonaje(\'' + place.personaje + '\')" style="width:28px;height:28px;background:var(--black);border:2px solid #c8920a;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,0.4);">👤</div>',
+      iconSize: [28, 28],
+      iconAnchor: [-8, 38],
+      popupAnchor: [0, 0]
     });
+    L.marker([place.lat, place.lng], { icon: personajeIcon, interactive: false }).addTo(map);
+  }
+});
     // ---- BUSCADOR ----
 window.searchPlaces = function(query) {
   var results = document.getElementById('search-results');
