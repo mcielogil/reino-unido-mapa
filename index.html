@@ -653,7 +653,7 @@
 <body>
 
   <div id="opening">
-  <div id="envelope-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;cursor:pointer;" onclick="abrirSobre()">
+  <div id="envelope-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;cursor:pointer;" onclick="window.abrirSobre && window.abrirSobre()">
     <div id="envelope-wrap" style="position:relative;width:280px;">
       <!-- Sobre -->
       <div style="width:280px;height:190px;background:#f4f0e8;border-radius:4px 4px 0 0;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.8);">
@@ -852,7 +852,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-function abrirSobre() {
+window.abrirSobre = function() {
   document.getElementById('envelope-flap').style.transform = 'rotateX(180deg)';
   setTimeout(function() {
     document.getElementById('envelope-screen').style.display = 'none';
