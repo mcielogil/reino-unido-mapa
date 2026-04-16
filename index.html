@@ -644,6 +644,10 @@
   0%, 100% { box-shadow: 0 0 8px rgba(200,146,10,0.3), 0 2px 8px rgba(0,0,0,0.6); }
   50% { box-shadow: 0 0 18px rgba(200,146,10,0.7), 0 2px 8px rgba(0,0,0,0.6); }
 }
+    @keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
   </style>
 </head>
 <body>
@@ -848,7 +852,14 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-
+function abrirSobre() {
+  document.getElementById('envelope-flap').style.transform = 'rotateX(180deg)';
+  setTimeout(function() {
+    document.getElementById('envelope-screen').style.display = 'none';
+    var carta = document.getElementById('carta-screen');
+    carta.style.display = 'flex';
+  }, 600);
+}
     function enterMap() {
       var o = document.getElementById('opening');
       o.classList.add('fade-out');
