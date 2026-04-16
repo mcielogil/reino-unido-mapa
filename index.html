@@ -4908,11 +4908,11 @@ function buildPopup(place) {
       '<div class="tab-body"><p>' + comoTexto + '</p></div>' +
     '</div>';
 
-  var visitKey = 'visited-' + place.name;
-var isVisited = localStorage.getItem(visitKey);
-var actions =
+  var actions =
   '<div class="popup-actions">' +
-  '<button class="popup-link-btn" onclick="window.showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
+  '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
+  '<button class="popup-link-btn" onclick="marcarVisitado(this, \'' + place.name.replace(/'/g, '') + '\')">Marcar visitado</button>' +
+  '</div>';
   '<button class="popup-link-btn" onclick="window.toggleVisited(this)" data-name="' + place.name.replace(/"/g,'&quot;') + '" style="' + (isVisited ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (isVisited ? '✓ Visitado' : 'Marcar visitado') + '</button>' +
   '</div>';
   return '<div class="popup-card' + (hasImage ? ' has-image' : '') + '" id="' + id + '">' +
@@ -5044,30 +5044,6 @@ document.getElementById('bottom-sheet').addEventListener('touchend', function(e)
   if (diff > 80) closeBottomSheet();
 }, { passive: true });
 
-// ---- MARCAR VISITADO ----
-window.toggleVisited = function(btn) {
-  var name = btn.getAttribute('data-name');
-  var key = 'visited-' + name;
-  var marker = allMarkers.find(function(o){ return o.place.name === name; });
-  
-  if (localStorage.getItem(key)) {
-    localStorage.removeItem(key);
-    btn.textContent = 'Marcar visitado';
-    btn.style.borderColor = '';
-    btn.style.color = '';
-    if (marker) marker.marker.setIcon(createPin(marker.place.category));
-  } else {
-    localStorage.setItem(key, '1');
-    btn.textContent = '✓ Visitado';
-    btn.style.borderColor = '#4a6741';
-    btn.style.color = '#4a6741';
-    if (marker) {
-      marker.marker.setIcon(L.divIcon({
-        className: '',
-        html: '<svg width="26" height="38" viewBox="0 0 26 38" xmlns="http://www.w3.org/2000/svg"><path d="M13 0C5.82 0 0 5.82 0 13c0 9.75 13 25 13 25S26 22.75 26 13C26 5.82 20.18 0 13 0z" fill="#3a3934"/><circle cx="13" cy="13" r="5.5" fill="white" opacity="0.4"/><circle cx="13" cy="13" r="3" fill="#3a3934"/></svg>',
-        iconSize: [26,38], iconAnchor:[13,38], popupAnchor:[0,-40]
-      }));
-    }
   }
 };
 
@@ -5082,7 +5058,20 @@ allMarkers.forEach(function(obj) {
     obj.marker.setIcon(greyPin);
   }
 });
-
+function marcarVisitado(btn, nombre) {
+  var key = 'v-' + nombre;
+  if (localStorage.getItem(key)) {
+    localStorage.removeItem(key);
+    btn.textContent = 'Marcar visitado';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+  } else {
+    localStorage.setItem(key, '1');
+    btn.textContent = '✓ Visitado';
+    btn.style.borderColor = '#4a6741';
+    btn.style.color = '#4a6741';
+  }
+}
   </script>
     <div id="bottom-sheet" style="
   display: none;
