@@ -653,41 +653,33 @@
 <body>
 
   <div id="opening">
-  <div id="envelope-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;cursor:pointer;" onclick="window.abrirSobre && window.abrirSobre()">
-    <div style="width:380px;height:260px;background:#f4f0e8;
-      <!-- Sobre -->
-      <div style="width:280px;height:190px;background:#f4f0e8;border-radius:4px 4px 0 0;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.8);">
-        <!-- Solapa cerrada -->
-        <div id="envelope-flap" style="position:absolute;top:0;left:0;right:0;height:100px;background:#ede8dc;clip-path:polygon(0 0, 50% 85%, 100% 0);transform-origin:top center;transition:transform 0.6s cubic-bezier(0.4,0,0.2,1);z-index:2;"></div>
-        <!-- Líneas decorativas -->
-        <div style="position:absolute;bottom:0;left:0;right:0;height:95px;background:#ede8dc;clip-path:polygon(0 100%, 50% 15%, 100% 100%);"></div>
-        <div style="position:absolute;top:0;left:0;width:50%;height:100%;background:#e8e2d4;clip-path:polygon(0 0, 100% 0, 50% 85%, 0 100%);"></div>
-        <div style="position:absolute;top:0;right:0;width:50%;height:100%;background:#ede8dc;clip-path:polygon(0 0, 100% 0, 100% 100%, 50% 85%);"></div>
-        <!-- Sello de lacre -->
-        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;box-shadow:0 4px 12px rgba(212,50,28,0.5);">
-          <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;font-style:italic;">G</div>
-        </div>
-      </div>
-      <!-- Base del sobre -->
-      <div style="width:380px;height:20px;background:#ede8dc;border-radius:0 0 4px 4px;box-shadow:0 20px 60px rgba(0,0,0,0.8);"></div>
+  <div id="envelope-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;cursor:pointer;background:var(--black);" onclick="window.abrirSobre && window.abrirSobre()">
+    <div style="position:relative;width:min(320px,80vw);">
+      <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.9));">
+        <rect x="0" y="0" width="320" height="200" rx="4" fill="#f4f0e8"/>
+        <polygon points="0,0 160,120 320,0" fill="#ede8dc"/>
+        <polygon points="0,0 0,200 130,100" fill="#e8e2d4"/>
+        <polygon points="320,0 320,200 190,100" fill="#ede8dc"/>
+        <polygon points="0,200 320,200 190,100 130,100" fill="#f0ece4"/>
+        <circle cx="160" cy="100" r="26" fill="#d4321c"/>
+        <text x="160" y="107" text-anchor="middle" font-family="Playfair Display, serif" font-size="22" font-style="italic" font-weight="700" fill="white">G</text>
+      </svg>
     </div>
-    <div style="margin-top:28px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#3a3934;">Para las que saben mirar</div>
-    <div style="margin-top:12px;font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:#2a2926;animation:blink 2s infinite;">Tocá para abrir</div>
+    <div style="margin-top:24px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#3a3934;">Para las que saben mirar</div>
+    <div style="margin-top:10px;font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:#2a2926;animation:blink 2s infinite;">Tocá para abrir</div>
   </div>
 
-  <div id="carta-screen" style="display:none;align-items:center;justify-content:center;height:100vh;padding:24px;overflow-y:auto;box-sizing:border-box;">
-    <div style="max-width:480px;width:100%;background:#f7f3eb;padding:48px 40px;box-shadow:0 32px 80px rgba(0,0,0,0.9);position:relative;border-radius:2px;">
-      <!-- Textura de papel -->
+  <div id="carta-screen" style="display:none;align-items:center;justify-content:center;height:100vh;padding:24px;overflow-y:auto;box-sizing:border-box;background:var(--black);">
+    <div style="max-width:420px;width:100%;background:#f7f3eb;padding:40px 32px;box-shadow:0 32px 80px rgba(0,0,0,0.9);position:relative;border-radius:2px;">
       <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(0,0,0,0.03) 28px,rgba(0,0,0,0.03) 29px);border-radius:2px;pointer-events:none;"></div>
-      <!-- Contenido -->
       <div style="position:relative;">
-        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#c8920a;margin-bottom:20px;">Gran Bretaña</div>
-        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#1a1612;line-height:1.1;margin-bottom:24px;">Ah.<br><em style="font-weight:400;">Llegaron.</em></div>
-        <div style="width:40px;height:1px;background:#c8920a;margin-bottom:24px;"></div>
-        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:14px;line-height:2;color:#4a4540;margin-bottom:16px;">Las estaba esperando — no a ustedes en particular, claro. Nunca espero a nadie en particular. Pero sí a alguien que llegue con los ojos abiertos y las manos libres.</div>
-        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:14px;line-height:2;color:#4a4540;margin-bottom:16px;">Tengo reyes enterrados y secretos sin resolver. Tengo callejones que vieron cosas que ningún libro se atrevió a contar del todo. Tengo dos mil años de ambición, de genio, de traición y de belleza — todo mezclado, todo vivo todavía.</div>
-        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:14px;line-height:2;color:#4a4540;margin-bottom:36px;">No soy fácil. Nunca lo fui. Pero a las que saben mirar, les cuento todo.</div>
-        <button onclick="enterMap()" style="background:var(--red);border:none;color:#fff;padding:16px 40px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:background 0.3s;">¿Entran?</button>
+        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#c8920a;margin-bottom:16px;">Gran Bretaña</div>
+        <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#1a1612;line-height:1.1;margin-bottom:20px;">Ah.<br><em style="font-weight:400;">Llegaron.</em></div>
+        <div style="width:36px;height:1px;background:#c8920a;margin-bottom:20px;"></div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:12px;">Las estaba esperando — no a ustedes en particular, claro. Nunca espero a nadie en particular. Pero sí a alguien que llegue con los ojos abiertos y las manos libres.</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:12px;">Tengo reyes enterrados y secretos sin resolver. Tengo callejones que vieron cosas que ningún libro se atrevió a contar del todo. Tengo dos mil años de ambición, de genio, de traición y de belleza — todo mezclado, todo vivo todavía.</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:28px;">No soy fácil. Nunca lo fui. Pero a las que saben mirar, les cuento todo.</div>
+        <button onclick="enterMap()" style="background:var(--red);border:none;color:#fff;padding:14px 36px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;">¿Entran?</button>
       </div>
     </div>
   </div>
