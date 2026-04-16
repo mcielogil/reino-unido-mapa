@@ -5193,13 +5193,6 @@ function abrirPersonaje(id) {
 
 window.abrirPersonaje = abrirPersonaje;
 
-<div id="map"></div>
-    <div id="personaje-panel" style="display:none;position:fixed;inset:0;z-index:3500;background:var(--black);flex-direction:column;overflow-y:auto;">
-  <div style="position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;padding:16px;background:var(--black);">
-    <button onclick="document.getElementById('personaje-panel').style.display='none'" style="background:transparent;border:1px solid #2a2926;color:#6a6860;cursor:pointer;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Cerrar</button>
-  </div>
-  <div id="personaje-content"></div>
-</div>
 function activarModoPlan() {
   document.getElementById('plan-panel').style.display = 'block';
   document.getElementById('plan-step1').style.display = 'block';
@@ -5324,6 +5317,13 @@ function marcarVisitado(btn, nombre) {
   }
 }
   </script>
+  <div id="map"></div>
+    <div id="personaje-panel" style="display:none;position:fixed;inset:0;z-index:3500;background:var(--black);flex-direction:column;overflow-y:auto;">
+  <div style="position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;padding:16px;background:var(--black);">
+    <button onclick="document.getElementById('personaje-panel').style.display='none'" style="background:transparent;border:1px solid #2a2926;color:#6a6860;cursor:pointer;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Cerrar</button>
+  </div>
+  <div id="personaje-content"></div>
+</div>
     <div id="bottom-sheet" style="
   display: none;
   position: fixed;
