@@ -5165,42 +5165,60 @@ function switchCityTab(tab) {
 function abrirPersonaje(id) {
   var p = personajes[id];
   if (!p) return;
-  var desbloqueado = localStorage.getItem('visited-Torre de Londres') || localStorage.getItem('test-unlock-' + id);
+  var desbloqueado = localStorage.getItem('v-TorreDeLondres') || localStorage.getItem('test-unlock-' + id);
   var panel = document.getElementById('personaje-panel');
   var content = document.getElementById('personaje-content');
 
   if (!desbloqueado) {
     content.innerHTML =
-      '<div style="padding:48px 24px;text-align:center;">' +
-        '<div style="width:80px;height:80px;background:#1a1916;border:2px solid #2a2926;border-radius:50%;margin:0 auto 28px;display:flex;align-items:center;justify-content:center;">' +
-          '<svg viewBox="0 0 24 24" width="36" height="36" fill="#3a3934"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>' +
+      '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;">' +
+        '<div style="width:100%;max-width:360px;background:#111;border:1px solid #2a2926;border-radius:4px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.8);">' +
+          '<div style="height:200px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #1e1d1a;">' +
+            '<svg viewBox="0 0 24 24" width="64" height="64" fill="#2a2926"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>' +
+          '</div>' +
+          '<div style="padding:28px 24px;">' +
+            '<div style="font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:12px;">Personaje bloqueado</div>' +
+            '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:15px;line-height:1.9;color:#6a6860;margin-bottom:28px;">"Me ejecutaron en este patio. Me amaron y me odiaron con la misma intensidad. Cambié la historia de un reino sin proponérmelo — o quizás sí. Mi hija fue más grande que yo. Eso me basta."</div>' +
+            '<div style="font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#3a3934;margin-bottom:20px;">¿Quién soy?</div>' +
+            '<button onclick="document.getElementById(\'personaje-panel\').style.display=\'none\'" style="width:100%;padding:12px;background:transparent;border:1px solid #2a2926;color:#4a4944;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;">Visitá este lugar para descubrir</button>' +
+            '<button onclick="localStorage.setItem(\'test-unlock-' + id + '\',\'1\');abrirPersonaje(\'' + id + '\')" style="width:100%;padding:8px;background:transparent;border:1px solid #1a1916;color:#2a2926;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;">🔧 revelar (test)</button>' +
+          '</div>' +
         '</div>' +
-        '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:16px;line-height:2;color:#6a6860;max-width:320px;margin:0 auto 32px;">' +
-          '"Me ejecutaron en este patio. Me amaron y me odiaron con la misma intensidad. Cambié la historia de un reino sin proponérmelo — o quizás sí. Mi hija fue más grande que yo. Eso me basta."' +
-        '</div>' +
-        '<div style="font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:28px;">¿Quién soy?</div>' +
-        '<button onclick="document.getElementById(\'personaje-panel\').style.display=\'none\'" style="padding:12px 28px;background:transparent;border:1px solid #2a2926;color:#4a4944;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:12px;display:block;width:100%;">Marcar lugar como visitado para descubrir</button>' +
-        '<button onclick="localStorage.setItem(\'test-unlock-' + id + '\',\'1\');abrirPersonaje(\'' + id + '\')" style="padding:12px 28px;background:transparent;border:1px solid #1a1916;color:#2a2926;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;display:block;width:100%;">🔧 test — revelar</button>' +
       '</div>';
   } else {
-    content.innerHTML =
-      '<div style="position:relative;height:280px;flex-shrink:0;overflow:hidden;">' +
-        '<img src="' + p.foto + '" style="width:100%;height:100%;object-fit:cover;object-position:top;opacity:0.85;">' +
-        '<div style="position:absolute;inset:0;background:linear-gradient(transparent 30%, var(--black));"></div>' +
-        '<div style="position:absolute;bottom:20px;left:24px;">' +
-          '<div style="font-family:\'Playfair Display\',serif;font-size:28px;font-weight:700;color:var(--white);">' + p.nombre + '</div>' +
-          '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);margin-top:4px;">' + p.titulo + '</div>' +
+    var tabActiva = 'historia';
+    function renderTabs(tab) {
+      return '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;">' +
+        '<div style="width:100%;max-width:360px;background:#111;border:1px solid #2a2926;border-radius:4px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.8);">' +
+          '<div style="position:relative;height:220px;overflow:hidden;">' +
+            '<img src="' + p.foto + '" style="width:100%;height:100%;object-fit:cover;object-position:top;" onerror="this.style.display=\'none\'">' +
+            '<div style="position:absolute;inset:0;background:linear-gradient(transparent 20%, #111);"></div>' +
+            '<div style="position:absolute;bottom:16px;left:20px;">' +
+              '<div style="font-family:\'Playfair Display\',serif;font-size:22px;font-weight:700;color:#fff;line-height:1.1;">' + p.nombre + '</div>' +
+              '<div style="font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);margin-top:4px;">' + p.titulo + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display:flex;border-bottom:1px solid #1e1d1a;">' +
+            ['historia','curiosidades','porque'].map(function(t) {
+              var labels = {historia:'Ella habla', curiosidades:'Curiosidades', porque:'Por qué aquí'};
+              return '<button onclick="window._personajeTab=\'' + t + '\';abrirPersonaje(\'' + id + '\')" style="flex:1;padding:10px 4px;background:transparent;border:none;border-bottom:2px solid ' + (tab===t ? 'var(--red)' : 'transparent') + ';color:' + (tab===t ? '#fff' : '#3a3934') + ';cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;">' + labels[t] + '</button>';
+            }).join('') +
+          '</div>' +
+          '<div style="padding:20px;max-height:260px;overflow-y:auto;">' +
+            (tab === 'historia' ?
+              '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:14px;line-height:1.9;color:#aaa;white-space:pre-line;">' + p.texto + '</div>' :
+            tab === 'curiosidades' ?
+              p.curiosidades.map(function(c) {
+                return '<div style="font-family:\'Playfair Display\',serif;font-size:13px;line-height:1.8;color:#6a6860;padding:10px 0;border-bottom:1px solid #1e1d1a;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--red);">—</span>' + c + '</div>';
+              }).join('') :
+              '<div style="font-family:\'Playfair Display\',serif;font-size:13px;line-height:1.8;color:#6a6860;">' + p.porQueAqui + '</div>'
+            ) +
+          '</div>' +
         '</div>' +
-      '</div>' +
-      '<div style="padding:28px 24px;">' +
-        '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:15px;line-height:2;color:#ccc;margin-bottom:32px;white-space:pre-line;">' + p.texto + '</div>' +
-        '<div style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);font-family:\'DM Sans\',sans-serif;margin-bottom:12px;">Por qué se desbloquea aquí</div>' +
-        '<div style="font-family:\'Playfair Display\',serif;font-size:13px;line-height:1.8;color:#6a6860;margin-bottom:32px;">' + p.porQueAqui + '</div>' +
-        '<div style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);font-family:\'DM Sans\',sans-serif;margin-bottom:16px;">Curiosidades</div>' +
-        p.curiosidades.map(function(c) {
-          return '<div style="font-family:\'Playfair Display\',serif;font-size:13px;line-height:1.8;color:#6a6860;padding:12px 0;border-bottom:1px solid #1e1d1a;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--red);">—</span>' + c + '</div>';
-        }).join('') +
       '</div>';
+    }
+    var tab = window._personajeTab || 'historia';
+    content.innerHTML = renderTabs(tab);
   }
   panel.style.display = 'flex';
 }
