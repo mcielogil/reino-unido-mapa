@@ -5196,7 +5196,7 @@ function switchCityTab(tab) {
 function abrirPersonaje(id) {
   var p = personajes[id];
   if (!p) return;
-  var desbloqueado = localStorage.getItem('v-TorreDeLondres') || localStorage.getItem('test-unlock-' + id);
+  var desbloqueado = localStorage.getItem('test-unlock-' + id);
   var panel = document.getElementById('personaje-panel');
   var content = document.getElementById('personaje-content');
 
