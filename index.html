@@ -737,6 +737,30 @@
   <button class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')" style="display:none;position:fixed;top:16px;left:16px;z-index:1002;width:44px;height:44px;background:var(--black);border:none;cursor:pointer;align-items:center;justify-content:center;">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
+    <div id="mobile-search" style="display:none;position:fixed;top:0;left:0;right:0;z-index:1002;padding:10px 12px;background:var(--black);border-bottom:1px solid #1e1d1a;">
+  <input 
+    id="search-input-mobile"
+    type="text"
+    placeholder="Buscar lugar..."
+    oninput="searchPlaces(this.value)"
+    style="width:100%;background:#161512;border:1px solid #2a2926;border-left:2px solid var(--red);color:var(--white);padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;box-sizing:border-box;border-radius:2px;"
+  />
+  <div id="search-results-mobile" style="margin-top:4px;display:flex;flex-direction:column;gap:2px;"></div>
+</div>
+```
+
+Luego buscá esto:
+```
+@media (max-width: 768px) {
+  #map {
+    left: 0;
+  }
+    #mobile-search {
+    display: block !important;
+  }
+  #map {
+    top: 60px;
+  }
   <div id="map"></div>
 
     <button id="clear-route-btn" class="route-clear-btn" onclick="clearRoute()">
