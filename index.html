@@ -5045,7 +5045,8 @@ document.getElementById('bottom-sheet').addEventListener('touchend', function(e)
 }, { passive: true });
 
 // ---- MARCAR VISITADO ----
-window.toggleVisited = function(name, btn) {
+window.toggleVisited = function(btn) {
+  var name = btn.getAttribute('data-name');
   var key = 'visited-' + name;
   var marker = allMarkers.find(function(o){ return o.place.name === name; });
   
