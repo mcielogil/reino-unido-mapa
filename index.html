@@ -5040,13 +5040,16 @@ window.closeBottomSheet = function() {
 
 // Swipe down para cerrar
 var touchStartY = 0;
-document.getElementById('bottom-sheet').addEventListener('touchstart', function(e){
-  touchStartY = e.touches[0].clientY;
-}, { passive: true });
-document.getElementById('bottom-sheet').addEventListener('touchend', function(e){
-  var diff = e.changedTouches[0].clientY - touchStartY;
-  if (diff > 80) closeBottomSheet();
-}, { passive: true });
+var bottomSheet = document.getElementById('bottom-sheet');
+if (bottomSheet) {
+  bottomSheet.addEventListener('touchstart', function(e){
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  bottomSheet.addEventListener('touchend', function(e){
+    var diff = e.changedTouches[0].clientY - touchStartY;
+    if (diff > 80) closeBottomSheet();
+  }, { passive: true });
+}
 
 // Aplicar visitados al cargar
 allMarkers.forEach(function(obj) {
