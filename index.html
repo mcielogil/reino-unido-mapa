@@ -4908,12 +4908,13 @@ function buildPopup(place) {
       '<div class="tab-body"><p>' + comoTexto + '</p></div>' +
     '</div>';
 
-  var actions =
-    '<div class="popup-actions">' +
-      '<button class="popup-link-btn" onclick="window.showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
-      '<button class="popup-link-btn" id="visit-btn-' + place.name.replace(/[^a-z0-9]/gi,'-') + '" onclick="toggleVisited(\'' + place.name.replace(/'/g,"\\'") + '\', this)" style="' + (localStorage.getItem('visited-' + place.name) ? 'border-color:var(--olive);color:var(--olive)' : '') + '">' + (localStorage.getItem('visited-' + place.name) ? '✓ Visitado' : 'Marcar visitado') + '</button>' +
-    '</div>';
-
+  var visitKey = 'visited-' + place.name;
+var isVisited = localStorage.getItem(visitKey);
+var actions =
+  '<div class="popup-actions">' +
+  '<button class="popup-link-btn" onclick="window.showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
+  '<button class="popup-link-btn" onclick="window.toggleVisited(this)" data-name="' + place.name.replace(/"/g,'&quot;') + '" style="' + (isVisited ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (isVisited ? '✓ Visitado' : 'Marcar visitado') + '</button>' +
+  '</div>';
   return '<div class="popup-card' + (hasImage ? ' has-image' : '') + '" id="' + id + '">' +
     header + tabs + lugarContent + historiaContent + curiosidadesContent + para3Content + comoContent + actions +
     '</div>';
