@@ -667,6 +667,28 @@
 </div>
     <div class="sidebar-body">
       <div>
+        <div>
+  <div class="sidebar-section-label">Buscar lugar</div>
+  <input 
+    id="search-input"
+    type="text" 
+    placeholder="Ej: pub, Shakespeare, torre..."
+    oninput="searchPlaces(this.value)"
+    style="
+      width: 100%;
+      background: #161512;
+      border: 1px solid #2a2926;
+      border-left: 2px solid var(--red);
+      color: var(--white);
+      padding: 8px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      outline: none;
+      box-sizing: border-box;
+    "
+  />
+  <div id="search-results" style="display:none; margin-top:8px; display:flex; flex-direction:column; gap:2px;"></div>
+</div>
         <div class="sidebar-section-label">Filtrar por tipo</div>
         <div class="filter-list">
           <button class="filter-btn active" onclick="toggleFilter(this,'Histórico')" data-filter="Histórico">
@@ -4850,6 +4872,7 @@ function buildPopup(place) {
   var actions =
     '<div class="popup-actions">' +
       '<button class="popup-link-btn" onclick="window.showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
+      '<button class="popup-link-btn" id="visit-btn-' + place.name.replace(/[^a-z0-9]/gi,'-') + '" onclick="toggleVisited(\'' + place.name.replace(/'/g,"\\'") + '\', this)" style="' + (localStorage.getItem('visited-' + place.name) ? 'border-color:var(--olive);color:var(--olive)' : '') + '">' + (localStorage.getItem('visited-' + place.name) ? '✓ Visitado' : 'Marcar visitado') + '</button>' +
     '</div>';
 
   return '<div class="popup-card' + (hasImage ? ' has-image' : '') + '" id="' + id + '">' +
@@ -4892,8 +4915,163 @@ function buildPopup(place) {
       marker.bindPopup(buildPopup(place), { maxWidth: 560, minWidth: 460 });
       allMarkers.push({ marker: marker, place: place });
     });
+    // ---- BUSCADOR ----
+window.searchPlaces = function(query) {
+  var results = document.getElementById('search-results');
+  if (!query || query.length < 2) {
+    results.style.display = 'none';
+    results.innerHTML = '';
+    allMarkers.forEach(function(obj) {
+      var show = obj.place.category === 'Baños Públicos' || activeFilters.has(obj.place.category);
+      if (show) map.addLayer(obj.marker); else map.removeLayer(obj.marker);
+    });
+    return;
+  }
+  var q = query.toLowerCase();
+  results.style.display = 'flex';
+  results.innerHTML = '';
+  var found = [];
+  allMarkers.forEach(function(obj) {
+    var p = obj.place;
+    var match = p.name.toLowerCase().includes(q) || 
+                p.lugar.toLowerCase().includes(q) || 
+                p.categoria && p.categoria.toLowerCase().includes(q) ||
+                p.historia && p.historia.toLowerCase().includes(q);
+    if (match) {
+      found.push(obj);
+      map.addLayer(obj.marker);
+    } else {
+      map.removeLayer(obj.marker);
+    }
+  });
+  if (found.length === 0) {
+    results.innerHTML = '<div style="font-size:12px;color:#3a3934;padding:4px 10px;font-family:DM Sans,sans-serif;">Sin resultados</div>';
+    return;
+  }
+  found.slice(0, 6).forEach(function(obj) {
+    var btn = document.createElement('button');
+    btn.textContent = obj.place.name;
+    btn.style.cssText = 'background:transparent;border:none;border-left:2px solid var(--red);color:#aaa;padding:6px 10px;font-family:DM Sans,sans-serif;font-size:12px;text-align:left;cursor:pointer;';
+    btn.onmouseenter = function(){ this.style.color = 'white'; };
+    btn.onmouseleave = function(){ this.style.color = '#aaa'; };
+    btn.onclick = function() {
+      map.setView([obj.place.lat, obj.place.lng], 16);
+      obj.marker.openPopup();
+      document.getElementById('search-input').value = '';
+      results.style.display = 'none';
+      results.innerHTML = '';
+      allMarkers.forEach(function(o) {
+        var show = o.place.category === 'Baños Públicos' || activeFilters.has(o.place.category);
+        if (show) map.addLayer(o.marker); else map.removeLayer(o.marker);
+      });
+    };
+    results.appendChild(btn);
+  });
+};
+
+// ---- BOTTOM SHEET (mobile) ----
+var isMobile = window.innerWidth <= 768;
+
+if (isMobile) {
+  map.on('popupopen', function(e) {
+    var content = e.popup.getContent();
+    var sheet = document.getElementById('bottom-sheet');
+    var overlay = document.getElementById('bottom-sheet-overlay');
+    var sheetContent = document.getElementById('bottom-sheet-content');
+    sheetContent.innerHTML = content;
+    sheet.style.display = 'block';
+    overlay.style.display = 'block';
+    setTimeout(function(){ sheet.style.transform = 'translateY(0)'; }, 10);
+    map.closePopup();
+  });
+}
+
+window.closeBottomSheet = function() {
+  var sheet = document.getElementById('bottom-sheet');
+  var overlay = document.getElementById('bottom-sheet-overlay');
+  sheet.style.transform = 'translateY(100%)';
+  overlay.style.display = 'none';
+  setTimeout(function(){ sheet.style.display = 'none'; }, 350);
+};
+
+// Swipe down para cerrar
+var touchStartY = 0;
+document.getElementById('bottom-sheet').addEventListener('touchstart', function(e){
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+document.getElementById('bottom-sheet').addEventListener('touchend', function(e){
+  var diff = e.changedTouches[0].clientY - touchStartY;
+  if (diff > 80) closeBottomSheet();
+}, { passive: true });
+
+// ---- MARCAR VISITADO ----
+window.toggleVisited = function(name, btn) {
+  var key = 'visited-' + name;
+  if (localStorage.getItem(key)) {
+    localStorage.removeItem(key);
+    btn.textContent = 'Marcar visitado';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+    var marker = allMarkers.find(function(o){ return o.place.name === name; });
+    if (marker) marker.marker.setIcon(createPin(marker.place.category));
+  } else {
+    localStorage.setItem(key, '1');
+    btn.textContent = '✓ Visitado';
+    btn.style.borderColor = 'var(--olive)';
+    btn.style.color = 'var(--olive)';
+    var marker = allMarkers.find(function(o){ return o.place.name === name; });
+    if (marker) {
+      var greyPin = L.divIcon({
+        className: '',
+        html: '<svg width="26" height="38" viewBox="0 0 26 38" xmlns="http://www.w3.org/2000/svg"><path d="M13 0C5.82 0 0 5.82 0 13c0 9.75 13 25 13 25S26 22.75 26 13C26 5.82 20.18 0 13 0z" fill="#3a3934"/><circle cx="13" cy="13" r="5.5" fill="white" opacity="0.4"/><circle cx="13" cy="13" r="3" fill="#3a3934"/></svg>',
+        iconSize: [26, 38], iconAnchor: [13, 38], popupAnchor: [0, -40]
+      });
+      marker.marker.setIcon(greyPin);
+    }
+  }
+};
+
+// Aplicar visitados al cargar
+allMarkers.forEach(function(obj) {
+  if (localStorage.getItem('visited-' + obj.place.name)) {
+    var greyPin = L.divIcon({
+      className: '',
+      html: '<svg width="26" height="38" viewBox="0 0 26 38" xmlns="http://www.w3.org/2000/svg"><path d="M13 0C5.82 0 0 5.82 0 13c0 9.75 13 25 13 25S26 22.75 26 13C26 5.82 20.18 0 13 0z" fill="#3a3934"/><circle cx="13" cy="13" r="5.5" fill="white" opacity="0.4"/><circle cx="13" cy="13" r="3" fill="#3a3934"/></svg>',
+      iconSize: [26, 38], iconAnchor: [13, 38], popupAnchor: [0, -40]
+    });
+    obj.marker.setIcon(greyPin);
+  }
+});
 
   </script>
+    <div id="bottom-sheet" style="
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 2000;
+  background: var(--black);
+  border-top: 2px solid var(--red);
+  border-radius: 16px 16px 0 0;
+  max-height: 75vh;
+  overflow-y: auto;
+  transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
+  transform: translateY(100%);
+">
+  <div style="
+    width: 40px; height: 4px;
+    background: #3a3934;
+    border-radius: 2px;
+    margin: 12px auto 8px;
+  "></div>
+  <div id="bottom-sheet-content"></div>
+</div>
+<div id="bottom-sheet-overlay" onclick="closeBottomSheet()" style="
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1999;
+"></div>
 </body>
 </html>
 
