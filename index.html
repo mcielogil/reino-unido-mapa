@@ -5076,10 +5076,8 @@ function seleccionarHoras(horas) {
   document.getElementById('plan-btn').style.background = 'var(--red)';
   document.getElementById('plan-btn').style.color = 'var(--white)';
   map.getContainer().style.cursor = 'crosshair';
-  setTimeout(function() {
     document.getElementById('plan-btn').title = '📍 Tocá el mapa para empezar';
-  }, 100);
-}
+
 
 map.on('click', function(e) {
   if (!modoPlan) return;
