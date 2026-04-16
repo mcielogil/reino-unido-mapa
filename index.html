@@ -849,13 +849,7 @@ window.abrirSobre = function() {
   var carta = document.getElementById('carta-screen');
   carta.style.display = 'flex';
 };
-  document.getElementById('envelope-flap').style.transform = 'rotateX(180deg)';
-  setTimeout(function() {
-    document.getElementById('envelope-screen').style.display = 'none';
-    var carta = document.getElementById('carta-screen');
-    carta.style.display = 'flex';
-  }, 600);
-}
+
     function enterMap() {
       var o = document.getElementById('opening');
       o.classList.add('fade-out');
