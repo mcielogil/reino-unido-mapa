@@ -4911,9 +4911,7 @@ function buildPopup(place) {
   var actions =
   '<div class="popup-actions">' +
   '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
-  '<button class="popup-link-btn" onclick="marcarVisitado(this, \'' + place.name.replace(/'/g, '') + '\')">Marcar visitado</button>' +
-  '</div>';
-  '<button class="popup-link-btn" onclick="window.toggleVisited(this)" data-name="' + place.name.replace(/"/g,'&quot;') + '" style="' + (isVisited ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (isVisited ? '✓ Visitado' : 'Marcar visitado') + '</button>' +
+  '<button class="popup-link-btn" onclick="marcarVisitado(this, \'' + place.name.replace(/[^a-zA-Z0-9]/g, '') + '\')">Marcar visitado</button>' +
   '</div>';
   return '<div class="popup-card' + (hasImage ? ' has-image' : '') + '" id="' + id + '">' +
     header + tabs + lugarContent + historiaContent + curiosidadesContent + para3Content + comoContent + actions +
