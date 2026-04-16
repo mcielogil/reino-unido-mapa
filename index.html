@@ -5168,12 +5168,19 @@ function abrirPersonaje(id) {
   var desbloqueado = localStorage.getItem('visited-Torre de Londres') || localStorage.getItem('test-unlock-' + id);
   var panel = document.getElementById('personaje-panel');
   var content = document.getElementById('personaje-content');
+
   if (!desbloqueado) {
     content.innerHTML =
-      '<div style="text-align:center;padding:60px 24px;">' +
-      '<div style="font-size:48px;margin-bottom:16px;">🔒</div>' +
-      '<div style="font-family:\'Playfair Display\',serif;font-size:20px;color:var(--white);margin-bottom:12px;">' + p.nombre + '</div>' +
-      '<div style="font-family:\'DM Sans\',sans-serif;font-size:12px;color:#4a4944;line-height:1.8;">Este personaje se desbloquea cuando<br>marcás la Torre de Londres como visitada.</div>' +
+      '<div style="padding:48px 24px;text-align:center;">' +
+        '<div style="width:80px;height:80px;background:#1a1916;border:2px solid #2a2926;border-radius:50%;margin:0 auto 28px;display:flex;align-items:center;justify-content:center;">' +
+          '<svg viewBox="0 0 24 24" width="36" height="36" fill="#3a3934"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>' +
+        '</div>' +
+        '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:16px;line-height:2;color:#6a6860;max-width:320px;margin:0 auto 32px;">' +
+          '"Me ejecutaron en este patio. Me amaron y me odiaron con la misma intensidad. Cambié la historia de un reino sin proponérmelo — o quizás sí. Mi hija fue más grande que yo. Eso me basta."' +
+        '</div>' +
+        '<div style="font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:28px;">¿Quién soy?</div>' +
+        '<button onclick="document.getElementById(\'personaje-panel\').style.display=\'none\'" style="padding:12px 28px;background:transparent;border:1px solid #2a2926;color:#4a4944;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:12px;display:block;width:100%;">Marcar lugar como visitado para descubrir</button>' +
+        '<button onclick="localStorage.setItem(\'test-unlock-' + id + '\',\'1\');abrirPersonaje(\'' + id + '\')" style="padding:12px 28px;background:transparent;border:1px solid #1a1916;color:#2a2926;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;display:block;width:100%;">🔧 test — revelar</button>' +
       '</div>';
   } else {
     content.innerHTML =
@@ -5193,9 +5200,6 @@ function abrirPersonaje(id) {
         p.curiosidades.map(function(c) {
           return '<div style="font-family:\'Playfair Display\',serif;font-size:13px;line-height:1.8;color:#6a6860;padding:12px 0;border-bottom:1px solid #1e1d1a;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--red);">—</span>' + c + '</div>';
         }).join('') +
-        '<div style="margin-top:32px;padding:16px;border:1px solid #2a2926;text-align:center;cursor:pointer;" onclick="localStorage.setItem(\'test-unlock-ana-bolena\',\'1\');abrirPersonaje(\'ana-bolena\')">' +
-          '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#3a3934;">🔧 Test — borrar este botón después</div>' +
-        '</div>' +
       '</div>';
   }
   panel.style.display = 'flex';
