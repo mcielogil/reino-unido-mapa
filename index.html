@@ -5043,6 +5043,39 @@ allMarkers.forEach(function(obj) {
     obj.marker.setIcon(greyPin);
   }
 });
+    function mostrarCercanos() {
+  var panel = document.getElementById('nearby-panel');
+  if (panel.style.display === 'block') {
+    panel.style.display = 'none';
+    return;
+  }
+  if (!userMarker) {
+    alert('Primero tocá el botón de ubicación (⊙)');
+    return;
+  }
+  var userLat = userMarker.getLatLng().lat;
+  var userLng = userMarker.getLatLng().lng;
+  var conDistancia = allMarkers.map(function(obj) {
+    var d = Math.sqrt(Math.pow(obj.place.lat - userLat, 2) + Math.pow(obj.place.lng - userLng, 2));
+    return { place: obj.place, marker: obj.marker, dist: d };
+  });
+  conDistancia.sort(function(a, b) { return a.dist - b.dist; });
+  var lista = document.getElementById('nearby-list');
+  lista.innerHTML = '';
+  conDistancia.slice(0, 5).forEach(function(obj) {
+    var metros = Math.round(obj.dist * 111000);
+    var btn = document.createElement('div');
+    btn.style.cssText = 'padding:8px 0;border-bottom:1px solid #1e1d1a;cursor:pointer;';
+    btn.innerHTML = '<div style="font-family:DM Sans,sans-serif;font-size:12px;color:var(--white);">' + obj.place.name + '</div><div style="font-family:DM Sans,sans-serif;font-size:10px;color:#4a4944;margin-top:2px;">' + metros + 'm de distancia</div>';
+    btn.onclick = function() {
+      map.setView([obj.place.lat, obj.place.lng], 16);
+      obj.marker.openPopup();
+      panel.style.display = 'none';
+    };
+    lista.appendChild(btn);
+  });
+  panel.style.display = 'block';
+}
 function marcarVisitado(btn, nombre) {
   var key = 'v-' + nombre;
   if (localStorage.getItem(key)) {
