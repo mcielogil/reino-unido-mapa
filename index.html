@@ -5049,11 +5049,21 @@ function marcarVisitado(btn, nombre) {
     btn.textContent = 'Marcar visitado';
     btn.style.borderColor = '';
     btn.style.color = '';
+    var obj = allMarkers.find(function(o){ return o.place.name.replace(/[^a-zA-Z0-9]/g,'') === nombre; });
+    if (obj) obj.marker.setIcon(createPin(obj.place.category));
   } else {
     localStorage.setItem(key, '1');
     btn.textContent = '✓ Visitado';
     btn.style.borderColor = '#4a6741';
     btn.style.color = '#4a6741';
+    var obj = allMarkers.find(function(o){ return o.place.name.replace(/[^a-zA-Z0-9]/g,'') === nombre; });
+    if (obj) {
+      obj.marker.setIcon(L.divIcon({
+        className: '',
+        html: '<svg width="26" height="38" viewBox="0 0 26 38" xmlns="http://www.w3.org/2000/svg"><path d="M13 0C5.82 0 0 5.82 0 13c0 9.75 13 25 13 25S26 22.75 26 13C26 5.82 20.18 0 13 0z" fill="#3a3934"/><circle cx="13" cy="13" r="5.5" fill="white" opacity="0.4"/><circle cx="13" cy="13" r="3" fill="#3a3934"/></svg>',
+        iconSize: [26,38], iconAnchor:[13,38], popupAnchor:[0,-40]
+      }));
+    }
   }
 }
   </script>
