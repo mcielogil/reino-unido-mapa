@@ -640,6 +640,10 @@
 
     .popup-inner::-webkit-scrollbar { width: 3px; }
     .popup-inner::-webkit-scrollbar-thumb { background: #ddd; }
+    @keyframes pulseGold {
+  0%, 100% { box-shadow: 0 0 8px rgba(200,146,10,0.3), 0 2px 8px rgba(0,0,0,0.6); }
+  50% { box-shadow: 0 0 18px rgba(200,146,10,0.7), 0 2px 8px rgba(0,0,0,0.6); }
+}
   </style>
 </head>
 <body>
@@ -4988,7 +4992,9 @@ function buildPopup(place) {
   if (place.personaje) {
     var personajeIcon = L.divIcon({
       className: '',
-      html: '<div onclick="abrirPersonaje(\'' + place.personaje + '\')" style="width:28px;height:28px;background:var(--black);border:2px solid #c8920a;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,0.4);">👤</div>',
+      html: '<div onclick="abrirPersonaje(\'' + place.personaje + '\')" style="width:32px;height:32px;background:#0f0e0c;border:1.5px solid #c8920a;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 12px rgba(200,146,10,0.4),0 2px 8px rgba(0,0,0,0.6);animation:pulseGold 2s infinite;">' +
+  '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#c8920a" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M5 21c0-4 3.1-7 7-7s7 3 7 7" stroke-linecap="round"/></svg>' +
+'</div>',
       iconSize: [28, 28],
       iconAnchor: [-8, 38],
       popupAnchor: [0, 0]
