@@ -781,6 +781,15 @@
   }
    
   <div id="map"></div>
+  <button id="fab-btn" onclick="toggleFab()" style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:1001;width:52px;height:52px;border-radius:50%;background:var(--red);border:none;color:white;cursor:pointer;box-shadow:0 4px 20px rgba(212,50,28,0.5);display:flex;align-items:center;justify-content:center;transition:transform 0.3s ease;">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="white" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+
+<div id="fab-menu" style="display:none;position:absolute;bottom:92px;left:50%;transform:translateX(-50%);z-index:1001;display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none;opacity:0;transition:opacity 0.3s ease;">
+  <button onclick="abrirPersonajes()" style="padding:12px 20px;background:var(--black);border:1px solid #2a2926;color:var(--white);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;pointer-events:all;">👤 Personajes</button>
+  <button onclick="document.getElementById('plan-panel').style.display='block';document.getElementById('plan-step1').style.display='block';document.getElementById('plan-result').style.display='none';" style="padding:12px 20px;background:var(--black);border:1px solid #2a2926;color:var(--white);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;pointer-events:all;">🗺 Plan del día</button>
+  <button onclick="document.getElementById('city-card').style.display='flex';cargarDesafios();" style="padding:12px 20px;background:var(--black);border:1px solid #2a2926;color:var(--white);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;pointer-events:all;">📖 Londres</button>
+</div>
   <button onclick="document.getElementById('city-card').style.display='flex'" style="position:absolute;left:50%;transform:translateX(-50%);bottom:20px;z-index:1001;padding:0 20px;height:40px;border:none;background:var(--black);color:var(--white);box-shadow:0 4px 16px rgba(0,0,0,0.15);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;border:1px solid #2a2926;white-space:nowrap;">— Londres —</button>
 
 <div id="city-card" style="display:none;position:fixed;inset:0;z-index:3001;background:var(--black);flex-direction:column;overflow:hidden;">
@@ -5255,7 +5264,28 @@ function abrirPersonaje(id) {
 }
 
 window.abrirPersonaje = abrirPersonaje;
+var fabAbierto = false;
+function toggleFab() {
+  fabAbierto = !fabAbierto;
+  var menu = document.getElementById('fab-menu');
+  var btn = document.getElementById('fab-btn');
+  if (fabAbierto) {
+    menu.style.display = 'flex';
+    menu.style.pointerEvents = 'all';
+    setTimeout(function(){ menu.style.opacity = '1'; }, 10);
+    btn.style.transform = 'translateX(-50%) rotate(90deg)';
+  } else {
+    menu.style.opacity = '0';
+    menu.style.pointerEvents = 'none';
+    btn.style.transform = 'translateX(-50%) rotate(0deg)';
+    setTimeout(function(){ menu.style.display = 'none'; }, 300);
+  }
+}
 
+function abrirPersonajes() {
+  toggleFab();
+  alert('Panel de personajes — próximamente');
+}
 function activarModoPlan() {
   document.getElementById('plan-panel').style.display = 'block';
   document.getElementById('plan-step1').style.display = 'block';
