@@ -5264,6 +5264,38 @@ function abrirPersonaje(id) {
 
 window.abrirPersonaje = abrirPersonaje;
 var fabAbierto = false;
+    function abrirPersonajes() {
+  toggleFab();
+  var grid = document.getElementById('personajes-grid');
+  grid.innerHTML = '';
+  Object.keys(personajes).forEach(function(id) {
+    var p = personajes[id];
+    var desbloqueado = localStorage.getItem('v-TorreDeLondres') || localStorage.getItem('test-unlock-' + id);
+    var card = document.createElement('div');
+    card.style.cssText = 'cursor:pointer;border-radius:4px;overflow:hidden;border:1px solid ' + (desbloqueado ? '#2a2926' : '#1a1916') + ';position:relative;aspect-ratio:2/3;';
+    if (desbloqueado) {
+      card.innerHTML =
+        '<img src="' + p.foto + '" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;">' +
+        '<div style="position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,0.9));">' +
+        '<div style="position:absolute;bottom:12px;left:12px;right:12px;">' +
+        '<div style="font-family:\'Playfair Display\',serif;font-size:13px;font-weight:700;color:#fff;line-height:1.2;">' + p.nombre + '</div>' +
+        '<div style="font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-top:3px;">' + p.titulo.split('·')[0].trim() + '</div>' +
+        '</div></div>';
+    } else {
+      card.innerHTML =
+        '<div style="width:100%;height:100%;background:#0f0e0c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">' +
+        '<svg viewBox="0 0 24 24" width="32" height="32" fill="#2a2926"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>' +
+        '<div style="font-size:16px;">🔒</div>' +
+        '</div>';
+    }
+    card.onclick = function() {
+      document.getElementById('personajes-panel').style.display = 'none';
+      abrirPersonaje(id);
+    };
+    grid.appendChild(card);
+  });
+  document.getElementById('personajes-panel').style.display = 'flex';
+}
 function toggleFab() {
   fabAbierto = !fabAbierto;
   var menu = document.getElementById('fab-menu');
