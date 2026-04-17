@@ -1545,6 +1545,7 @@ function createPin(category) {
         curiosidades: "<ul><li>La última frase que Wilde pronunció en público, según los registros del tribunal, fue: &ldquo;El amor que no se atreve a decir su nombre.&rdquo; Era la definición del amor entre hombres que le preguntaron que explicara.</li><li>En la cárcel de Reading, donde pasó la mayor parte de su condena, Wilde escribió De Profundis — una carta de 80 páginas a Lord Alfred Douglas que no fue enviada hasta después de su muerte.</li><li>La tumba de Wilde en el cementerio Père Lachaise de París tiene lápiz labial de miles de visitantes que la besan. El cementerio tuvo que instalar una barrera de vidrio para proteger la piedra.</li><li>Tite Street era la calle de los artistas en el Londres victoriano — John Singer Sargent vivía a pocos números de distancia y James McNeill Whistler también.</li></ul>",
         paraLasTres: "Vayan a Tite Street y busquen la placa azul en el número 34. Después caminen hasta el Embankment del Támesis en Chelsea, que está a cinco minutos — es uno de los tramos más bonitos y tranquilos del río en Londres.",
         comoVivirlo: "Es una calle residencial privada — solo se puede ver desde la vereda. La placa azul está claramente visible. Chelsea está en el suroeste, accesible desde Sloane Square en metro.",
+        personaje: "oscar-wilde",
         lat: 51.4876, lng: -0.1672
       },
 
@@ -5261,7 +5262,20 @@ function abrirPersonaje(id) {
   }
   panel.style.display = 'flex';
 }
-
+personajes['oscar-wilde'] = {
+  nombre: 'Oscar Wilde',
+  titulo: 'Escritor · 1854–1900',
+  foto: 'https://mcielogil.github.io/reino-unido-mapa/oscar.wilde.jpg',
+  texto: 'Me condenaron por amar. Así de simple y así de brutal. El mismo Londres que llenaba mis teatros, que repetía mis frases en los salones, que me consideraba el hombre más brillante de la ciudad — ese mismo Londres me puso esposas, me llevó por las calles para que todos me vieran, y me encerró dos años con trabajos forzados.\n\nViví en esta calle cuando era invencible. Aquí escribí todo lo que me hizo famoso. Aquí fui feliz, a mi manera extravagante y ruidosa. Aquí también cometí el error de creer que el talento protege. No protege. Nunca protege.\n\nSalí de la cárcel roto. Morí en París tres años después, en una habitación de hotel barata, casi solo, con cuarenta y seis años. Dicen que mis últimas palabras fueron sobre el papel pintado de la habitación. Me parece un final perfectamente apropiado para alguien que siempre prefirió la superficie a la profundidad — o eso decían los que no me entendían.\n\nLo que no te dicen es que seguí siendo yo hasta el final. Eso no me lo pudieron quitar.',
+  porQueAqui: 'Aquí vivió Wilde once años, los más prolíficos de su vida. Desde esta dirección fue arrestado el 6 de abril de 1895. La casa tiene una placa azul — discreta, casi tímida, para un hombre que nunca fue ninguna de las dos cosas.',
+  curiosidades: [
+    'Wilde era el escritor más famoso de Londres en 1895 — sus obras llenaban los teatros del West End simultáneamente. Lo condenaron por "indecencia grave": en ese tiempo, amar a otro hombre era un crimen en Inglaterra. Lo supo siempre, y eligió no esconderse.',
+    'El Marqués de Queensberry, padre de su amante Lord Alfred Douglas, lo acusó públicamente. Wilde cometió el error de demandarlo por difamación. Perdió. Fue arrestado, juzgado y condenado a dos años de trabajos forzados en Reading Gaol. Entró brillante. Salió destruido.',
+    'Su tumba en el Père Lachaise de París tiene lápiz labial de miles de visitantes que la besan. El cementerio tuvo que instalar una barrera de vidrio para proteger la piedra. Incluso muerto, sigue generando escándalo y amor a partes iguales.'
+  ],
+  adivinanza: 'Fui el más brillante de mi época. Me aplaudieron y me destruyeron con la misma mano. Escribí para hacer reír, pero viví una tragedia. Elegí no esconderme — y eso me costó todo.',
+  lugar: 'oscar-wilde'
+};
 window.abrirPersonaje = abrirPersonaje;
 var fabAbierto = false;
     function abrirPersonajes() {
