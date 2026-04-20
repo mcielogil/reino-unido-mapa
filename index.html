@@ -6085,8 +6085,6 @@ function seleccionarHoras(horas) {
 map.on('click', function(e) {
   if (!modoPlan) return;
   modoPlan = false;
-  document.getElementById('plan-btn').style.background = 'var(--white)';
-  document.getElementById('plan-btn').style.color = 'var(--black)';
   map.getContainer().style.cursor = '';
   var lat = e.latlng.lat;
   var lng = e.latlng.lng;
