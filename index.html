@@ -6196,7 +6196,7 @@ function marcarVisitado(btn, nombre) {
     </div>
     <button onclick="document.getElementById('personajes-panel').style.display='none'" style="background:transparent;border:1px solid #2a2926;color:#6a6860;cursor:pointer;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Cerrar</button>
   </div>
-  <div id="personajes-grid" style="padding:24px;display:flex;flex-direction:row;flex-wrap:nowrap;gap:16px;overflow-x:auto;overflow-y:hidden;width:100%;box-sizing:border-box;scrollbar-width:thin;scrollbar-color:#2a2926 transparent;"></div>
+  <div id="personajes-grid" style="padding:24px;display:grid;grid-template-rows:repeat(3,210px);grid-auto-flow:column;grid-auto-columns:140px;gap:16px;overflow-x:auto;overflow-y:hidden;width:100%;box-sizing:border-box;scrollbar-width:thin;scrollbar-color:#2a2926 transparent;"></div>
 </div>
     <div id="personaje-panel" style="display:none;position:fixed;inset:0;z-index:3500;background:var(--black);flex-direction:column;overflow-y:auto;">
   <div style="position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;padding:16px;background:var(--black);">
