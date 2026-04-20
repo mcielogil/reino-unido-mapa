@@ -6080,7 +6080,9 @@ function seleccionarHoras(horas) {
   modoPlan = true;
   document.getElementById('plan-panel').style.display = 'none';
   document.getElementById('plan-panel').style.pointerEvents = 'none';
-  document.getElementById('map').style.cursor = 'crosshair';
+  setTimeout(function() {
+    document.getElementById('map').style.cursor = 'crosshair';
+  }, 300);
 }
 
 map.on('click', function(e) {
