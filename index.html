@@ -63,6 +63,15 @@
     .leaflet-tile-pane {
       filter: saturate(1.6) contrast(1.1) brightness(0.96) hue-rotate(-5deg);
     }
+    .leaflet-grab {
+  cursor: inherit !important;
+}
+.leaflet-container.crosshair-mode {
+  cursor: crosshair !important;
+}
+.leaflet-container.crosshair-mode .leaflet-grab {
+  cursor: crosshair !important;
+}
 
     /* OPENING SCREEN */
     #opening {
@@ -6081,7 +6090,7 @@ function seleccionarHoras(horas) {
   document.getElementById('plan-panel').style.display = 'none';
   document.getElementById('plan-panel').style.pointerEvents = 'none';
   setTimeout(function() {
-   document.querySelector('.leaflet-container').style.cursor = 'crosshair';
+   document.querySelector('.leaflet-container').classList.add('crosshair-mode');
   }, 300);
 }
 
