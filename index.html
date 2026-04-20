@@ -6079,6 +6079,7 @@ function seleccionarHoras(horas) {
   document.getElementById('plan-step1').style.display = 'none';
   modoPlan = true;
   document.getElementById('plan-panel').style.display = 'none';
+  document.getElementById('plan-panel').style.pointerEvents = 'none';
   map.getContainer().style.cursor = 'crosshair';
 }
 
