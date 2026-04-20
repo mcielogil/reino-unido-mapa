@@ -6091,13 +6091,50 @@ function activarModoPlan() {
 
 function seleccionarHoras(horas) {
   horasPlan = horas;
+  var centro = map.getCenter();
+  var lat = centro.lat;
+  var lng = centro.lng;
+  var cantLugares = horas === 2 ? 3 : horas === 4 ? 5 : 8;
+  var categoriasFiltradas = ['Histórico','Cine y Cultura Pop','Barrios y Vida Local','Parques y Naturaleza','Oculto y Curioso'];
+  var candidatos = allMarkers.filter(function(obj) {
+    return categoriasFiltradas.indexOf(obj.place.category) !== -1;
+  });
+  var conDistancia = candidatos.map(function(obj) {
+    var d = Math.sqrt(Math.pow(obj.place.lat - lat, 2) + Math.pow(obj.place.lng - lng, 2));
+    return { place: obj.place, marker: obj.marker, dist: d };
+  });
+  conDistancia.sort(function(a, b) { return a.dist - b.dist; });
+  var seleccionados = conDistancia.slice(0, cantLugares);
+  var result = document.getElementById('plan-result');
+  result.innerHTML = '';
+  var horasTexto = horas === 2 ? '2 horas' : horas === 4 ? '4 horas' : 'día completo';
+  result.innerHTML += '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:14px;color:#6a6860;margin-bottom:20px;">Plan para ' + horasTexto + ' — ' + cantLugares + ' lugares cerca del centro del mapa</div>';
+  var tiempoAcum = 0;
+  var minutosPorLugar = Math.floor((horas * 60) / cantLugares);
+  seleccionados.forEach(function(obj, i) {
+    var hora = 9 + Math.floor(tiempoAcum / 60);
+    var min = tiempoAcum % 60;
+    var horaStr = hora + ':' + (min < 10 ? '0' : '') + min;
+    tiempoAcum += minutosPorLugar + 15;
+    var item = document.createElement('div');
+    item.style.cssText = 'padding:16px 0;border-bottom:1px solid #1e1d1a;cursor:pointer;display:flex;gap:14px;align-items:flex-start;';
+    item.innerHTML =
+      '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;color:var(--red);min-width:36px;padding-top:2px;">' + horaStr + '</div>' +
+      '<div>' +
+        '<div style="font-family:\'Playfair Display\',serif;font-size:15px;color:var(--white);margin-bottom:4px;">' + obj.place.name + '</div>' +
+        '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;color:#4a4944;letter-spacing:0.1em;text-transform:uppercase;">' + obj.place.category + ' · ' + minutosPorLugar + ' min</div>' +
+        '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:12px;color:#6a6860;margin-top:6px;">' + obj.place.lugar.substring(0, 100) + '...</div>' +
+      '</div>';
+    item.onclick = function() {
+      document.getElementById('plan-panel').style.display = 'none';
+      map.setView([obj.place.lat, obj.place.lng], 16);
+      obj.marker.openPopup();
+    };
+    result.appendChild(item);
+  });
   document.getElementById('plan-step1').style.display = 'none';
-  modoPlan = true;
-  document.getElementById('plan-panel').style.display = 'none';
-  document.getElementById('plan-panel').style.pointerEvents = 'none';
-  setTimeout(function() {
-   document.querySelector('.leaflet-container').classList.add('crosshair-mode');
-  }, 300);
+  document.getElementById('plan-result').style.display = 'block';
+  document.getElementById('plan-panel').style.display = 'block';
 }
 
 map.on('click', function(e) {
