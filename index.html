@@ -6079,10 +6079,7 @@ function seleccionarHoras(horas) {
   document.getElementById('plan-step1').style.display = 'none';
   modoPlan = true;
   document.getElementById('plan-panel').style.display = 'none';
-  document.getElementById('plan-btn').style.background = 'var(--red)';
-  document.getElementById('plan-btn').style.color = 'var(--white)';
   map.getContainer().style.cursor = 'crosshair';
-    document.getElementById('plan-btn').title = '📍 Tocá el mapa para empezar';
 }
 
 map.on('click', function(e) {
