@@ -28,12 +28,15 @@
 
     #map {
   position: absolute;
-  top: 0; right: 0; bottom: 0;
+  top: 0; right: 0; bottom: 56px;
   left: var(--sidebar-w);
 }
 
 @media (max-width: 768px) {
   #map {
+    left: 0;
+  }
+  #bottom-nav {
     left: 0;
   }
   #sidebar {
@@ -800,14 +803,19 @@
   }
    
   <div id="map"></div>
-  <button id="fab-btn" onclick="toggleFab()" style="position:absolute;top:20px;right:20px;z-index:1001;width:52px;height:52px;border-radius:50%;background:var(--red);border:none;color:white;cursor:pointer;box-shadow:0 4px 20px rgba(212,50,28,0.5);display:flex;align-items:center;justify-content:center;transition:transform 0.3s ease;">
-  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="white" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-</button>
-
-<div id="fab-menu" style="display:none;position:absolute;top:84px;right:20px;z-index:1001;flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none;opacity:0;transition:opacity 0.3s ease;">
-  <button onclick="abrirPersonajes()" style="padding:12px 20px;background:var(--black);border:1px solid #2a2926;color:var(--white);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;pointer-events:all;">👤 Personajes</button>
-  <button onclick="document.getElementById('plan-panel').style.display='block';document.getElementById('plan-step1').style.display='block';document.getElementById('plan-result').style.display='none';" style="padding:12px 20px;background:var(--black);border:1px solid #2a2926;color:var(--white);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;pointer-events:all;">🗺 Plan del día</button>
-  <button onclick="document.getElementById('city-card').style.display='flex';cargarDesafios();" style="padding:12px 20px;background:var(--black);border:1px solid #2a2926;color:var(--white);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;pointer-events:all;">📖 Londres</button>
+  <div id="bottom-nav" style="position:fixed;bottom:0;left:var(--sidebar-w);right:0;z-index:1001;background:#0f0e0c;border-top:1px solid #1e1d1a;padding:12px 0 16px;display:flex;justify-content:space-around;align-items:center;">
+  <button onclick="document.getElementById('city-card').style.display='flex';cargarDesafios();" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fafaf8" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#fafaf8;font-family:'DM Sans',sans-serif;">Londres</span>
+  </button>
+  <button onclick="document.getElementById('plan-panel').style.display='block';document.getElementById('plan-step1').style.display='block';document.getElementById('plan-result').style.display='none';" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4a4944" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#4a4944;font-family:'DM Sans',sans-serif;">Plan del día</span>
+  </button>
+  <button onclick="abrirPersonajes()" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4a4944" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.1-7 7-7s7 3 7 7"/></svg>
+    <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#4a4944;font-family:'DM Sans',sans-serif;">Personajes</span>
+  </button>
 </div>
 
 <div id="city-card" style="display:none;position:fixed;inset:0;z-index:3001;background:var(--black);flex-direction:column;overflow:hidden;">
