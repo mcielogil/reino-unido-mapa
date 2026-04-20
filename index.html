@@ -4984,7 +4984,7 @@ function buildPopup(place) {
         '<div class="popup-tab active" onclick="switchTab(\'' + id + '\',\'lugar\')">El Lugar</div>' +
         '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'historia\')">Lo que Pasó Aquí</div>' +
         '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'curiosidades\')">Curiosidades</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'para3\')">Para las Tres</div>' +
+        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'para3\')">Cómo Vivirlo</div>' +
         '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'como\')">Cómo Vivirlo</div>' +
       '</div>';
   }
@@ -5008,7 +5008,7 @@ function buildPopup(place) {
 
   var historiaLabel = isToilet ? 'Info útil' : 'Lo que Pasó Aquí';
   var curiosidadesLabel = isToilet ? 'Acceso' : 'Curiosidades';
-  var para3Label = isToilet ? 'Cerca de acá' : 'Para las Tres';
+  var para3Label = isToilet ? 'Cerca de acá' : 'Cómo Vivirlo';
   var comoLabel = isToilet ? 'Cómo llegar' : 'Cómo Vivirlo';
   var comoTexto = isToilet ? place.comoLlegar : place.comoVivirlo;
 
@@ -5296,7 +5296,7 @@ function abrirPersonaje(id) {
           '</div>' +
           '<div style="display:flex;border-bottom:1px solid #1e1d1a;">' +
             ['historia','curiosidades','porque'].map(function(t) {
-              var labels = {historia:'Ella habla', curiosidades:'Curiosidades', porque:'Por qué aquí'};
+              var labels = {historia:'Su voz', curiosidades:'Curiosidades', porque:'Por qué aquí'};
               return '<button onclick="window._personajeTab=\'' + t + '\';abrirPersonaje(\'' + id + '\')" style="flex:1;padding:10px 4px;background:transparent;border:none;border-bottom:2px solid ' + (tab===t ? 'var(--red)' : 'transparent') + ';color:' + (tab===t ? '#fff' : '#3a3934') + ';cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;">' + labels[t] + '</button>';
             }).join('') +
           '</div>' +
