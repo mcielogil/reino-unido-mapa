@@ -1030,7 +1030,7 @@ function startWatchingUserLocation() {
       currentBtn = btn;
       window.speechSynthesis.speak(utterance);
     }
-var map = L.map('map', { zoomControl: false }).setView([51.505, -0.118], 13);
+var map = L.map('map', { zoomControl: false, dragging: true, touchZoom: true, scrollWheelZoom: true }).setView([51.505, -0.118], 13);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 19 }).addTo(map);
 
