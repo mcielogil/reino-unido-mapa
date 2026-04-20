@@ -5978,35 +5978,73 @@ window.abrirPersonaje = abrirPersonaje;
 var fabAbierto = false;
     function abrirPersonajes() {
   toggleFab();
+  var panel = document.getElementById('personajes-panel');
   var grid = document.getElementById('personajes-grid');
   grid.innerHTML = '';
+
   Object.keys(personajes).forEach(function(id) {
     var p = personajes[id];
-    var desbloqueado = localStorage.getItem('v-TorreDeLondres') || localStorage.getItem('test-unlock-' + id);
+    var desbloqueado = localStorage.getItem('test-unlock-' + id) || localStorage.getItem('v-' + id);
+
     var card = document.createElement('div');
-    card.style.cssText = 'cursor:pointer;border-radius:4px;overflow:hidden;border:1px solid ' + (desbloqueado ? '#2a2926' : '#1a1916') + ';position:relative;aspect-ratio:2/3;';
+    card.style.cssText = 'flex-shrink:0;width:140px;height:210px;perspective:1000px;cursor:pointer;';
+
+    var inner = document.createElement('div');
+    inner.style.cssText = 'position:relative;width:100%;height:100%;transition:transform 0.6s cubic-bezier(0.4,0,0.2,1);transform-style:preserve-3d;';
+
+    var front = document.createElement('div');
+    front.style.cssText = 'position:absolute;inset:0;backface-visibility:hidden;border-radius:4px;overflow:hidden;';
+
     if (desbloqueado) {
-      card.innerHTML =
+      front.innerHTML =
         '<img src="' + p.foto + '" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;">' +
-        '<div style="position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,0.9));">' +
-        '<div style="position:absolute;bottom:12px;left:12px;right:12px;">' +
-        '<div style="font-family:\'Playfair Display\',serif;font-size:13px;font-weight:700;color:#fff;line-height:1.2;">' + p.nombre + '</div>' +
-        '<div style="font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-top:3px;">' + p.titulo.split('·')[0].trim() + '</div>' +
+        '<div style="position:absolute;inset:0;background:linear-gradient(transparent 50%,rgba(0,0,0,0.85));">' +
+        '<div style="position:absolute;bottom:10px;left:10px;right:10px;">' +
+        '<div style="font-family:\'Playfair Display\',serif;font-size:11px;font-weight:700;color:#fff;line-height:1.2;">' + p.nombre + '</div>' +
+        '<div style="font-family:\'DM Sans\',sans-serif;font-size:7px;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-top:2px;">' + p.titulo.split('·')[0].trim() + '</div>' +
         '</div></div>';
     } else {
-      card.innerHTML =
-        '<div style="width:100%;height:100%;background:#0f0e0c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">' +
-        '<svg viewBox="0 0 24 24" width="32" height="32" fill="#2a2926"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>' +
-        '<div style="font-size:16px;">🔒</div>' +
+      front.innerHTML =
+        '<div style="width:100%;height:100%;background:#0f0e0c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:1px solid #1e1d1a;">' +
+        '<svg viewBox="0 0 24 24" width="36" height="36" fill="#2a2926"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>' +
+        '<div style="font-size:20px;">🔒</div>' +
+        '<div style="font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:#2a2926;text-align:center;padding:0 8px;">Visitá el lugar</div>' +
         '</div>';
     }
+
+    var back = document.createElement('div');
+    back.style.cssText = 'position:absolute;inset:0;backface-visibility:hidden;transform:rotateY(180deg);border-radius:4px;overflow:hidden;background:var(--black);border:1px solid #2a2926;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;';
+
+    if (desbloqueado) {
+      back.innerHTML =
+        '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:10px;color:#6a6860;line-height:1.6;text-align:center;">"' + p.adivinanza.substring(0, 80) + '..."</div>' +
+        '<div style="font-family:\'Playfair Display\',serif;font-size:12px;font-weight:700;color:var(--white);text-align:center;line-height:1.2;">' + p.nombre + '</div>' +
+        '<button onclick="event.stopPropagation();document.getElementById(\'personajes-panel\').style.display=\'none\';abrirPersonaje(\'' + id + '\')" style="padding:8px 16px;background:var(--red);border:none;color:#fff;font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;">Leer más</button>';
+    } else {
+      back.innerHTML =
+        '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:10px;color:#3a3934;line-height:1.6;text-align:center;">Visitá este lugar para descubrir quién se esconde aquí</div>' +
+        '<div style="font-size:24px;">🔒</div>';
+    }
+
+    inner.appendChild(front);
+    inner.appendChild(back);
+    card.appendChild(inner);
+
+    var flipped = false;
     card.onclick = function() {
-      document.getElementById('personajes-panel').style.display = 'none';
-      abrirPersonaje(id);
+      if (!flipped) {
+        inner.style.transform = 'rotateY(180deg)';
+        flipped = true;
+      } else {
+        inner.style.transform = 'rotateY(0deg)';
+        flipped = false;
+      }
     };
+
     grid.appendChild(card);
   });
-  document.getElementById('personajes-panel').style.display = 'flex';
+
+  panel.style.display = 'flex';
 }
 function toggleFab() {
   fabAbierto = !fabAbierto;
@@ -6158,7 +6196,7 @@ function marcarVisitado(btn, nombre) {
     </div>
     <button onclick="document.getElementById('personajes-panel').style.display='none'" style="background:transparent;border:1px solid #2a2926;color:#6a6860;cursor:pointer;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Cerrar</button>
   </div>
-  <div id="personajes-grid" style="padding:24px;overflow-y:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:500px;margin:0 auto;width:100%;"></div>
+  <div id="personajes-grid" style="padding:24px;display:flex;flex-direction:row;flex-wrap:nowrap;gap:16px;overflow-x:auto;overflow-y:hidden;width:100%;box-sizing:border-box;scrollbar-width:thin;scrollbar-color:#2a2926 transparent;"></div>
 </div>
     <div id="personaje-panel" style="display:none;position:fixed;inset:0;z-index:3500;background:var(--black);flex-direction:column;overflow-y:auto;">
   <div style="position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;padding:16px;background:var(--black);">
