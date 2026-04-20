@@ -6080,13 +6080,13 @@ function seleccionarHoras(horas) {
   modoPlan = true;
   document.getElementById('plan-panel').style.display = 'none';
   document.getElementById('plan-panel').style.pointerEvents = 'none';
-  map.getContainer().style.cursor = 'crosshair';
+  document.getElementById('map').style.cursor = 'crosshair';
 }
 
 map.on('click', function(e) {
   if (!modoPlan) return;
   modoPlan = false;
-  map.getContainer().style.cursor = '';
+  document.getElementById('map').style.cursor = '';
   document.getElementById('plan-panel').style.pointerEvents = 'all';
   document.getElementById('plan-panel').style.display = 'block';
   var lat = e.latlng.lat;
