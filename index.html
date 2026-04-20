@@ -282,22 +282,30 @@
     }
 
     /* LEAFLET OVERRIDES */
-    .leaflet-popup-content-wrapper {
+ .leaflet-popup-content-wrapper,
+.leaflet-popup-content {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  border-radius: 0 !important;
   background: var(--white);
   border: none;
-  border-radius: 0 !important;
   box-shadow: 0 24px 64px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.1);
-  padding: 0;
-  min-width: 0 !important;
-  width: auto !important;
 }
-      background: var(--white);
-      border: none;
-      border-radius: 0 !important;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.1);
-      padding: 0;
-    }
 
+.leaflet-popup {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.toilet-popup .leaflet-popup-content-wrapper,
+.toilet-popup .leaflet-popup-content {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 280px !important;
+  border-radius: 0 !important;
+  background: var(--black) !important;
+}
     .leaflet-popup-content { margin: 0 !important; padding: 0 !important; width: 100% !important; }
     .leaflet-popup-content-wrapper {
   padding: 0 !important;
