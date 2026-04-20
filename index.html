@@ -6081,14 +6081,14 @@ function seleccionarHoras(horas) {
   document.getElementById('plan-panel').style.display = 'none';
   document.getElementById('plan-panel').style.pointerEvents = 'none';
   setTimeout(function() {
-    document.getElementById('map').style.cursor = 'crosshair';
+   document.querySelector('.leaflet-container').style.cursor = 'crosshair';
   }, 300);
 }
 
 map.on('click', function(e) {
   if (!modoPlan) return;
   modoPlan = false;
-  document.getElementById('map').style.cursor = '';
+  document.querySelector('.leaflet-container').style.cursor = '';
   document.getElementById('plan-panel').style.pointerEvents = 'all';
   document.getElementById('plan-panel').style.display = 'block';
   var lat = e.latlng.lat;
