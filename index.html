@@ -6087,6 +6087,8 @@ map.on('click', function(e) {
   if (!modoPlan) return;
   modoPlan = false;
   map.getContainer().style.cursor = '';
+  document.getElementById('plan-panel').style.pointerEvents = 'all';
+  document.getElementById('plan-panel').style.display = 'block';
   var lat = e.latlng.lat;
   var lng = e.latlng.lng;
   var cantLugares = horasPlan === 2 ? 3 : horasPlan === 4 ? 5 : 8;
