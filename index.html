@@ -5102,7 +5102,10 @@ function buildPopup(place) {
 
     places.forEach(function(place) {
   var marker = L.marker([place.lat, place.lng], { icon: createPin(place.category) }).addTo(map);
-  marker.bindPopup(buildPopup(place), { maxWidth: 560, minWidth: 460 });
+marker.bindPopup(buildPopup(place), { 
+  maxWidth: place.category === 'Baños Públicos' ? 300 : 560, 
+  minWidth: place.category === 'Baños Públicos' ? 280 : 460 
+});
   allMarkers.push({ marker: marker, place: place });
   if (place.personaje) {
     var personajeIcon = L.divIcon({
