@@ -6096,6 +6096,7 @@ function seleccionarHoras(horas) {
 
 map.on('click', function(e) {
   if (!modoPlan) return;
+  e.originalEvent.stopPropagation();
   modoPlan = false;
   document.querySelector('.leaflet-container').style.cursor = '';
   document.getElementById('plan-panel').style.pointerEvents = 'all';
