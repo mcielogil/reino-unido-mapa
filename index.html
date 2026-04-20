@@ -4952,7 +4952,7 @@ function buildPopup(place) {
   var id = 'popup-' + Math.random().toString(36).substr(2,9);
   var isToilet = place.category === 'Baños Públicos';
   if (isToilet) {
-  return '<div class="popup-card">' +
+  return '<div class="popup-card" style="min-width:280px;max-width:320px;">' +
     '<div class="popup-header">' +
       '<div class="popup-header-text">' +
         '<h3>' + place.name + '</h3>' +
@@ -4961,8 +4961,8 @@ function buildPopup(place) {
         '</div>' +
       '</div>' +
     '</div>' +
-    '<div style="padding:16px 20px;background:var(--white);display:flex;flex-direction:column;gap:10px;">' +
-      '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;color:#666;line-height:1.6;">' + place.lugar + '</div>' +
+    '<div style="padding:16px 20px;background:var(--black);display:flex;flex-direction:column;gap:10px;">' +
+      '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;color:#6a6860;line-height:1.6;">' + place.lugar + '</div>' +
       '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')" style="width:100%;padding:12px;text-align:center;">Ver ruta</button>' +
     '</div>' +
   '</div>';
