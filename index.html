@@ -865,7 +865,7 @@
     <button onclick="document.getElementById('plan-panel').style.display='none'" style="background:transparent;border:1px solid #2a2926;color:#6a6860;cursor:pointer;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Cerrar</button>
   </div>
   <div id="plan-step1">
-    <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:#6a6860;margin-bottom:20px;">¿Cuántas horas tenés?</div>
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:#6a6860;margin-bottom:20px;">Centrate en la zona que querés explorar y elegí cuántas horas tenés.</div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <button onclick="seleccionarHoras(2)" style="padding:12px 20px;border:1px solid #2a2926;background:transparent;color:var(--white);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;">2 horas</button>
       <button onclick="seleccionarHoras(4)" style="padding:12px 20px;border:1px solid #2a2926;background:transparent;color:var(--white);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;">4 horas</button>
@@ -6108,7 +6108,7 @@ function seleccionarHoras(horas) {
   var result = document.getElementById('plan-result');
   result.innerHTML = '';
   var horasTexto = horas === 2 ? '2 horas' : horas === 4 ? '4 horas' : 'día completo';
-  result.innerHTML += '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:14px;color:#6a6860;margin-bottom:20px;">Plan para ' + horasTexto + ' — ' + cantLugares + ' lugares cerca del centro del mapa</div>';
+  result.innerHTML += '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:14px;color:#6a6860;margin-bottom:20px;">Plan para ' + horasTexto + ' — ' + cantLugares + ' lugares cerca de donde estás mirando</div>';
   var tiempoAcum = 0;
   var minutosPorLugar = Math.floor((horas * 60) / cantLugares);
   seleccionados.forEach(function(obj, i) {
