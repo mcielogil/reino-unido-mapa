@@ -886,7 +886,10 @@
 
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
+<script>
+L.Browser.touch = false;
+</script>
+<script>
      function enterMap() {
       var o = document.getElementById('opening');
       o.classList.add('fade-out');
