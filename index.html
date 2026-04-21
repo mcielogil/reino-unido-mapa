@@ -864,7 +864,7 @@
 <div id="plan-panel" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:3000;background:var(--black);overflow-y:auto;padding:32px 24px;">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
     <div style="font-family:\'Playfair Display\',serif;font-size:24px;font-weight:700;color:var(--white);">Tu plan del día</div>
-    <button onclick="document.getElementById('plan-panel').style.display='none'" style="background:transparent;border:1px solid #2a2926;color:#6a6860;cursor:pointer;padding:8px 14px;font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Cerrar</button>
+    <button onclick="document.getElementById('plan-panel').style.display='none';setPlanInteraction(false);clearPlanPointMarker();" style="background:transparent;border:1px solid #2a2926;color:#6a6860;cursor:pointer;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Cerrar</button>
   </div>
   <div id="plan-step1">
     <div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:15px;color:#6a6860;margin-bottom:10px;">Elegí cuántas horas tienen y después tocá un punto del mapa.</div>
@@ -2393,16 +2393,6 @@ function buildPopup(place) {
   marker.bindPopup(buildPopup(place), {
     maxWidth: place.category === 'Baños Públicos' ? 300 : 560,
     minWidth: place.category === 'Baños Públicos' ? 280 : 460
-  });
-
-  marker.on('click', function(e) {
-    if (modoPlan && horasPlan) {
-      if (e.originalEvent) {
-        L.DomEvent.stop(e.originalEvent);
-      }
-      map.closePopup();
-      confirmarPuntoPlan(e.latlng);
-    }
   });
 
   allMarkers.push({ marker: marker, place: place });
