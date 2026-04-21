@@ -1114,12 +1114,10 @@ map.on('click', function (e) {
     selectedLatLng = ev.target.getLatLng();
   });
 
-  // 🔥 ACÁ generás el plan
-
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap &copy; CARTO',
   maxZoom: 19
 }).addTo(map);
-  L.tileLayer(...).addTo(map);
 
 
 // 🔽 PEGÁ TODO EL PARCHE ACÁ 🔽
