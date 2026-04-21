@@ -1037,8 +1037,12 @@ function startWatchingUserLocation() {
 L.Browser.touch = false;
 var map = L.map('map', { zoomControl: false, dragging: true, touchZoom: true, scrollWheelZoom: true, tap: false }).setView([51.505, -0.118], 13);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
+  setTimeout(function() {
   map.getContainer().classList.remove('leaflet-touch-drag');
-map.getContainer().classList.remove('leaflet-touch-zoom');
+  map.getContainer().classList.remove('leaflet-touch-zoom');
+  map.dragging.disable();
+  map.dragging.enable();
+}, 100);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 19 }).addTo(map);
 
     startWatchingUserLocation();
