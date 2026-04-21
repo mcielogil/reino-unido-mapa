@@ -2839,6 +2839,8 @@ function renderPlanDesdePunto(latlng, horas) {
   document.getElementById('plan-result').style.display = 'block';
   document.getElementById('plan-panel').style.display = 'block';
 }
+
+var desafiosLondres = [
   'Tomar un desayuno inglés completo — huevos, bacon, beans, toast',
   'Comer un fish & chips envuelto en papel',
   'Tomar una pinta en un pub victoriano',
@@ -3698,101 +3700,7 @@ function toggleFab() {
   }
 }
 
-function activarModoPlan() {
-  horasPlan = 0;
-  puntoPlan = null;
-  setPlanInteraction(false);
-  document.getElementById('plan-panel').style.display = 'block';
-  document.getElementById('plan-step1').style.display = 'block';
-  document.getElementById('plan-result').style.display = 'none';
-  var status = document.getElementById('plan-status');
-  status.style.display = 'none';
-  status.textContent = '';
-}
-
-function seleccionarHoras(horas) {
-  horasPlan = horas;
-  puntoPlan = null;
-  setPlanInteraction(true);
-
-  var status = document.getElementById('plan-status');
-  var horasTexto = horas === 2 ? '2 horas' : horas === 4 ? '4 horas' : 'día completo';
-
-  status.style.display = 'block';
-  status.textContent = 'Ahora hacé click en cualquier punto del mapa o en un pin, y te preparo un recorrido de ' + horasTexto + ' alrededor de esa zona.';
-
-  document.getElementById('plan-result').style.display = 'none';
-  document.getElementById('plan-panel').style.display = 'none';
-}
-
-function renderPlanDesdePunto(latlng, horas) {
-  var lat = latlng.lat;
-  var lng = latlng.lng;
-  var cantLugares = horas === 2 ? 3 : horas === 4 ? 5 : 8;
-  var categoriasFiltradas = ['Histórico','Cine y Cultura Pop','Barrios y Vida Local','Parques y Naturaleza','Oculto y Curioso'];
-
-  var candidatos = allMarkers.filter(function(obj) {
-    return categoriasFiltradas.indexOf(obj.place.category) !== -1;
-  });
-
-  var conDistancia = candidatos.map(function(obj) {
-    var d = map.distance([lat, lng], [obj.place.lat, obj.place.lng]);
-    return { place: obj.place, marker: obj.marker, dist: d };
-  });
-
-  conDistancia.sort(function(a, b) {
-    return a.dist - b.dist;
-  });
-
-  var seleccionados = conDistancia.slice(0, cantLugares);
-  var result = document.getElementById('plan-result');
-  var status = document.getElementById('plan-status');
-
-  result.innerHTML = '';
-  status.style.display = 'none';
-  status.textContent = '';
-
-  var horasTexto = horas === 2 ? '2 horas' : horas === 4 ? '4 horas' : 'día completo';
-
-  result.innerHTML += '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:14px;color:#6a6860;margin-bottom:20px;">Plan para ' + horasTexto + ' — ' + cantLugares + ' paradas cerca del punto que marcaron en el mapa</div>';
-
-  var tiempoAcum = 0;
-  var minutosPorLugar = Math.max(20, Math.floor((horas * 60) / cantLugares) - 10);
-
-  seleccionados.forEach(function(obj) {
-    var hora = 9 + Math.floor(tiempoAcum / 60);
-    var min = tiempoAcum % 60;
-    var horaStr = hora + ':' + (min < 10 ? '0' : '') + min;
-    tiempoAcum += minutosPorLugar + 15;
-
-    var metros = Math.round(obj.dist);
-
-    var item = document.createElement('div');
-    item.style.cssText = 'padding:16px 0;border-bottom:1px solid #1e1d1a;cursor:pointer;display:flex;gap:14px;align-items:flex-start;';
-
-    item.innerHTML =
-      '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;color:var(--red);min-width:44px;padding-top:2px;">' + horaStr + '</div>' +
-      '<div>' +
-        '<div style="font-family:\'Playfair Display\',serif;font-size:15px;color:var(--white);margin-bottom:4px;">' + obj.place.name + '</div>' +
-        '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;color:#4a4944;letter-spacing:0.1em;text-transform:uppercase;">' + obj.place.category + ' · ' + minutosPorLugar + ' min · a ' + metros + ' m</div>' +
-        '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:12px;color:#6a6860;margin-top:6px;">' + obj.place.lugar.substring(0, 120) + '...</div>' +
-      '</div>';
-
-    item.onclick = function() {
-      document.getElementById('plan-panel').style.display = 'none';
-      map.setView([obj.place.lat, obj.place.lng], 16);
-      obj.marker.openPopup();
-    };
-
-    result.appendChild(item);
-  });
-
-  document.getElementById('plan-step1').style.display = 'block';
-  document.getElementById('plan-result').style.display = 'block';
-  document.getElementById('plan-panel').style.display = 'block';
-}
-
-    function mostrarCercanos() {
+function mostrarCercanos() {
   var panel = document.getElementById('nearby-panel');
   if (panel.style.display === 'block') {
     panel.style.display = 'none';
