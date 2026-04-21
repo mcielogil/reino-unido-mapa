@@ -6098,6 +6098,14 @@ var fabAbierto = false;
 
   panel.style.display = 'flex';
 }
+  function closeBottomSheet() {
+  var sheet = document.getElementById('bottom-sheet');
+  var overlay = document.getElementById('bottom-sheet-overlay');
+  if (sheet) sheet.style.transform = 'translateY(100%)';
+  if (overlay) overlay.style.display = 'none';
+}
+
+function toggleFab() {
 function toggleFab() {
   fabAbierto = !fabAbierto;
   var menu = document.getElementById('fab-menu');
