@@ -1039,16 +1039,9 @@ function startWatchingUserLocation() {
       window.speechSynthesis.speak(utterance);
     }
 L.Browser.touch = false;
-var map = L.map('map', { zoomControl: false }).setView([51.505, -0.118], 13);
-map.getContainer().style.touchAction = 'none';
-map.getContainer().style.userSelect = 'none';
+L.Browser.pointer = false;
+var map = L.map('map', { zoomControl: false, dragging: true, tap: false }).setView([51.505, -0.118], 13);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
-  setTimeout(function() {
-  map.getContainer().classList.remove('leaflet-touch-drag');
-  map.getContainer().classList.remove('leaflet-touch-zoom');
-  map.dragging.disable();
-  map.dragging.enable();
-}, 100);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 19 }).addTo(map);
 
 map.getContainer().addEventListener('pointerdown', function(e) {
