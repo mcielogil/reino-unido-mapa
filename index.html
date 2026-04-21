@@ -893,8 +893,6 @@
 
  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-L.Browser.touch = false;
-L.Browser.pointer = false;
 </script>
 <script>
      function enterMap() {
@@ -1041,16 +1039,7 @@ function startWatchingUserLocation() {
       window.speechSynthesis.speak(utterance);
     }
 L.Browser.touch = false;
-var map = L.map('map', { 
-  zoomControl: false, 
-  dragging: true, 
-  touchZoom: false,
-  scrollWheelZoom: true, 
-  tap: false,
-  tapTolerance: 0,
-  bounceAtZoomLimits: false
-}).setView([51.505, -0.118], 13);
-map.getContainer().style.touchAction = 'none'; 
+var map = L.map('map', { zoomControl: false }).setView([51.505, -0.118], 13);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
   setTimeout(function() {
   map.getContainer().classList.remove('leaflet-touch-drag');
