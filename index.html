@@ -1041,7 +1041,16 @@ function startWatchingUserLocation() {
       window.speechSynthesis.speak(utterance);
     }
 L.Browser.touch = false;
-var map = L.map('map', { zoomControl: false, dragging: true, touchZoom: true, scrollWheelZoom: true, tap: false }).setView([51.505, -0.118], 13);
+var map = L.map('map', { 
+  zoomControl: false, 
+  dragging: true, 
+  touchZoom: false,
+  scrollWheelZoom: true, 
+  tap: false,
+  tapTolerance: 0,
+  bounceAtZoomLimits: false
+}).setView([51.505, -0.118], 13);
+map.getContainer().style.touchAction = 'none'; 
     L.control.zoom({ position: 'bottomright' }).addTo(map);
   setTimeout(function() {
   map.getContainer().classList.remove('leaflet-touch-drag');
