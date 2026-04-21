@@ -6054,45 +6054,79 @@ var fabAbierto = false;
     var desbloqueado = isPersonajeUnlocked(id);
 
     var card = document.createElement('div');
-    card.style.cssText = 'position:relative;height:220px;border:1px solid #1e1d1a;background:#111;overflow:hidden;cursor:pointer;transition:transform 0.2s ease,border-color 0.2s ease;';
-    card.onmouseenter = function() {
-      card.style.transform = 'translateY(-2px)';
-      card.style.borderColor = desbloqueado ? 'rgba(200,146,10,0.45)' : '#2a2926';
-    };
-    card.onmouseleave = function() {
-      card.style.transform = 'translateY(0)';
-      card.style.borderColor = '#1e1d1a';
-    };
+    card.style.cssText = 'perspective:1200px;height:260px;position:relative;';
 
     if (desbloqueado) {
       card.innerHTML =
-        '<img src="' + p.foto + '" style="width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;">' +
-        '<div style="position:absolute;inset:0;background:linear-gradient(transparent 40%, rgba(15,14,12,0.92));"></div>' +
-        '<div style="position:absolute;top:10px;right:10px;padding:5px 7px;background:rgba(15,14,12,0.82);border:1px solid rgba(200,146,10,0.35);font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:#c8920a;">Descubierto</div>' +
-        '<div style="position:absolute;left:12px;right:12px;bottom:12px;">' +
-          '<div style="font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:#c8920a;margin-bottom:6px;">Personaje</div>' +
-          '<div style="font-family:\'Playfair Display\',serif;font-size:16px;font-weight:700;color:#fff;line-height:1.12;margin-bottom:5px;">' + p.nombre + '</div>' +
-          '<div style="font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:#b8b2a8;line-height:1.4;">' + p.titulo + '</div>' +
+        '<div class="personaje-flip-card" style="position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(0.16,1,0.3,1);cursor:pointer;">' +
+
+          '<div class="personaje-flip-front" style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid #1e1d1a;background:#111;overflow:hidden;">' +
+            '<img src="' + p.foto + '" style="width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;">' +
+            '<div style="position:absolute;inset:0;background:linear-gradient(transparent 38%, rgba(15,14,12,0.94));"></div>' +
+            '<div style="position:absolute;top:10px;right:10px;padding:5px 7px;background:rgba(15,14,12,0.82);border:1px solid rgba(200,146,10,0.35);font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:#c8920a;">Descubierto</div>' +
+            '<div style="position:absolute;left:12px;right:12px;bottom:12px;">' +
+              '<div style="font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:#c8920a;margin-bottom:6px;">Personaje</div>' +
+              '<div style="font-family:\'Playfair Display\',serif;font-size:18px;font-weight:700;color:#fff;line-height:1.1;margin-bottom:6px;">' + p.nombre + '</div>' +
+              '<div style="font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:#b8b2a8;line-height:1.4;">' + p.titulo + '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="personaje-flip-back" style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg);border:1px solid rgba(200,146,10,0.28);background:linear-gradient(180deg,#15120f,#0f0e0c);padding:18px;display:flex;flex-direction:column;justify-content:space-between;">' +
+            '<div>' +
+              '<div style="font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:#c8920a;margin-bottom:10px;">Colección descubierta</div>' +
+              '<div style="font-family:\'Playfair Display\',serif;font-size:20px;font-weight:700;color:#fff;line-height:1.08;margin-bottom:8px;">' + p.nombre + '</div>' +
+              '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#b8b2a8;line-height:1.5;margin-bottom:14px;">' + p.titulo + '</div>' +
+              '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.7;color:#8d877e;">Tocá “Ver más” para abrir la carta completa.</div>' +
+            '</div>' +
+            '<button class="personaje-ver-mas-btn" style="width:100%;padding:12px 14px;background:transparent;border:1px solid #c8920a;color:#fafaf8;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;">Ver más</button>' +
+          '</div>' +
+
         '</div>';
-      card.onclick = function() {
+
+      var flipInner = card.querySelector('.personaje-flip-card');
+      var verMasBtn = card.querySelector('.personaje-ver-mas-btn');
+      var flipped = false;
+
+      card.addEventListener('mouseenter', function() {
+        if (!flipped) {
+          var front = card.querySelector('.personaje-flip-front');
+          if (front) front.style.borderColor = 'rgba(200,146,10,0.45)';
+        }
+      });
+
+      card.addEventListener('mouseleave', function() {
+        if (!flipped) {
+          var front = card.querySelector('.personaje-flip-front');
+          if (front) front.style.borderColor = '#1e1d1a';
+        }
+      });
+
+      card.addEventListener('click', function(e) {
+        if (e.target.classList.contains('personaje-ver-mas-btn')) return;
+        flipped = !flipped;
+        flipInner.style.transform = flipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+      });
+
+      verMasBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
         panel.style.display = 'none';
         window._personajeTab = 'historia';
         abrirPersonaje(id);
-      };
+      });
+
     } else {
       card.innerHTML =
-        '<div style="position:absolute;inset:0;background:linear-gradient(180deg,#111,#0b0b0b);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;text-align:center;">' +
-          '<div style="width:56px;height:56px;border-radius:50%;border:1px solid #2a2926;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">' +
-            '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#3a3934" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.1-7 7-7s7 3 7 7" stroke-linecap="round"/></svg>' +
+        '<div onclick="window._personajeTab=\'historia\';abrirPersonaje(\'' + id + '\')" style="position:relative;width:100%;height:100%;border:1px solid #1e1d1a;background:linear-gradient(180deg,#111,#0b0b0b);overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;">' +
+          '<div style="position:absolute;inset:0;background:radial-gradient(circle at center, rgba(255,255,255,0.03), transparent 60%);"></div>' +
+          '<img src="' + p.foto + '" style="width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;filter:grayscale(1) brightness(0.18) contrast(1.15);opacity:0.95;">' +
+          '<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,14,12,0.2),rgba(15,14,12,0.85));"></div>' +
+          '<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:74px;height:74px;border-radius:50%;border:1px solid rgba(255,255,255,0.12);background:rgba(15,14,12,0.55);display:flex;align-items:center;justify-content:center;">' +
+            '<svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="rgba(255,255,255,0.42)" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.1-7 7-7s7 3 7 7" stroke-linecap="round"/></svg>' +
           '</div>' +
-          '<div style="font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:#4a4944;margin-bottom:8px;">Sin descubrir</div>' +
-          '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:14px;line-height:1.5;color:#6a6860;margin-bottom:10px;">' + (p.adivinanza || 'Hay alguien escondido en este lugar.') + '</div>' +
-          '<div style="font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:#3a3934;">Marcá como visitado el lugar para desbloquearlo</div>' +
+          '<div style="position:absolute;bottom:12px;left:12px;right:12px;text-align:center;">' +
+            '<div style="font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:#6a6860;">Personaje oculto</div>' +
+          '</div>' +
         '</div>';
-      card.onclick = function() {
-        window._personajeTab = 'historia';
-        abrirPersonaje(id);
-      };
     }
 
     grid.appendChild(card);
