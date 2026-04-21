@@ -1051,6 +1051,42 @@ var map = L.map('map', {
 }).setView([51.505, -0.118], 13);
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+  let planMode = false;
+let planMarker = null;
+let selectedLatLng = null;
+let isDraggingMap = false;
+
+// Detectar drag REAL
+map.on('movestart', function () {
+  isDraggingMap = true;
+});
+
+map.on('moveend', function () {
+  setTimeout(() => isDraggingMap = false, 100);
+});
+
+// CLICK limpio
+map.on('click', function (e) {
+  if (!planMode) return;
+  if (isDraggingMap) return;
+
+  selectedLatLng = e.latlng;
+
+  if (planMarker) {
+    map.removeLayer(planMarker);
+  }
+
+  planMarker = L.marker(e.latlng, {
+    draggable: true
+  }).addTo(map);
+
+  planMarker.on('dragend', function (ev) {
+    selectedLatLng = ev.target.getLatLng();
+  });
+
+  // 🔥 ACÁ generás el plan
+  generarPlanDesdePunto(selectedLatLng);
+});
   attribution: '&copy; OpenStreetMap &copy; CARTO',
   maxZoom: 19
 }).addTo(map);
@@ -1076,7 +1112,6 @@ map.on('moveend', function() {
   }, 120);
 });
 
-map.on('click', function(e) {
   if (!modoPlan || !horasPlan) return;
   if (suppressNextPlanClick) return;
   if (typeof planDragging !== 'undefined' && planDragging) return;
