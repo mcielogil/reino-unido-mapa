@@ -1038,34 +1038,16 @@ function startWatchingUserLocation() {
       currentBtn = btn;
       window.speechSynthesis.speak(utterance);
     }
-L.Browser.touch = false;
-L.Browser.pointer = false;
-var map = L.map('map', { zoomControl: false, dragging: true, tap: false }).setView([51.505, -0.118], 13);
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 19 }).addTo(map);
-
-map.getContainer().addEventListener('pointerdown', function(e) {
-  e.stopPropagation();
-  var startX = e.clientX;
-  var startY = e.clientY;
-  var startCenter = map.getCenter();
-  var startPoint = map.latLngToContainerPoint(startCenter);
-  
-  function onMove(e) {
-    var dx = e.clientX - startX;
-    var dy = e.clientY - startY;
-    var newPoint = L.point(startPoint.x - dx, startPoint.y - dy);
-    map.panTo(map.containerPointToLatLng(newPoint), {animate: false});
-  }
-  
-  function onUp() {
-    document.removeEventListener('pointermove', onMove);
-    document.removeEventListener('pointerup', onUp);
-  }
-  
-  document.addEventListener('pointermove', onMove);
-  document.addEventListener('pointerup', onUp);
-}, true);
+var map = L.map('map', {
+  zoomControl: false,
+  dragging: true,
+  tap: false
+}).setView([51.505, -0.118], 13);
+L.control.zoom({ position: 'bottomright' }).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap &copy; CARTO',
+  maxZoom: 19
+}).addTo(map);
 
     startWatchingUserLocation();
     startWatchingUserLocation();
@@ -6278,4 +6260,3 @@ function marcarVisitado(btn, nombre) {
 "></div>
 </body>
 </html>
-
