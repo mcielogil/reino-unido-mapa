@@ -1064,7 +1064,24 @@ map.keyboard.enable();
     startWatchingUserLocation();
 
     map.on('popupclose', function() { stopSpeech(); });
-    map.on('click', handlePlanMapClick);
+    var suppressNextPlanClick = false;
+
+map.on('movestart', function() {
+  suppressNextPlanClick = true;
+});
+
+map.on('moveend', function() {
+  setTimeout(function() {
+    suppressNextPlanClick = false;
+  }, 120);
+});
+
+map.on('click', function(e) {
+  if (!modoPlan || !horasPlan) return;
+  if (suppressNextPlanClick) return;
+  if (typeof planDragging !== 'undefined' && planDragging) return;
+  confirmarPuntoPlan(e.latlng);
+});
 
     
     var categoryColors = {
@@ -2640,204 +2657,6 @@ function confirmarPuntoPlan(latlng) {
   createPlanPointMarker(latlng);
   setPlanInteraction(false);
   renderPlanDesdePunto(latlng, horasPlan);
-}
-
-function activarModoPlan() {
-  horasPlan = 0;
-  puntoPlan = null;
-  planDragging = false;
-  planMouseDownPoint = null;
-  clearPlanPointMarker();
-  setPlanInteraction(false);
-
-  document.getElementById('plan-panel').style.display = 'block';
-  document.getElementById('plan-step1').style.display = 'block';
-  document.getElementById('plan-result').style.display = 'none';
-
-  var status = document.getElementById('plan-status');
-  status.style.display = 'none';
-  status.textContent = '';
-}
-
-function seleccionarHoras(horas) {
-  horasPlan = horas;
-  puntoPlan = null;
-  planDragging = false;
-  planMouseDownPoint = null;
-  clearPlanPointMarker();
-  setPlanInteraction(true);
-
-  var status = document.getElementById('plan-status');
-  status.style.display = 'block';
-  status.textContent = 'Arrastrá el mapa si querés ubicarte mejor y después hacé un click en cualquier parte para plantar un pin y armar el recorrido desde ahí.';
-
-  document.getElementById('plan-result').style.display = 'none';
-  document.getElementById('plan-panel').style.display = 'none';
-}
-
-function handlePlanMapClick(e) {
-  if (!modoPlan || !horasPlan) return;
-  if (planDragging) return;
-  confirmarPuntoPlan(e.latlng);
-}
-
-map.on('mousedown', function(e) {
-  planDragging = false;
-  planMouseDownPoint = e.containerPoint;
-});
-
-map.on('mousemove', function(e) {
-  if (!planMouseDownPoint) return;
-  var dx = e.containerPoint.x - planMouseDownPoint.x;
-  var dy = e.containerPoint.y - planMouseDownPoint.y;
-  if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
-    planDragging = true;
-  }
-});
-
-map.on('mouseup', function() {
-  setTimeout(function() {
-    planMouseDownPoint = null;
-    planDragging = false;
-  }, 0);
-});
-
-function scorePlanCandidate(obj, selected, horas) {
-  var score = obj.dist;
-  var tipo = tipoPlan(obj.place);
-
-  if (tipo === 'general') score -= 120;
-  if (tipo === 'cerveza') score += 140;
-  if (tipo === 'comida') score += 220;
-  if (tipo === 'comida-bebida') score += 80;
-
-  if (selected.length > 0) {
-    var ultimo = selected[selected.length - 1];
-    var ultimoTipo = tipoPlan(ultimo.place);
-
-    if ((tipo === 'comida' || tipo === 'comida-bebida') && (ultimoTipo === 'comida' || ultimoTipo === 'comida-bebida')) {
-      score += horas <= 2 ? 5000 : 2200;
-    }
-
-    if (tipo === 'cerveza' && ultimoTipo === 'cerveza') {
-      score += 900;
-    }
-  }
-
-  return score;
-}
-
-function elegirParadasParaPlan(candidatos, horas) {
-  var limite = horas === 2 ? 3 : horas === 4 ? 5 : 8;
-  var pool = candidatos.slice();
-  var seleccion = [];
-
-  while (pool.length > 0 && seleccion.length < limite) {
-    pool.forEach(function(item) {
-      item._score = scorePlanCandidate(item, seleccion, horas);
-    });
-
-    pool.sort(function(a, b) {
-      return a._score - b._score;
-    });
-
-    var elegido = pool.shift();
-    seleccion.push(elegido);
-  }
-
-  return seleccion;
-}
-
-function renderPlanDesdePunto(latlng, horas) {
-  var cantLugares = horas === 2 ? 3 : horas === 4 ? 5 : 8;
-  var categoriasFiltradas = ['Histórico','Cine y Cultura Pop','Barrios y Vida Local','Parques y Naturaleza','Oculto y Curioso'];
-
-  var candidatos = allMarkers
-    .filter(function(obj) {
-      return categoriasFiltradas.indexOf(obj.place.category) !== -1;
-    })
-    .map(function(obj) {
-      return {
-        place: obj.place,
-        marker: obj.marker,
-        dist: map.distance([latlng.lat, latlng.lng], [obj.place.lat, obj.place.lng])
-      };
-    })
-    .filter(function(obj) {
-      return obj.dist <= (horas === 2 ? 1800 : horas === 4 ? 2800 : 4500);
-    });
-
-  if (candidatos.length < cantLugares) {
-    candidatos = allMarkers
-      .filter(function(obj) {
-        return categoriasFiltradas.indexOf(obj.place.category) !== -1;
-      })
-      .map(function(obj) {
-        return {
-          place: obj.place,
-          marker: obj.marker,
-          dist: map.distance([latlng.lat, latlng.lng], [obj.place.lat, obj.place.lng])
-        };
-      });
-  }
-
-  var seleccionados = elegirParadasParaPlan(candidatos, horas).slice(0, cantLugares);
-
-  var result = document.getElementById('plan-result');
-  var status = document.getElementById('plan-status');
-
-  result.innerHTML = '';
-  status.style.display = 'none';
-  status.textContent = '';
-
-  var horasTexto = horas === 2 ? '2 horas' : horas === 4 ? '4 horas' : 'día completo';
-  result.innerHTML += '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:14px;color:#6a6860;margin-bottom:20px;">Plan para ' + horasTexto + ' — armado desde el pin que elegiste en el mapa.</div>';
-
-  var tiempoAcum = 0;
-
-  seleccionados.forEach(function(obj, index) {
-    var tipo = tipoPlan(obj.place);
-    var minutosLugar = horas === 2 ? 35 : horas === 4 ? 45 : 55;
-
-    if (tipo === 'comida') minutosLugar += 25;
-    if (tipo === 'comida-bebida') minutosLugar += 35;
-    if (tipo === 'cerveza') minutosLugar += 15;
-
-    var hora = 9 + Math.floor(tiempoAcum / 60);
-    var min = tiempoAcum % 60;
-    var horaStr = hora + ':' + (min < 10 ? '0' : '') + min;
-    tiempoAcum += minutosLugar;
-
-    var metros = Math.round(obj.dist);
-    var etiqueta = obj.place.category;
-
-    if (tipo === 'comida') etiqueta += ' · comida';
-    if (tipo === 'cerveza') etiqueta += ' · cerveza';
-    if (tipo === 'comida-bebida') etiqueta += ' · comida y cerveza';
-
-    var item = document.createElement('div');
-    item.style.cssText = 'padding:16px 0;border-bottom:1px solid #1e1d1a;cursor:pointer;display:flex;gap:14px;align-items:flex-start;';
-
-    item.innerHTML =
-      '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;color:var(--red);min-width:44px;padding-top:2px;">' + horaStr + '</div>' +
-      '<div>' +
-        '<div style="font-family:\'Playfair Display\',serif;font-size:15px;color:var(--white);margin-bottom:4px;">' + obj.place.name + '</div>' +
-        '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;color:#4a4944;letter-spacing:0.1em;text-transform:uppercase;">' + etiqueta + ' · ' + minutosLugar + ' min · a ' + metros + ' m</div>' +
-        '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:12px;color:#6a6860;margin-top:6px;">' + obj.place.lugar.substring(0, 120) + '...</div>' +
-      '</div>';
-
-    item.onclick = function() {
-      document.getElementById('plan-panel').style.display = 'none';
-      map.setView([obj.place.lat, obj.place.lng], 16);
-      obj.marker.openPopup();
-    };
-
-    result.appendChild(item);
-  });
-
-  document.getElementById('plan-step1').style.display = 'block';
-  document.getElementById('plan-result').style.display = 'block';
-  document.getElementById('plan-panel').style.display = 'block';
 }
 
 var desafiosLondres = [
