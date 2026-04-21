@@ -1085,11 +1085,50 @@ map.on('click', function (e) {
   });
 
   // 🔥 ACÁ generás el plan
-  generarPlanDesdePunto(selectedLatLng);
-});
+
   attribution: '&copy; OpenStreetMap &copy; CARTO',
   maxZoom: 19
 }).addTo(map);
+  L.tileLayer(...).addTo(map);
+
+
+// 🔽 PEGÁ TODO EL PARCHE ACÁ 🔽
+
+let planMode = false;
+let planMarker = null;
+let selectedLatLng = null;
+let isDraggingMap = false;
+
+map.on('movestart', function () {
+  isDraggingMap = true;
+});
+
+map.on('moveend', function () {
+  setTimeout(function() {
+    isDraggingMap = false;
+  }, 100);
+});
+
+map.on('click', function (e) {
+  if (!planMode) return;
+  if (isDraggingMap) return;
+
+  selectedLatLng = e.latlng;
+
+  if (planMarker) {
+    map.removeLayer(planMarker);
+  }
+
+  planMarker = L.marker(e.latlng, {
+    draggable: true
+  }).addTo(map);
+
+  planMarker.on('dragend', function (ev) {
+    selectedLatLng = ev.target.getLatLng();
+  });
+
+  generarPlanDesdePunto(selectedLatLng);
+});
 map.dragging.enable();
 map.scrollWheelZoom.enable();
 map.doubleClickZoom.enable();
