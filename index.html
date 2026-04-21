@@ -64,10 +64,10 @@
       filter: saturate(1.6) contrast(1.1) brightness(0.96) hue-rotate(-5deg);
     }
     .leaflet-marker-pane {
-  pointer-events: none;
+  pointer-events: auto;
 }
 .leaflet-marker-pane.plan-mode {
-  pointer-events: none !important;
+  pointer-events: auto !important;
 }
     .leaflet-grab {
   cursor: inherit !important;
@@ -1043,13 +1043,22 @@ function startWatchingUserLocation() {
 var map = L.map('map', {
   zoomControl: false,
   dragging: true,
-  tap: false
+  tap: false,
+  scrollWheelZoom: true,
+  doubleClickZoom: true,
+  boxZoom: true,
+  keyboard: true
 }).setView([51.505, -0.118], 13);
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap &copy; CARTO',
   maxZoom: 19
 }).addTo(map);
+map.dragging.enable();
+map.scrollWheelZoom.enable();
+map.doubleClickZoom.enable();
+map.boxZoom.enable();
+map.keyboard.enable();
 
     startWatchingUserLocation();
     startWatchingUserLocation();
@@ -1108,7 +1117,7 @@ function createPin(category) {
 
     var places = [
 
-      {
+{
         name: "Torre de Londres",
         category: "Histórico",
         imageTitle: "Torre de Londres al amanecer",
@@ -1121,7 +1130,7 @@ function createPin(category) {
         lat: 51.5081, lng: -0.0759
       },
 
-      {
+{
         name: "Abadía de Westminster",
         category: "Histórico",
         imageTitle: "Nave central de Westminster",
@@ -1134,7 +1143,7 @@ function createPin(category) {
         lat: 51.4994, lng: -0.1273
       },
 
-      {
+{
         name: "Museo Británico",
         category: "Histórico",
         imageTitle: "Gran Patio del Museo Británico",
@@ -1147,7 +1156,7 @@ function createPin(category) {
         lat: 51.5194, lng: -0.1270
       },
 
-      {
+{
         name: "Palacio de Buckingham",
         category: "Histórico",
         imageTitle: "Palacio de Buckingham y St. James’s Park",
@@ -1160,7 +1169,7 @@ function createPin(category) {
         lat: 51.5014, lng: -0.1419
       },
 
-      {
+{
         name: "Southwark: El Londres de Shakespeare",
         category: "Histórico",
         imageTitle: "Globe Theatre y el Támesis",
@@ -1173,7 +1182,7 @@ function createPin(category) {
         lat: 51.5081, lng: -0.0972
       },
 
-      {
+{
         name: "St. Paul’s Cathedral",
         category: "Histórico",
         imageTitle: "Cúpula de St. Paul’s al atardecer",
@@ -1186,7 +1195,7 @@ function createPin(category) {
         lat: 51.5138, lng: -0.0984
       },
 
-      {
+{
         name: "King’s Cross — Andén 9¾",
         category: "Cine y Cultura Pop",
         imageTitle: "Andén 9¾ en King’s Cross",
@@ -1199,7 +1208,7 @@ function createPin(category) {
         lat: 51.5308, lng: -0.1238
       },
 
-      {
+{
         name: "Notting Hill y Portobello Road",
         category: "Barrios y Vida Local",
         imageTitle: "Casas de colores de Notting Hill",
@@ -1211,7 +1220,7 @@ function createPin(category) {
         lat: 51.5136, lng: -0.2016
       },
 
-      {
+{
         name: "Borough Market",
         category: "Barrios y Vida Local",
         imageTitle: "Borough Market bajo los arcos del tren",
@@ -1225,7 +1234,7 @@ function createPin(category) {
         lat: 51.5055, lng: -0.0910
       },
 
-      {
+{
         name: "Brick Lane y el East End",
         category: "Barrios y Vida Local",
         imageTitle: "Arte callejero en Brick Lane",
@@ -1238,7 +1247,7 @@ function createPin(category) {
         lat: 51.5218, lng: -0.0718
       },
 
-      {
+{
         name: "Hyde Park",
         category: "Parques y Naturaleza",
         imageTitle: "The Serpentine en Hyde Park al amanecer",
@@ -1251,7 +1260,7 @@ function createPin(category) {
         lat: 51.5073, lng: -0.1657
       },
 
-      {
+{
         name: "Highgate Cemetery",
         category: "Oculto y Curioso",
         imageTitle: "Tumbas victorianas en Highgate Cemetery",
@@ -1264,7 +1273,7 @@ function createPin(category) {
         lat: 51.5678, lng: -0.1462
       },
 
-      {
+{
         name: "Dennis Severs' House",
         category: "Oculto y Curioso",
         imageTitle: "Vela encendida en Dennis Severs' House",
@@ -1277,7 +1286,7 @@ function createPin(category) {
         lat: 51.5196, lng: -0.0774
       },
 
-      {
+{
         name: "Sir John Soane’s Museum",
         category: "Oculto y Curioso",
         imageTitle: "Interior del Museo Sir John Soane",
@@ -1290,7 +1299,7 @@ function createPin(category) {
         lat: 51.5174, lng: -0.1183
       },
 
-      {
+{
         name: "Tate Modern",
         category: "Cine y Cultura Pop",
         imageTitle: "Sala de Turbinas del Tate Modern",
@@ -1303,7 +1312,7 @@ function createPin(category) {
         lat: 51.5076, lng: -0.0994
       },
 
-      {
+{
         name: "Camden Town",
         category: "Barrios y Vida Local",
         imageTitle: "Mercado de Camden al mediodía",
@@ -1316,7 +1325,7 @@ function createPin(category) {
         lat: 51.5390, lng: -0.1426
       },
 
-      {
+{
         name: "221B Baker Street — Sherlock Holmes",
         category: "Cine y Cultura Pop",
         imageTitle: "Puerta de 221B Baker Street",
@@ -1329,7 +1338,7 @@ function createPin(category) {
         lat: 51.5237, lng: -0.1585
       },
 
-      {
+{
         name: "Pub The Anchor — Donde bebía Shakespeare",
         category: "Oculto y Curioso",
         imageTitle: "Pub The Anchor en Bankside",
@@ -1342,7 +1351,7 @@ function createPin(category) {
         lat: 51.5063, lng: -0.0921
       },
 
-      {
+{
         name: "Callejón de Jack the Ripper — Goulston Street",
         category: "Oculto y Curioso",
         imageTitle: "Goulston Street en el East End",
@@ -1355,7 +1364,7 @@ function createPin(category) {
         lat: 51.5154, lng: -0.0743
       },
 
-      {
+{
         name: "La Casa de Charles Dickens",
         category: "Histórico",
         imageTitle: "Casa de Charles Dickens en Doughty Street",
@@ -1368,7 +1377,7 @@ function createPin(category) {
         lat: 51.5228, lng: -0.1193
       },
 
-      {
+{
         name: "Leadenhall Market — Diagon Alley",
         category: "Cine y Cultura Pop",
         imageTitle: "Techo victoriano de Leadenhall Market",
@@ -1381,7 +1390,7 @@ function createPin(category) {
         lat: 51.5127, lng: -0.0836
       },
 
-      {
+{
         name: "Crossbones Graveyard — El cementerio de las proscritas",
         category: "Oculto y Curioso",
         imageTitle: "Verja de Crossbones Graveyard con cintas",
@@ -1394,7 +1403,7 @@ function createPin(category) {
         lat: 51.5027, lng: -0.0951
       },
 
-      {
+{
         name: "La Escalera del Ángel — Angel, Islington",
         category: "Oculto y Curioso",
         imageTitle: "Pub The Angel en Islington",
@@ -1407,7 +1416,7 @@ function createPin(category) {
         lat: 51.5322, lng: -0.1058
       },
 
-      {
+{
         name: "Cleopatra’s Needle — El obelisco que vio a Napoleón",
         category: "Histórico",
         imageTitle: "Cleopatra’s Needle en el Embankment",
@@ -1420,7 +1429,7 @@ function createPin(category) {
         lat: 51.5074, lng: -0.1201
       },
 
-      {
+{
         name: "El Café donde nació el seguro moderno — Lloyd’s Coffee House",
         category: "Histórico",
         imageTitle: "Lloyd’s of London en la City",
@@ -1432,7 +1441,7 @@ function createPin(category) {
         lat: 51.5127, lng: -0.0827
       },
 
-      {
+{
         name: "Bunhill Fields — El cementerio de los disidentes",
         category: "Oculto y Curioso",
         imageTitle: "Bunhill Fields cementerio con árboles",
@@ -1445,7 +1454,7 @@ function createPin(category) {
         lat: 51.5232, lng: -0.0893
       },
 
-      {
+{
         name: "Postman’s Park — El memorial de los héroes anónimos",
         category: "Oculto y Curioso",
         imageTitle: "Placas de Postman’s Park en el memorial",
@@ -1458,7 +1467,7 @@ function createPin(category) {
         lat: 51.5162, lng: -0.0978
       },
 
-      {
+{
         name: "Gordon’s Wine Bar — El más antiguo de Londres",
         category: "Barrios y Vida Local",
         imageTitle: "Interior de bodega de Gordon’s Wine Bar",
@@ -1472,7 +1481,7 @@ function createPin(category) {
         lat: 51.5072, lng: -0.1236
       },
 
-      {
+{
         name: "Kensal Green Cemetery — El primer cementerio victoriano",
         category: "Oculto y Curioso",
         imageTitle: "Kensal Green Cemetery mausoleos victorianos",
@@ -1485,7 +1494,7 @@ function createPin(category) {
         lat: 51.5302, lng: -0.2237
       },
 
-      {
+{
         name: "El Banco de Inglaterra — El Viejo Dama de Threadneedle Street",
         category: "Histórico",
         imageTitle: "Fachada del Banco de Inglaterra",
@@ -1498,7 +1507,7 @@ function createPin(category) {
         lat: 51.5142, lng: -0.0888
       },
 
-      {
+{
         name: "Seven Dials — El cruce de los siete relojes",
         category: "Barrios y Vida Local",
         imageTitle: "Columna central de Seven Dials",
@@ -1511,7 +1520,7 @@ function createPin(category) {
         lat: 51.5136, lng: -0.1267
       },
 
-      {
+{
         name: "Neal’s Yard — El patio secreto",
         category: "Barrios y Vida Local",
         imageTitle: "Neal’s Yard patio de colores en Covent Garden",
@@ -1524,7 +1533,7 @@ function createPin(category) {
         lat: 51.5133, lng: -0.1264
       },
 
-      {
+{
         name: "Leighton House — El palacio árabe escondido",
         category: "Oculto y Curioso",
         imageTitle: "Arab Hall de Leighton House",
@@ -1537,7 +1546,7 @@ function createPin(category) {
         lat: 51.5014, lng: -0.2025
       },
 
-      {
+{
         name: "Pub Ye Olde Cheshire Cheese — El pub de Johnson y Dickens",
         category: "Barrios y Vida Local",
         imageTitle: "Entrada al Ye Olde Cheshire Cheese pub",
@@ -1550,7 +1559,7 @@ function createPin(category) {
         lat: 51.5140, lng: -0.1074
       },
 
-      {
+{
         name: "Pelicans en St. James’s Park",
         category: "Parques y Naturaleza",
         imageTitle: "Pelicanos en St. James’s Park Londres",
@@ -1562,7 +1571,7 @@ function createPin(category) {
         lat: 51.5025, lng: -0.1340
       },
 
-      {
+{
         name: "Columbia Road — El mercado de flores del domingo",
         category: "Barrios y Vida Local",
         imageTitle: "Columbia Road Flower Market domingo",
@@ -1575,7 +1584,7 @@ function createPin(category) {
         lat: 51.5290, lng: -0.0784
       },
 
-      {
+{
         name: "Inns of Court — La ciudad medieval dentro de la ciudad",
         category: "Histórico",
         imageTitle: "Temple Church y los Inns of Court",
@@ -1588,7 +1597,7 @@ function createPin(category) {
         lat: 51.5120, lng: -0.1129
       },
 
-    {
+{
         name: "Churchill War Rooms",
         category: "Histórico",
         imageTitle: "Churchill War Rooms bunker subterraneo",
@@ -1601,7 +1610,7 @@ function createPin(category) {
         lat: 51.5021, lng: -0.1290
       },
 
-      {
+{
         name: "Whitechapel — Los 5 crímenes de Jack the Ripper",
         category: "Oculto y Curioso",
         imageTitle: "Whitechapel Road en el East End",
@@ -1613,7 +1622,7 @@ function createPin(category) {
         lat: 51.5193, lng: -0.0619
       },
 
-      {
+{
         name: "George Orwell — La casa de 1984",
         category: "Histórico",
         imageTitle: "Canonbury Square Islington donde vivio Orwell",
@@ -1626,7 +1635,7 @@ function createPin(category) {
         lat: 51.5441, lng: -0.0942
       },
 
-      {
+{
         name: "Oscar Wilde — Su casa en Tite Street",
         category: "Histórico",
         imageTitle: "Tite Street Chelsea donde vivio Oscar Wilde",
@@ -1639,7 +1648,7 @@ function createPin(category) {
         lat: 51.4876, lng: -0.1672
       },
 
-      {
+{
         name: "Virginia Woolf y el Grupo de Bloomsbury",
         category: "Histórico",
         imageTitle: "Tavistock Square Bloomsbury Londres",
@@ -1652,7 +1661,7 @@ function createPin(category) {
         lat: 51.5243, lng: -0.1277
       },
 
-      {
+{
         name: "Abbey Road — El cruce de los Beatles",
         category: "Cine y Cultura Pop",
         imageTitle: "Cruce de Abbey Road con los Beatles",
@@ -1665,7 +1674,7 @@ function createPin(category) {
         lat: 51.5320, lng: -0.1780
       },
 
-      {
+{
         name: "10 Downing Street — La puerta más famosa",
         category: "Histórico",
         imageTitle: "Puerta negra de 10 Downing Street",
@@ -1678,7 +1687,7 @@ function createPin(category) {
         lat: 51.5034, lng: -0.1276
       },
 
-      {
+{
         name: "Karl Marx — Su casa en Dean Street",
         category: "Histórico",
         imageTitle: "Dean Street Soho donde vivio Karl Marx",
@@ -1691,7 +1700,7 @@ function createPin(category) {
         lat: 51.5136, lng: -0.1316
       },
 
-      {
+{
         name: "El Ministerio de Magia — Westminster Station",
         category: "Cine y Cultura Pop",
         imageTitle: "Estacion de metro Westminster con columnas",
@@ -1703,7 +1712,7 @@ function createPin(category) {
         lat: 51.5013, lng: -0.1246
       },
 
-      {
+{
         name: "Conan Doyle — Donde nació Sherlock Holmes",
         category: "Cine y Cultura Pop",
         imageTitle: "Placa de Sherlock Holmes en Northumberland Street",
@@ -1715,7 +1724,7 @@ function createPin(category) {
         lat: 51.5069, lng: -0.1228
       },
 
-      {
+{
         name: "El Fantasma de la Ópera — Her Majesty's Theatre",
         category: "Cine y Cultura Pop",
         imageTitle: "Her Majesty's Theatre en Haymarket",
@@ -1728,7 +1737,7 @@ function createPin(category) {
         lat: 51.5071, lng: -0.1315
       },
 
-      {
+{
   name: "Tesco Meal Deal + Hyde Park",
   category: "Barrios y Vida Local",
   imageTitle: "Meal deal clásico de supermercado",
@@ -1740,7 +1749,7 @@ function createPin(category) {
   lat: 51.5067, lng: -0.1426
 },
 
-      {
+{
   name: "Beigel Bake — el mejor bagel barato",
   category: "Barrios y Vida Local",
   imageTitle: "Bagel de salmón en Brick Lane",
@@ -1752,7 +1761,7 @@ function createPin(category) {
   lat: 51.5218, lng: -0.0718
 },
 
-      {
+{
   name: "Pret A Manger — bien usado",
   category: "Barrios y Vida Local",
   imageTitle: "Café y sandwich de Pret",
@@ -1764,7 +1773,7 @@ function createPin(category) {
   lat: 51.5100, lng: -0.1200
 },
 
-      {
+{
   name: "Greggs — el snack británico real",
   category: "Barrios y Vida Local",
   imageTitle: "Sausage roll de Greggs",
@@ -1776,7 +1785,7 @@ function createPin(category) {
   lat: 51.5150, lng: -0.1300
 },
 
-      {
+{
   name: "Flat White — café sin vueltas",
   category: "Barrios y Vida Local",
   imageTitle: "Flat white en Soho",
@@ -1788,7 +1797,7 @@ function createPin(category) {
   lat: 51.5138, lng: -0.1365
 },
 
-      {
+{
   name: "Franco Manca — pizza que vale la pena",
   category: "Barrios y Vida Local",
   imageTitle: "Pizza sourdough en Franco Manca",
@@ -1800,7 +1809,7 @@ function createPin(category) {
   lat: 51.5145, lng: -0.1270
 },
 
-      {
+{
   name: "Monmouth Coffee — café en serio",
   category: "Barrios y Vida Local",
   imageTitle: "Café filtrado en Borough Market",
@@ -1812,7 +1821,7 @@ function createPin(category) {
   lat: 51.5055, lng: -0.0910
 },
 
-      {
+{
   name: "Una pinta en un pub cualquiera",
   category: "Barrios y Vida Local",
   imageTitle: "Pinta de cerveza en pub",
@@ -1824,7 +1833,7 @@ function createPin(category) {
   lat: 51.5100, lng: -0.1300
 },
 
-      {
+{
   name: "Kappacasein — grilled cheese en Borough",
   category: "Barrios y Vida Local",
   imageTitle: "Grilled cheese derritiéndose",
@@ -1836,7 +1845,7 @@ function createPin(category) {
   lat: 51.5055, lng: -0.0910
 },
 
-      {
+{
   name: "Xi’an Impression — noodles sin maquillaje",
   category: "Barrios y Vida Local",
   imageTitle: "Noodles anchos con chili oil",
@@ -1848,7 +1857,7 @@ function createPin(category) {
   lat: 51.5640, lng: -0.1060
 },
 
-      {
+{
   name: "Max’s Sandwich Shop — sandwiches sin sentido común",
   category: "Barrios y Vida Local",
   imageTitle: "Sandwich exagerado con papas",
@@ -1860,7 +1869,7 @@ function createPin(category) {
   lat: 51.5700, lng: -0.1000
 },
 
-      {
+{
   name: "Pilpel — falafel rápido y bien hecho",
   category: "Barrios y Vida Local",
   imageTitle: "Pita rellena de falafel",
@@ -1872,7 +1881,7 @@ function createPin(category) {
   lat: 51.5120, lng: -0.1200
 },
 
-      {
+{
   name: "Ozone Coffee — café bien hecho",
   category: "Barrios y Vida Local",
   imageTitle: "Flat white y brunch simple",
@@ -1884,7 +1893,7 @@ function createPin(category) {
   lat: 51.5250, lng: -0.0800
 },
 
-      {
+{
   name: "Pollo frito de barrio — versión Londres real",
   category: "Barrios y Vida Local",
   imageTitle: "Caja de pollo frito con papas",
@@ -1896,7 +1905,7 @@ function createPin(category) {
   lat: 51.4800, lng: -0.1000
 },
 
-      {
+{
   name: "Fabrique — pan y café sin ruido",
   category: "Barrios y Vida Local",
   imageTitle: "Roll de canela en mesa de madera",
@@ -1908,7 +1917,7 @@ function createPin(category) {
   lat: 51.5130, lng: -0.1360
 },
 
-      {
+{
   name: "Boxpark — elegir sin pensar demasiado",
   category: "Barrios y Vida Local",
   imageTitle: "Contenedores con comida street food",
@@ -1920,7 +1929,7 @@ function createPin(category) {
   lat: 51.5230, lng: -0.0750
 },
 
-      {
+{
   name: "Barbican Estate — concreto, silencio y extrañeza",
   category: "Oculto y Curioso",
   imageTitle: "Pasarelas del Barbican Estate",
@@ -1932,7 +1941,7 @@ function createPin(category) {
   lat: 51.5202, lng: -0.0973
 },
 
-      {
+{
   name: "Wilton’s Music Hall — el teatro que sobrevivió",
   category: "Oculto y Curioso",
   imageTitle: "Interior de Wilton’s Music Hall",
@@ -1944,7 +1953,7 @@ function createPin(category) {
   lat: 51.5108, lng: -0.0586
 },
 
-      {
+{
   name: "St Dunstan in the East — la iglesia en ruinas",
   category: "Oculto y Curioso",
   imageTitle: "Ruinas de St Dunstan in the East",
@@ -1956,7 +1965,7 @@ function createPin(category) {
   lat: 51.5095, lng: -0.0824
 },
 
-      {
+{
   name: "Little Venice — el Londres que baja la voz",
   category: "Parques y Naturaleza",
   imageTitle: "Canales y barcazas en Little Venice",
@@ -1968,7 +1977,7 @@ function createPin(category) {
   lat: 51.5234, lng: -0.1836
 },
 
-      {
+{
   name: "Whitechapel Gallery — arte en el East End",
   category: "Cine y Cultura Pop",
   imageTitle: "Whitechapel Gallery en el East End",
@@ -1980,7 +1989,7 @@ function createPin(category) {
   lat: 51.5194, lng: -0.0719
 },
 
-      {
+{
   name: "Sky Garden — Londres desde arriba, gratis",
   category: "Barrios y Vida Local",
   imageTitle: "Vista desde Sky Garden",
@@ -1992,7 +2001,7 @@ function createPin(category) {
   lat: 51.5107, lng: -0.0838
 },
 
-      {
+{
   name: "Las rejas negras — lo que no ves ya no está",
   category: "Oculto y Curioso",
   imageTitle: "Rejas negras frente a casas georgianas",
@@ -2004,7 +2013,7 @@ function createPin(category) {
   lat: 51.5150, lng: -0.2000
 },
 
-      {
+{
   name: "Las placas azules — quién vivió acá",
   category: "Oculto y Curioso",
   imageTitle: "Blue plaque en fachada de Londres",
@@ -2016,7 +2025,7 @@ function createPin(category) {
   lat: 51.5237, lng: -0.1336
 },
 
-      {
+{
   name: "La fila — el orden invisible",
   category: "Barrios y Vida Local",
   imageTitle: "Fila ordenada en Londres",
@@ -2028,7 +2037,7 @@ function createPin(category) {
   lat: 51.5100, lng: -0.1200
 },
 
-      {
+{
   name: "Las puertas — identidad mínima",
   category: "Barrios y Vida Local",
   imageTitle: "Puertas de colores en Notting Hill",
@@ -2040,7 +2049,7 @@ function createPin(category) {
   lat: 51.5155, lng: -0.2010
 },
 
-      {
+{
   name: "Calles sin lógica — Londres no es una grilla",
   category: "Barrios y Vida Local",
   imageTitle: "Mapa irregular de calles de Londres",
@@ -2052,10 +2061,6 @@ function createPin(category) {
   lat: 51.5136, lng: -0.1365
 },
 
-  /* 5) PEGAR estos baños dentro de var places = [ ... ];
-   idealmente al final, justo antes de ];
-*/
-
 {
   name: "Baños públicos — St. James’s Park",
   category: "Baños Públicos",
@@ -2066,6 +2071,7 @@ function createPin(category) {
   comoLlegar: "Dentro de St. James’s Park, seguir señalización del parque.",
   lat: 51.5022, lng: -0.1324
 },
+
 {
   name: "Baños públicos — Trafalgar Square",
   category: "Baños Públicos",
@@ -2076,6 +2082,7 @@ function createPin(category) {
   comoLlegar: "Ubicados en el perímetro de Trafalgar Square.",
   lat: 51.5080, lng: -0.1281
 },
+
 {
   name: "Baños públicos — Victoria Embankment",
   category: "Baños Públicos",
@@ -2086,6 +2093,7 @@ function createPin(category) {
   comoLlegar: "Seguir el paseo del río sobre Victoria Embankment.",
   lat: 51.5067, lng: -0.1228
 },
+
 {
   name: "Baños públicos — Russell Square",
   category: "Baños Públicos",
@@ -2096,6 +2104,7 @@ function createPin(category) {
   comoLlegar: "Dentro del parque Russell Square.",
   lat: 51.5235, lng: -0.1244
 },
+
 {
   name: "Baños públicos — Hyde Park",
   category: "Baños Públicos",
@@ -2106,6 +2115,7 @@ function createPin(category) {
   comoLlegar: "Seguir senderos principales del parque.",
   lat: 51.5049, lng: -0.1716
 },
+
 {
   name: "Baños públicos — Victoria Station",
   category: "Baños Públicos",
@@ -2116,6 +2126,7 @@ function createPin(category) {
   comoLlegar: "Dentro de la estación, seguir señalización.",
   lat: 51.4965, lng: -0.1447
 },
+
 {
   name: "Baños públicos — Waterloo Station",
   category: "Baños Públicos",
@@ -2126,6 +2137,7 @@ function createPin(category) {
   comoLlegar: "Dentro de Waterloo Station.",
   lat: 51.5036, lng: -0.1133
 },
+
 {
   name: "Baños públicos — King’s Cross St Pancras",
   category: "Baños Públicos",
@@ -2136,6 +2148,7 @@ function createPin(category) {
   comoLlegar: "Seguir carteles dentro de la estación.",
   lat: 51.5308, lng: -0.1238
 },
+
 {
   name: "Baños públicos — Liverpool Street Station",
   category: "Baños Públicos",
@@ -2146,6 +2159,7 @@ function createPin(category) {
   comoLlegar: "Dentro de la estación.",
   lat: 51.5178, lng: -0.0823
 },
+
 {
   name: "Baños públicos — Green Park Station",
   category: "Baños Públicos",
@@ -2156,6 +2170,7 @@ function createPin(category) {
   comoLlegar: "Dentro de la estación.",
   lat: 51.5067, lng: -0.1428
 },
+
 {
   name: "Baños públicos — Westminster",
   category: "Baños Públicos",
@@ -2166,6 +2181,7 @@ function createPin(category) {
   comoLlegar: "Cerca de Parliament Square.",
   lat: 51.5007, lng: -0.1246
 },
+
 {
   name: "Baños públicos — Piccadilly Circus",
   category: "Baños Públicos",
@@ -2176,6 +2192,7 @@ function createPin(category) {
   comoLlegar: "Accesibles desde Piccadilly Circus.",
   lat: 51.5101, lng: -0.1340
 },
+
 {
   name: "Baños públicos — City of London",
   category: "Baños Públicos",
@@ -2186,6 +2203,7 @@ function createPin(category) {
   comoLlegar: "Cerca de Bank y St Paul’s.",
   lat: 51.5138, lng: -0.0896
 },
+
 {
   name: "Baños públicos — London Bridge",
   category: "Baños Públicos",
@@ -2196,6 +2214,7 @@ function createPin(category) {
   comoLlegar: "Dentro de London Bridge Station.",
   lat: 51.5052, lng: -0.0865
 },
+
 {
   name: "Baños públicos — Stratford",
   category: "Baños Públicos",
@@ -2206,2781 +2225,8 @@ function createPin(category) {
   comoLlegar: "Dentro de Stratford Station o Westfield.",
   lat: 51.5413, lng: -0.0032
 },
-  {
-  name: "Roman Baths",
-  category: "Histórico",
-  imageTitle: "Piscina sagrada de los Roman Baths",
-  lugar: "El vapor se eleva como si el agua aún recordara a los dioses que alguna vez la habitaron. Hay algo inquietante en este lugar: no es ruina, no es museo — es una presencia. El agua sigue brotando caliente desde la tierra, como hace dos mil años, y aunque ya no se puede tocar, sabés que sigue viva. Caminás por las pasarelas y sentís que estás invadiendo algo que no terminó de irse.",
-  historia: "Los romanos construyeron estos baños alrededor del año 70 d.C., sobre un manantial natural que consideraban sagrado. Dedicaron el templo a Sulis Minerva, una diosa híbrida entre la deidad celta local y la romana. Durante siglos, la gente arrojaba tablillas de plomo maldiciendo a ladrones y enemigos — muchas fueron encontradas en el fondo del agua. Tras la caída del Imperio Romano, el lugar quedó enterrado y olvidado hasta el siglo XVIII.",
-  curiosidades: "<ul><li>El agua brota a 46°C desde una profundidad de más de 3.000 metros.</li><li>Se encontraron más de 130 tablillas de maldición escritas en latín vulgar.</li><li>El agua no es potable hoy — contiene bacterias peligrosas.</li></ul>",
-  paraLasTres: "Escuchen la audioguía en silencio en la piscina principal. Después busquen las tablillas de maldición en el museo — son pequeñas, pero inquietantes.",
-  comoVivirlo: "Ir temprano o al atardecer. La luz baja transforma completamente el lugar.",
-  lat: 51.3811, lng: -2.3590
-},
 
 {
-  name: "Bath Abbey",
-  category: "Histórico",
-  imageTitle: "Fachada gótica de Bath Abbey",
-  lugar: "Hay una escalera tallada en piedra donde los ángeles suben y bajan del cielo. No es metáfora: está ahí, en la fachada. Y uno no sabe si es un gesto de fe o de advertencia. La abadía no abruma — envuelve. Es luminosa, casi frágil, pero profundamente antigua.",
-  historia: "Fundada en el siglo VII y reconstruida en estilo gótico en el XV, la abadía fue escenario de la coronación del primer rey de Inglaterra, Edgar, en el año 973. Durante siglos fue abandonada, restaurada, olvidada y devuelta a la vida varias veces.",
-  curiosidades: "<ul><li>La escalera de ángeles está inspirada en un sueño del obispo Oliver King.</li><li>El órgano tiene más de 4.000 tubos.</li><li>Hay más de 600 lápidas en el suelo.</li></ul>",
-  paraLasTres: "Miren el suelo. Lean nombres. Hay historias ahí que nadie cuenta en voz alta.",
-  comoVivirlo: "Subir a la torre si pueden. La vista de Bath desde arriba ordena la ciudad.",
-  lat: 51.3813, lng: -2.3593
-},
-
-{
-  name: "The Circus",
-  category: "Barrios y Vida Local",
-  imageTitle: "Arquitectura circular de The Circus",
-  lugar: "Es un círculo perfecto, pero no lo parece hasta que te detenés. Las casas miran hacia adentro como si compartieran un secreto. Hay algo teatral en la simetría, algo que parece diseñado para ser observado desde el centro — como si el espectador fueras vos.",
-  historia: "Diseñado por John Wood the Elder en 1754, inspirado en el Coliseo romano y en símbolos druídicos. Cada fachada tiene tres órdenes clásicos: dórico, jónico y corintio.",
-  curiosidades: "<ul><li>Se cree que el diseño incorpora referencias a Stonehenge.</li><li>Las casas fueron habitadas por aristócratas y luego divididas en apartamentos.</li></ul>",
-  paraLasTres: "Párense en el centro. Giren lentamente. No hablen por un momento.",
-  comoVivirlo: "Ir temprano o de noche. Cuando no hay gente, el lugar cambia.",
-  lat: 51.3837, lng: -2.3651
-},
-
-{
-  name: "Royal Crescent",
-  category: "Histórico",
-  imageTitle: "Royal Crescent al atardecer",
-  lugar: "Treinta casas en curva mirando un mismo horizonte. Todo es armonía, proporción, equilibrio. Y sin embargo, hay algo ligeramente inquietante en tanta perfección. Como si estuviera diseñada no para vivir, sino para ser contemplada.",
-  historia: "Construido entre 1767 y 1775, es uno de los mayores ejemplos de arquitectura georgiana en Inglaterra. Fue símbolo del poder y el gusto de la aristocracia.",
-  curiosidades: "<ul><li>Solo la fachada es uniforme — cada casa es distinta por dentro.</li><li>Aparece en múltiples películas de época.</li></ul>",
-  paraLasTres: "Sentarse en el césped frente a la curva. Mirar cómo cambia la luz.",
-  comoVivirlo: "Ir al atardecer. Es cuando el lugar parece menos real.",
-  lat: 51.3835, lng: -2.3682
-},
-
-{
-  name: "Sally Lunn’s Historic Eating House",
-  category: "Barrios y Vida Local",
-  imageTitle: "Interior antiguo de Sally Lunn’s",
-  lugar: "Hay lugares donde el tiempo no pasa: se acumula. Este es uno. Las paredes inclinadas, las vigas bajas, el olor a pan caliente. Es fácil imaginar que alguien dejó la mesa hace un momento y no volvió nunca.",
-  historia: "Casa del siglo XV, famosa por el 'Sally Lunn bun', un pan dulce creado por una refugiada francesa en el siglo XVII.",
-  curiosidades: "<ul><li>Es una de las casas más antiguas de Bath.</li><li>El sótano tiene restos romanos visibles.</li></ul>",
-  paraLasTres: "Compartan un bun caliente. No pidan uno cada una.",
-  comoVivirlo: "Ir temprano o tarde. Al mediodía se llena demasiado.",
-  lat: 51.3809, lng: -2.3587
-},
-  {
-  name: "Jane Austen Centre",
-  category: "Cine y Cultura Pop",
-  imageTitle: "Jane Austen Centre fachada georgiana",
-  lugar: "No es la casa donde vivió, ni el lugar exacto donde escribió — pero es el punto donde su sombra se vuelve más nítida. Bath aparece en sus novelas como un escenario elegante y, a veces, cruel. Entrar acá es entrar en esa mirada: la ciudad como teatro social, donde todo se observa, se juzga y se recuerda.",
-  historia: "Jane Austen vivió en Bath entre 1801 y 1806. No fue una etapa feliz: dejó de escribir durante años. Sin embargo, la ciudad aparece en 'Persuasión' y 'Northanger Abbey' como un personaje más.",
-  curiosidades: "<ul><li>Austen odiaba parte de la vida social de Bath, aunque la usó brillantemente en sus novelas.</li><li>La moda Regency que ves en el centro es reconstrucción histórica, no original.</li></ul>",
-  paraLasTres: "Leer en voz alta un fragmento de 'Persuasión' caminando después por la ciudad.",
-  comoVivirlo: "Vale más por el contexto que por el museo en sí. Combinar con paseo por la ciudad.",
-  lat: 51.3824, lng: -2.3622
-},
-
-{
-  name: "Pulteney Bridge",
-  category: "Histórico",
-  imageTitle: "Pulteney Bridge sobre el río Avon",
-  lugar: "Un puente que no parece puente. Tiendas a ambos lados, como si el río fuera un detalle menor. El agua cae en pequeños saltos debajo, siempre en movimiento, siempre igual. Es uno de esos lugares donde la ciudad parece diseñada más para ser vista que para ser usada.",
-  historia: "Construido en 1774, inspirado en el Ponte Vecchio de Florencia. Es uno de los pocos puentes en el mundo con tiendas en ambos lados a lo largo de toda su extensión.",
-  curiosidades: "<ul><li>Originalmente tenía un diseño perfectamente simétrico — hoy no lo es.</li><li>Ha sido modificado múltiples veces por incendios y reformas.</li></ul>",
-  paraLasTres: "Cruzar despacio, detenerse en el centro, mirar el agua caer.",
-  comoVivirlo: "Bajar al nivel del río para la mejor vista.",
-  lat: 51.3852, lng: -2.3590
-},
-
-{
-  name: "Thermae Bath Spa",
-  category: "Parques y Naturaleza",
-  imageTitle: "Piscina termal en la terraza",
-  lugar: "Agua caliente en el aire frío. Vapor que sube mientras la ciudad permanece quieta alrededor. A diferencia de los baños romanos, acá sí podés entrar. Y cuando lo hacés, entendés por qué este lugar existe desde hace miles de años.",
-  historia: "Este spa moderno reabrió en 2006, utilizando las mismas aguas termales naturales que los romanos aprovecharon hace dos mil años.",
-  curiosidades: "<ul><li>Es el único lugar en Inglaterra donde podés bañarte en aguas termales naturales.</li><li>La piscina de la terraza tiene vista directa sobre la ciudad.</li></ul>",
-  paraLasTres: "Ir al atardecer. Quedarse en silencio dentro del agua.",
-  comoVivirlo: "Reservar con anticipación. Evitar horarios pico.",
-  lat: 51.3810, lng: -2.3592
-},
-
-{
-  name: "Prior Park Landscape Garden",
-  category: "Parques y Naturaleza",
-  imageTitle: "Puente palladiano en Prior Park",
-  lugar: "Un jardín diseñado para parecer natural, pero donde cada curva fue pensada. El lago refleja el cielo con una precisión que parece ensayada. Y en el centro, el puente palladiano: una estructura perfecta en medio de un paisaje que finge no serlo.",
-  historia: "Diseñado en el siglo XVIII por Capability Brown, el gran arquitecto de jardines ingleses. Fue propiedad de Ralph Allen, mecenas de Bath.",
-  curiosidades: "<ul><li>Es uno de los cuatro puentes palladianos que existen en el mundo.</li><li>El jardín fue diseñado como símbolo de estatus, no como espacio público.</li></ul>",
-  paraLasTres: "Caminar sin rumbo. Sentarse frente al lago.",
-  comoVivirlo: "Ir con buen clima. Llevar algo para comer.",
-  lat: 51.3750, lng: -2.3565
-},
-
-{
-  name: "Baños Públicos — Parade Gardens",
-  category: "Baños Públicos",
-  imageTitle: "Entrada discreta Parade Gardens",
-  lugar: "No todo lo importante se señala. Hay puertas pequeñas en ciudades antiguas que resuelven más de lo que prometen. Estos baños están escondidos donde nadie mira, pero cuando los necesitás, aparecen como un pacto silencioso entre la ciudad y quien la recorre.",
-  historia: "Instalaciones públicas mantenidas por el council local, ubicadas junto a uno de los jardines más visitados de Bath.",
-  curiosidades: "<ul><li>Son de los pocos baños públicos bien mantenidos en el centro.</li><li>Suelen requerir monedas (20-50p).</li></ul>",
-  paraLasTres: "Ubicarlos mentalmente. En algún momento los van a necesitar.",
-  comoVivirlo: "Llevar monedas siempre. No confiar en cafés.",
-  lat: 51.3845, lng: -2.3572
-},
-   {
-  name: "Mary Shelley’s House — Frankenstein",
-  category: "Cine y Cultura Pop",
-  imageTitle: "Casa de Mary Shelley en Bath",
-  lugar: "Hay casas donde alguien vivió, y casas donde algo empezó. Mary Shelley pasó por Bath en 1816, rota por pérdidas, rodeada de muerte, escribiendo en los márgenes de su propia vida. Frankenstein no nació acá exactamente — pero sí su tono. Esa idea de que crear algo también puede ser una forma de perderlo todo.",
-  historia: "Mary Shelley escribió Frankenstein en 1816, con apenas 18 años. Vivió en Bath durante un periodo oscuro: su medio hermana se suicidó aquí ese mismo año. La ciudad, con su elegancia superficial, contrasta con el horror íntimo de la novela.",
-  curiosidades: "<ul><li>Frankenstein fue publicado anónimamente en 1818.</li><li>Muchos lectores creyeron que el autor era Percy Shelley.</li></ul>",
-  paraLasTres: "Pensar la historia no como monstruo, sino como abandono.",
-  comoVivirlo: "Vale más como idea que como museo. No esperes espectacularidad.",
-  personaje: "mary-shelley",
-  lat: 51.3817, lng: -2.3625
-},
-
-{
-  name: "Widcombe Parade — Cheap eats reales",
-  category: "Barrios y Vida Local",
-  imageTitle: "Calle tranquila en Widcombe",
-  lugar: "Cruzás el puente y Bath cambia. Menos perfecta, más vivible. Acá comen los que viven, no los que visitan. Cafés sin pretensión, panaderías que no necesitan contar su historia porque ya la tienen.",
-  historia: "Widcombe fue históricamente un barrio separado del centro, más accesible y menos aristocrático. Hoy mantiene esa lógica: mejor comida, menos marketing.",
-  curiosidades: "<ul><li>Los precios bajan apenas cruzás el río.</li><li>Hay panaderías mejores que las del centro turístico.</li></ul>",
-  paraLasTres: "Elegir un lugar sin reviews. Confiar en el instinto.",
-  comoVivirlo: "Desayuno o almuerzo temprano. Después se llena de locales.",
-  lat: 51.3779, lng: -2.3562
-},
-
-{
-  name: "Sydney Gardens",
-  category: "Parques y Naturaleza",
-  imageTitle: "Senderos en Sydney Gardens",
-  lugar: "Un parque que parece tranquilo hasta que entendés que un tren lo atraviesa. El ruido corta el aire cada tanto, recordándote que incluso en los lugares más calmos, algo siempre irrumpe.",
-  historia: "Uno de los parques de placer del siglo XVIII donde la alta sociedad paseaba. Jane Austen caminaba aquí regularmente.",
-  curiosidades: "<ul><li>Es el único parque en Bath atravesado por una línea ferroviaria activa.</li><li>Austen lo menciona indirectamente en sus cartas.</li></ul>",
-  paraLasTres: "Sentarse a esperar el tren. No hacer nada hasta que pase.",
-  comoVivirlo: "Ir con tiempo. Es un lugar para bajar ritmo.",
-  lat: 51.3863, lng: -2.3525
-},
-
-{
-  name: "Green Street — Calle que nadie busca",
-  category: "Oculto y Curioso",
-  imageTitle: "Fachadas georgianas en Green Street",
-  lugar: "A una cuadra del caos, el silencio. Green Street no tiene atracciones, no tiene tiendas importantes, no tiene razón para ser visitada — y por eso vale la pena. Es Bath sin explicación.",
-  historia: "Parte del desarrollo georgiano original, pensada como calle residencial elegante, nunca fue absorbida del todo por el turismo.",
-  curiosidades: "<ul><li>Las casas mantienen proporciones originales sin alteraciones comerciales.</li><li>Es una de las calles menos fotografiadas del centro.</li></ul>",
-  paraLasTres: "Caminar sin sacar fotos. Solo mirar.",
-  comoVivirlo: "Ir sin destino. Pasar y seguir.",
-  lat: 51.3832, lng: -2.3620
-},
-
-{
-  name: "The Raven Pub",
-  category: "Barrios y Vida Local",
-  imageTitle: "Interior cálido de The Raven Pub",
-  lugar: "Oscuro, bajo, lleno. Mesas de madera, cerveza espesa y platos que pesan. No intenta ser lindo — intenta ser suficiente. Y lo logra.",
-  historia: "Pub tradicional de Bath conocido por sus pies (empanadas inglesas) y su selección de ales locales.",
-  curiosidades: "<ul><li>Especialistas en pies artesanales — no es marketing, es reputación.</li><li>Siempre lleno de locales, rara vez de turistas organizados.</li></ul>",
-  paraLasTres: "Pedir un pie para compartir. Siempre mejor así.",
-  comoVivirlo: "Ir antes de las 7pm. Después cuesta conseguir mesa.",
-  lat: 51.3826, lng: -2.3633
-},
-  {
-  name: "St. Mary’s Churchyard — El borde olvidado",
-  category: "Oculto y Curioso",
-  imageTitle: "Lápidas inclinadas en St. Mary’s",
-  lugar: "Las lápidas no están derechas. Algunas ceden, otras se hunden apenas. El pasto crece sin orden y el silencio no es total — siempre hay un ruido lejano de ciudad que no termina de llegar. No es un lugar cuidado para ser visitado: es un lugar que simplemente quedó.",
-  historia: "Pequeño cementerio parroquial con tumbas que datan de los siglos XVIII y XIX. Muchos enterramientos sin registro completo.",
-  curiosidades: "<ul><li>Algunas lápidas están erosionadas al punto de ser ilegibles.</li><li>No aparece en la mayoría de guías de Bath.</li></ul>",
-  paraLasTres: "Elegir una lápida sin nombre y quedarse un momento.",
-  comoVivirlo: "Ir sin prisa. No sacar fotos.",
-  lat: 51.3795, lng: -2.3610
-},
-
-{
-  name: "Alexandra Park Viewpoint",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista panorámica de Bath desde Alexandra Park",
-  lugar: "Desde arriba, Bath parece ordenada. Perfecta. Como si nada hubiera salido mal nunca. Pero sabés que no es cierto. La distancia limpia todo — y esa es la trampa.",
-  historia: "Parque en altura al sur de la ciudad, utilizado desde el siglo XIX como punto panorámico.",
-  curiosidades: "<ul><li>Una de las mejores vistas gratuitas de Bath.</li><li>Poco concurrido en comparación con otros miradores.</li></ul>",
-  paraLasTres: "Ir en silencio. Cada una mirando algo distinto.",
-  comoVivirlo: "Subir caminando si pueden. Cambia la percepción.",
-  lat: 51.3763, lng: -2.3560
-},
-
-{
-  name: "Chapel Arts Café",
-  category: "Barrios y Vida Local",
-  imageTitle: "Interior artístico de Chapel Arts",
-  lugar: "Mitad café, mitad refugio. Las mesas nunca están del todo llenas ni del todo vacías. Hay gente escribiendo, gente leyendo, gente mirando sin hacer nada. Es uno de esos lugares donde nadie te apura a ser alguien.",
-  historia: "Espacio cultural independiente que combina café, galería y pequeños eventos artísticos.",
-  curiosidades: "<ul><li>Frecuentemente hay música en vivo o exposiciones pequeñas.</li><li>Precios más accesibles que en el centro turístico.</li></ul>",
-  paraLasTres: "Sentarse sin hablar durante un rato.",
-  comoVivirlo: "Ideal para una pausa larga. No es de paso.",
-  lat: 51.3798, lng: -2.3584
-},
-
-{
-  name: "Beckford’s Tower",
-  category: "Histórico",
-  imageTitle: "Torre Beckford en la colina",
-  lugar: "Una torre aislada, construida por un hombre que necesitaba mirar desde arriba. No para ver mejor, sino para estar separado. Subir es entender eso.",
-  historia: "Construida en 1827 para William Beckford, escritor excéntrico y coleccionista obsesivo. Usaba la torre como retiro personal.",
-  curiosidades: "<ul><li>Beckford fue uno de los hombres más ricos de Inglaterra.</li><li>Vivía prácticamente aislado en sus últimos años.</li></ul>",
-  paraLasTres: "Subir juntas, pero separarse arriba.",
-  comoVivirlo: "Ir con tiempo. No es un lugar rápido.",
-  lat: 51.3875, lng: -2.3655
-},
-
-{
-  name: "Baños Públicos — Charlotte Street",
-  category: "Baños Públicos",
-  imageTitle: "Entrada Charlotte Street",
-  lugar: "No hay narrativa acá. Solo funcionalidad. Pero en ciudades como esta, eso también importa. Saber dónde ir cuando nadie quiere decirlo.",
-  historia: "Instalación pública céntrica, utilizada principalmente por locales.",
-  curiosidades: "<ul><li>Más confiables que muchos cafés.</li><li>Mejor mantenimiento que el promedio.</li></ul>",
-  paraLasTres: "Registrar ubicación. No subestimar esto.",
-  comoVivirlo: "Siempre llevar monedas.",
-  lat: 51.3839, lng: -2.3644
-},
-      {
-  name: "Great Pulteney Street",
-  category: "Histórico",
-  imageTitle: "Gran avenida georgiana en Bath",
-  lugar: "Una calle demasiado grande para ser casual. Todo está alineado, contenido, pensado para impresionar. Caminás por el centro y sentís que estás dentro de una decisión — no de un lugar.",
-  historia: "Construida en 1789 como símbolo de expansión elegante de la ciudad. Inspirada en los bulevares europeos.",
-  curiosidades: "<ul><li>Ha sido usada en películas como 'Les Misérables'.</li><li>Es una de las calles más anchas de Bath.</li></ul>",
-  paraLasTres: "Caminarla entera sin cruzar de vereda.",
-  comoVivirlo: "Ir temprano. Vacía es otra cosa.",
-  lat: 51.3850, lng: -2.3555
-},
-
-{
-  name: "The Holburne Museum",
-  category: "Cine y Cultura Pop",
-  imageTitle: "Holburne Museum fachada",
-  lugar: "Desde afuera parece una escena. Y lo es. Muchas veces. Pero cuando entrás, el ruido baja. Es menos espectacular de lo que promete — y eso lo vuelve honesto.",
-  historia: "Museo de arte fundado en 1882, basado en la colección de Sir William Holburne.",
-  curiosidades: "<ul><li>Aparece en 'Bridgerton'.</li><li>El edificio fue ampliado con una estructura moderna atrás.</li></ul>",
-  paraLasTres: "Mirar primero desde afuera, después entrar.",
-  comoVivirlo: "No más de una hora. No es para quedarse.",
-  lat: 51.3862, lng: -2.3507
-},
-
-{
-  name: "Bath Skyline Walk",
-  category: "Parques y Naturaleza",
-  imageTitle: "Sendero Bath Skyline",
-  lugar: "La ciudad desaparece de a poco. Primero el ruido, después las formas, después la idea. Queda el terreno, el viento, y una sensación de distancia que no se consigue dentro.",
-  historia: "Sendero circular gestionado por el National Trust que rodea Bath desde las colinas.",
-  curiosidades: "<ul><li>Son aproximadamente 10 km de recorrido.</li><li>Combina bosque, campos y vistas urbanas.</li></ul>",
-  paraLasTres: "No hablar durante un tramo largo.",
-  comoVivirlo: "Elegir un tramo, no todo. No es obligatorio completarlo.",
-  lat: 51.3800, lng: -2.3400
-},
-
-{
-  name: "Assembly Rooms",
-  category: "Histórico",
-  imageTitle: "Salones de Assembly Rooms",
-  lugar: "Acá pasaba todo lo que no se decía en voz alta. Bailes, acuerdos, miradas. La arquitectura es elegante, pero lo importante es lo que ocurría entre las personas.",
-  historia: "Construidos en 1771 como centro social de la élite. Escenario clave de la vida en Bath durante el siglo XVIII.",
-  curiosidades: "<ul><li>Austen los menciona en sus novelas.</li><li>Separaban estrictamente clases sociales.</li></ul>",
-  paraLasTres: "Imaginar una escena sin música.",
-  comoVivirlo: "Rápido. Es más conceptual que experiencial.",
-  lat: 51.3846, lng: -2.3649
-},
-
-{
-  name: "The Bell Inn",
-  category: "Barrios y Vida Local",
-  imageTitle: "Interior The Bell Inn",
-  lugar: "No está hecho para gustar. Está hecho para existir. Música en vivo, gente mezclada, ruido real. Es uno de los pocos lugares donde Bath deja de ser perfecta.",
-  historia: "Pub independiente con fuerte tradición musical y comunitaria.",
-  curiosidades: "<ul><li>Música en vivo casi todos los días.</li><li>Ambiente completamente local.</li></ul>",
-  paraLasTres: "Entrar aunque no parezca el lugar.",
-  comoVivirlo: "Ir de noche. Es otro lugar.",
-  lat: 51.3805, lng: -2.3652
-},
-  {
-  name: "North Parade Passage",
-  category: "Oculto y Curioso",
-  imageTitle: "Pasaje estrecho en Bath",
-  lugar: "Un pasaje tan estrecho que parece que no deberías entrar. Pero lo hacés igual. Y cuando salís del otro lado, Bath cambia apenas — lo suficiente.",
-  historia: "Pasaje histórico que conecta zonas comerciales desde el siglo XVIII.",
-  curiosidades: "<ul><li>Muchos lo pasan de largo sin verlo.</li><li>Ejemplo perfecto de la escala peatonal original.</li></ul>",
-  paraLasTres: "Atravesarlo sin hablar.",
-  comoVivirlo: "Usarlo como transición. No como destino.",
-  lat: 51.3815, lng: -2.3585
-},
-
-{
-  name: "Walcot Street",
-  category: "Barrios y Vida Local",
-  imageTitle: "Tiendas independientes en Walcot",
-  lugar: "Bath sin maquillaje. Menos simétrica, más honesta. Acá la ciudad no intenta ser postal — y por eso respira mejor.",
-  historia: "Históricamente zona artesanal y comercial fuera del circuito aristocrático.",
-  curiosidades: "<ul><li>Tiendas independientes reales, no curadas para turistas.</li><li>Más mezcla social que el centro.</li></ul>",
-  paraLasTres: "Caminar sin entrar a todo. Elegir solo un lugar.",
-  comoVivirlo: "Ir después del centro. Funciona como contraste.",
-  lat: 51.3839, lng: -2.3598
-},
-
-{
-  name: "Cleveland Pools",
-  category: "Histórico",
-  imageTitle: "Piscinas históricas Cleveland",
-  lugar: "Agua quieta, arquitectura simple, casi olvidada. No es espectacular — y ahí está su valor. Es lo que queda cuando el lujo se retira.",
-  historia: "Piscinas al aire libre del siglo XIX, recientemente restauradas. De las más antiguas de Inglaterra.",
-  curiosidades: "<ul><li>Funcionaban como alternativa accesible a los baños termales.</li><li>Estuvieron abandonadas durante décadas.</li></ul>",
-  paraLasTres: "Compararlo mentalmente con Thermae Spa.",
-  comoVivirlo: "Ir si quieren ver la otra cara del agua en Bath.",
-  lat: 51.3886, lng: -2.3540
-},
-
-{
-  name: "Coffee #1 — Quiet corner",
-  category: "Barrios y Vida Local",
-  imageTitle: "Café tranquilo en Bath",
-  lugar: "Nada especial. Y eso lo hace perfecto. Buen café, mesas normales, gente normal. Un lugar para bajar el mapa de la cabeza.",
-  historia: "Cadena local bien integrada en la ciudad, sin estética invasiva.",
-  curiosidades: "<ul><li>Consistente y sin pretensión.</li><li>Mejor que la mayoría de cafés turísticos.</li></ul>",
-  paraLasTres: "No hablar del viaje por 20 minutos.",
-  comoVivirlo: "Parada técnica real. No estética.",
-  lat: 51.3820, lng: -2.3610
-},
-
-{
-  name: "Error común — Zona central saturada",
-  category: "Oculto y Curioso",
-  imageTitle: "Multitud en centro de Bath",
-  lugar: "Calles llenas, gente sacando fotos de lo mismo, restaurantes caros que parecen iguales. No es que esté mal — es que quedarse solo acá es perderse la ciudad.",
-  historia: "El centro de Bath concentra la mayoría del turismo por proximidad de los landmarks.",
-  curiosidades: "<ul><li>La mayoría de visitantes no sale de un radio de 500 metros.</li><li>Los precios suben sin mejorar calidad.</li></ul>",
-  paraLasTres: "Detectarlo rápido y salir.",
-  comoVivirlo: "Usarlo como punto de paso, no de permanencia.",
-  lat: 51.3812, lng: -2.3595
-},
-  {
-  name: "York Minster",
-  category: "Histórico",
-  imageTitle: "Catedral de York Minster",
-  lugar: "No es solo grande. Es desproporcionada. La piedra parece haber sido puesta para durar más que cualquier intención humana. Entrás y el espacio no te recibe: te contiene. La luz entra filtrada por vitrales que sobrevivieron guerras, incendios y siglos de decisiones equivocadas.",
-  historia: "Construida entre los siglos XIII y XV, es una de las catedrales góticas más grandes de Europa. York fue un centro religioso clave desde la época romana.",
-  curiosidades: "<ul><li>Contiene el Great East Window, el mayor vitral medieval del mundo.</li><li>Sobrevivió parcialmente a bombardeos en la Segunda Guerra Mundial.</li></ul>",
-  paraLasTres: "Sentarse sin hablar. Mirar hacia arriba hasta que incomode.",
-  comoVivirlo: "Ir temprano. Con gente pierde parte del efecto.",
-  lat: 53.9626, lng: -1.0819
-},
-
-{
-  name: "The Shambles",
-  category: "Barrios y Vida Local",
-  imageTitle: "Calle medieval The Shambles",
-  lugar: "Las casas se inclinan como si quisieran tocarse. La calle es tan estrecha que la luz baja en tiras. Hoy está llena de tiendas, pero si mirás bien, todavía queda algo de lo que fue: una calle donde la carne colgaba y la sangre corría hacia el centro.",
-  historia: "Calle medieval del siglo XIV, originalmente ocupada por carniceros. Las estructuras sobresalientes permitían trabajar la carne.",
-  curiosidades: "<ul><li>El nombre viene de 'shamel', que significa banco de carnicero.</li><li>Inspiró visualmente a Diagon Alley en Harry Potter.</li></ul>",
-  paraLasTres: "Pasar dos veces: una mirando, otra ignorando.",
-  comoVivirlo: "Ir temprano o muy tarde. Evitar el pico turístico.",
-  lat: 53.9590, lng: -1.0803
-},
-
-{
-  name: "York City Walls",
-  category: "Histórico",
-  imageTitle: "Murallas de York",
-  lugar: "Caminar por las murallas es ver la ciudad desde el borde. No desde arriba — desde afuera. Es una forma de entenderla sin entrar del todo.",
-  historia: "Murallas romanas, luego reforzadas en la Edad Media. Son las mejor conservadas de Inglaterra.",
-  curiosidades: "<ul><li>Se puede caminar casi todo el perímetro gratuitamente.</li><li>Algunos tramos son originales romanos.</li></ul>",
-  paraLasTres: "Caminar en silencio un tramo completo.",
-  comoVivirlo: "No hacer todo. Elegir una sección.",
-  lat: 53.9600, lng: -1.0820
-},
-
-{
-  name: "Clifford’s Tower",
-  category: "Histórico",
-  imageTitle: "Torre sobre colina en York",
-  lugar: "Una torre sola en una colina artificial. Desde abajo parece simple. Desde arriba, incómoda. Hay historia ahí que no encaja del todo con la postal.",
-  historia: "Restos del castillo de York. Escenario de una masacre en 1190 donde murieron más de 150 judíos refugiados.",
-  curiosidades: "<ul><li>La colina es artificial, construida por los normandos.</li><li>El evento de 1190 es uno de los episodios más oscuros de la ciudad.</li></ul>",
-  paraLasTres: "Subir, pero quedarse poco.",
-  comoVivirlo: "Más por lo que representa que por lo que muestra.",
-  lat: 53.9583, lng: -1.0805
-},
-
-{
-  name: "SPARK:York — Cheap eats",
-  category: "Barrios y Vida Local",
-  imageTitle: "Food market moderno SPARK York",
-  lugar: "Contenedores, comida rápida, gente mezclada. No es lindo, no es histórico — pero es real. Un descanso de la ciudad que intenta ser medieval todo el tiempo.",
-  historia: "Espacio moderno de comida y comunidad, creado para revitalizar un área urbana.",
-  curiosidades: "<ul><li>Gran variedad de comida a buen precio.</li><li>Ambiente joven y local.</li></ul>",
-  paraLasTres: "Comer algo distinto cada una.",
-  comoVivirlo: "Ideal para cortar el día.",
-  lat: 53.9565, lng: -1.0810
-},
-  {
-  name: "Treasurer’s House — Los soldados",
-  category: "Oculto y Curioso",
-  imageTitle: "Interior silencioso Treasurer’s House",
-  lugar: "Una casa elegante, ordenada, casi demasiado tranquila. Pero hay una historia que la atraviesa: un hombre vio soldados romanos caminando bajo el suelo, como si la calle actual no existiera. No fantasmas flotando — soldados marchando a un nivel más bajo, donde antes estaba la calle romana.",
-  historia: "En 1953, un electricista llamado Harry Martindale afirmó haber visto una legión romana atravesando el sótano. La historia nunca fue explicada.",
-  curiosidades: "<ul><li>Los soldados parecían caminar por una calle enterrada.</li><li>El testigo no tenía interés previo en lo paranormal.</li></ul>",
-  paraLasTres: "No discutir si es real o no.",
-  comoVivirlo: "Entrar con la idea de que algo puede no encajar.",
-  lat: 53.9622, lng: -1.0808
-},
-
-{
-  name: "The Golden Fleece Pub",
-  category: "Oculto y Curioso",
-  imageTitle: "Pub Golden Fleece interior",
-  lugar: "Bajo, inclinado, incómodo. Todo parece apenas fuera de lugar. No es un pub que te abrace — es un pub que te observa. Dicen que es uno de los más embrujados de Inglaterra. Y por una vez, no suena a marketing.",
-  historia: "Data del siglo XVI. Construido sobre antiguas calles y posibles enterramientos medievales.",
-  curiosidades: "<ul><li>Reportes constantes de actividad paranormal.</li><li>El edificio está visiblemente torcido por los siglos.</li></ul>",
-  paraLasTres: "Sentarse en silencio un rato.",
-  comoVivirlo: "Ir de noche. Cambia todo.",
-  lat: 53.9587, lng: -1.0807
-},
-
-{
-  name: "Snickelways — Pasajes secretos",
-  category: "Oculto y Curioso",
-  imageTitle: "Pasaje estrecho en York",
-  lugar: "No son calles. No son callejones. Son algo intermedio. Pasajes que conectan puntos sin avisar, que aparecen donde no deberían. York se entiende mejor cuando te perdés en ellos.",
-  historia: "Red de pasajes medievales usados para conectar zonas comerciales y residenciales.",
-  curiosidades: "<ul><li>El nombre 'snickelway' es relativamente moderno (años 80).</li><li>Algunos tienen nombres propios y siglos de historia.</li></ul>",
-  paraLasTres: "Elegir uno al azar y seguirlo.",
-  comoVivirlo: "No usar mapa por unos minutos.",
-  lat: 53.9605, lng: -1.0812
-},
-
-{
-  name: "York Cold War Bunker",
-  category: "Histórico",
-  imageTitle: "Búnker frío en York",
-  lugar: "Hormigón, puertas pesadas, silencio. No hay estética, no hay intención de gustar. Solo funcionalidad pensada para el fin del mundo. Es reciente — y eso lo vuelve más incómodo.",
-  historia: "Búnker construido en los años 60 para monitorear ataques nucleares durante la Guerra Fría.",
-  curiosidades: "<ul><li>Podía albergar personal durante semanas aislados.</li><li>Parte del sistema de defensa civil británico.</li></ul>",
-  paraLasTres: "Escuchar el silencio.",
-  comoVivirlo: "Tour guiado. Vale la pena.",
-  lat: 53.9540, lng: -1.1050
-},
-
-{
-  name: "Baños Públicos — Museum Gardens",
-  category: "Baños Públicos",
-  imageTitle: "Entrada baños Museum Gardens",
-  lugar: "Entre ruinas romanas y jardines cuidados, algo práctico. York es una ciudad donde caminar mucho es inevitable — y saber esto evita decisiones malas.",
-  historia: "Instalaciones públicas ubicadas dentro de uno de los parques principales.",
-  curiosidades: "<ul><li>Bien mantenidos en comparación con otros.</li><li>Ubicación estratégica cerca del centro.</li></ul>",
-  paraLasTres: "Registrar ubicación mental.",
-  comoVivirlo: "Usar sin dudar. Es parte del recorrido.",
-  lat: 53.9619, lng: -1.0890
-},
-  {
-  name: "Brew & Brownie — Café que sí vale",
-  category: "Barrios y Vida Local",
-  imageTitle: "Café Brew & Brownie interior",
-  lugar: "Pequeño, ruidoso, siempre lleno. No intenta ser tranquilo ni perfecto — pero el café es bueno de verdad y la comida también. Es el tipo de lugar donde la calidad reemplaza al discurso.",
-  historia: "Café independiente que se volvió referencia local por consistencia, no por estética.",
-  curiosidades: "<ul><li>Siempre hay cola — es buena señal.</li><li>Mejor desayuno que la mayoría del centro.</li></ul>",
-  paraLasTres: "Esperar la mesa. Vale la pena.",
-  comoVivirlo: "Ir temprano. Después de las 10 se complica.",
-  lat: 53.9615, lng: -1.0825
-},
-
-{
-  name: "House of the Trembling Madness",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pub oscuro medieval York",
-  lugar: "Un pub dentro de una casa torcida sobre una tienda de botellas. Techos bajos, escaleras estrechas, mesas apretadas. No es cómodo — es auténtico.",
-  historia: "Edificio medieval adaptado como pub moderno con fuerte identidad histórica.",
-  curiosidades: "<ul><li>Arriba es pub, abajo tienda de cerveza.</li><li>Ambiente medieval real, no recreado.</li></ul>",
-  paraLasTres: "Subir sin saber si hay lugar.",
-  comoVivirlo: "Ir fuera de hora pico.",
-  lat: 53.9608, lng: -1.0809
-},
-
-{
-  name: "Goodramgate — Calle con capas",
-  category: "Barrios y Vida Local",
-  imageTitle: "Calle Goodramgate en York",
-  lugar: "Menos famosa que Shambles, pero más honesta. Acá la ciudad no está actuando tanto. Las casas siguen inclinándose, pero sin espectadores constantes.",
-  historia: "Calle medieval que conectaba zonas comerciales clave.",
-  curiosidades: "<ul><li>Menos turística que Shambles.</li><li>Mantiene estructuras originales.</li></ul>",
-  paraLasTres: "Compararla con Shambles.",
-  comoVivirlo: "Caminar sin detenerse demasiado.",
-  lat: 53.9610, lng: -1.0795
-},
-
-{
-  name: "Museum Gardens Ruins",
-  category: "Parques y Naturaleza",
-  imageTitle: "Ruinas en Museum Gardens",
-  lugar: "Ruinas romanas, abadías destruidas, gente haciendo picnic. Todo mezclado sin explicación. York funciona así: capas sin ordenar.",
-  historia: "Restos de la Abadía de St. Mary (siglo XI), destruida en la disolución de los monasterios.",
-  curiosidades: "<ul><li>Se puede caminar libremente entre las ruinas.</li><li>Zona usada por locales para descansar.</li></ul>",
-  paraLasTres: "Sentarse sin hacer nada.",
-  comoVivirlo: "Mejor con buen clima.",
-  lat: 53.9622, lng: -1.0895
-},
-
-{
-  name: "Error común — York “de película”",
-  category: "Oculto y Curioso",
-  imageTitle: "Multitud turística en York",
-  lugar: "York se vende como medieval perfecto. Y lo es — pero solo si mirás lo que quieren que mires. Quedarse en esa capa es perder la mitad de la ciudad.",
-  historia: "El turismo masivo reforzó una versión simplificada de York como ciudad medieval intacta.",
-  curiosidades: "<ul><li>La mayoría de visitantes no sale del eje Minster–Shambles.</li><li>Los precios suben sin mejorar experiencia.</li></ul>",
-  paraLasTres: "Detectarlo rápido.",
-  comoVivirlo: "Usarlo como referencia, no como base.",
-  lat: 53.9612, lng: -1.0810
-},
-  {
-  name: "Bibury — Arlington Row",
-  category: "Histórico",
-  imageTitle: "Casas de Arlington Row",
-  lugar: "Demasiado perfecto. Demasiado alineado. Parece una postal diseñada antes de existir. Y sin embargo, está ahí. Lo ves y dudás un segundo: si es real o si lo estás recordando mal.",
-  historia: "Arlington Row data del siglo XIV, originalmente como almacenes de lana, luego convertidos en viviendas para tejedores.",
-  curiosidades: "<ul><li>Considerado uno de los pueblos más fotografiados de Inglaterra.</li><li>Aparece en pasaportes británicos.</li></ul>",
-  paraLasTres: "Verlo rápido. No quedarse demasiado.",
-  comoVivirlo: "Ir temprano o al atardecer. Evitar el mediodía.",
-  lat: 51.7587, lng: -1.8313
-},
-
-{
-  name: "Castle Combe",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pueblo de piedra Castle Combe",
-  lugar: "Silencioso. Demasiado. No hay cables visibles, no hay ruido, no hay interrupciones. Es uno de esos lugares donde el tiempo no pasó — o pasó y fue borrado.",
-  historia: "Pueblo medieval que evitó el desarrollo industrial, manteniendo su estructura original casi intacta.",
-  curiosidades: "<ul><li>Escenario de múltiples películas, incluida 'War Horse'.</li><li>No tiene semáforos ni carteles modernos visibles.</li></ul>",
-  paraLasTres: "Caminar sin hablar.",
-  comoVivirlo: "Ideal temprano en la mañana.",
-  lat: 51.4923, lng: -2.2281
-},
-
-{
-  name: "Bourton-on-the-Water",
-  category: "Barrios y Vida Local",
-  imageTitle: "Puentes bajos sobre el río Windrush",
-  lugar: "Agua baja, puentes pequeños, gente por todos lados. Es el Cotswolds más accesible — y el más saturado. Pero si lo mirás bien, hay momentos donde la multitud desaparece y queda solo el ritmo del agua.",
-  historia: "Desarrollado como punto turístico desde el siglo XIX por su geografía abierta y su río central.",
-  curiosidades: "<ul><li>Conocido como la 'Venecia de los Cotswolds'.</li><li>Tiene una maqueta del pueblo a escala dentro del mismo pueblo.</li></ul>",
-  paraLasTres: "Buscar un punto sin gente. Siempre hay uno.",
-  comoVivirlo: "Evitar fines de semana.",
-  lat: 51.8867, lng: -1.7581
-},
-
-{
-  name: "Stow-on-the-Wold — Puerta de Yew",
-  category: "Oculto y Curioso",
-  imageTitle: "Puerta enmarcada por árboles",
-  lugar: "Una puerta entre árboles. Nada más. Pero la forma en que los troncos la rodean hace que parezca una entrada a otra cosa. No sabés a qué — pero no parece una iglesia común.",
-  historia: "Iglesia de St. Edward, construida en la Edad Media, con árboles de tejo que crecieron alrededor de la puerta trasera.",
-  curiosidades: "<ul><li>Inspiró imágenes similares en 'El Señor de los Anillos'.</li><li>Los tejos tienen cientos de años.</li></ul>",
-  paraLasTres: "Entrar despacio. Mirar hacia atrás antes de irse.",
-  comoVivirlo: "Ir por la parte trasera de la iglesia.",
-  lat: 51.9302, lng: -1.7248
-},
-
-{
-  name: "Lower Slaughter",
-  category: "Parques y Naturaleza",
-  imageTitle: "Río tranquilo en Lower Slaughter",
-  lugar: "Todo es bajo, lento, contenido. El agua no corre: se desliza. No hay nada espectacular — y por eso funciona. Es uno de esos lugares donde no pasa nada y eso alcanza.",
-  historia: "Pueblo histórico sin desarrollo comercial significativo, preservado casi intacto.",
-  curiosidades: "<ul><li>El nombre viene de 'slough' (humedal), no de violencia.</li><li>Uno de los pueblos más tranquilos de la región.</li></ul>",
-  paraLasTres: "Sentarse y no hacer nada.",
-  comoVivirlo: "Combinar con Upper Slaughter caminando.",
-  lat: 51.8881, lng: -1.7635
-},
-  {
-  name: "The Wild Rabbit — Pub real",
-  category: "Barrios y Vida Local",
-  imageTitle: "Interior cálido The Wild Rabbit",
-  lugar: "Madera, fuego, luz baja. No intenta parecer antiguo — lo es, pero con criterio. Es uno de los pocos lugares donde el diseño no arruina la experiencia.",
-  historia: "Pub moderno dentro de una estructura tradicional, parte del Daylesford estate.",
-  curiosidades: "<ul><li>Comida de muy buen nivel para ser pub.</li><li>Frecuentado por locales con criterio, no solo turistas.</li></ul>",
-  paraLasTres: "Comer algo simple. No sobrepedir.",
-  comoVivirlo: "Reservar. Se llena.",
-  lat: 51.9280, lng: -1.6365
-},
-
-{
-  name: "Daylesford Organic Farm Shop",
-  category: "Barrios y Vida Local",
-  imageTitle: "Market elegante Daylesford",
-  lugar: "Todo es perfecto: productos, orden, estética. Y sin embargo, hay algo artificial en tanta perfección. Vale la pena — pero sabiendo qué es.",
-  historia: "Granja orgánica convertida en marca premium de alimentos y lifestyle.",
-  curiosidades: "<ul><li>Precios altos, calidad alta.</li><li>Muy popular entre londinenses de fin de semana.</li></ul>",
-  paraLasTres: "Comprar algo chico. No convertirlo en destino principal.",
-  comoVivirlo: "Parada corta.",
-  lat: 51.9125, lng: -1.6480
-},
-
-{
-  name: "Upper Slaughter",
-  category: "Parques y Naturaleza",
-  imageTitle: "Camino entre Lower y Upper Slaughter",
-  lugar: "Menos visitado que su vecino, más silencioso. Es el mismo paisaje — pero sin público. Eso cambia todo.",
-  historia: "Pueblo histórico conectado a Lower Slaughter por un sendero peatonal antiguo.",
-  curiosidades: "<ul><li>Muchos turistas no llegan hasta acá.</li><li>Uno de los pueblos menos intervenidos.</li></ul>",
-  paraLasTres: "Caminar desde Lower Slaughter.",
-  comoVivirlo: "Sin apuro. Es corto.",
-  lat: 51.9000, lng: -1.7600
-},
-
-{
-  name: "The Bell at Sapperton",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pub The Bell Sapperton",
-  lugar: "Menos pulido, más real. Un pub donde la conversación pesa más que la decoración. Es fácil pasar de largo — y es un error.",
-  historia: "Pub tradicional en un pueblo pequeño fuera del circuito principal.",
-  curiosidades: "<ul><li>Frecuentado por locales.</li><li>Menos turístico que otros pubs de la zona.</li></ul>",
-  paraLasTres: "Entrar aunque no parezca.",
-  comoVivirlo: "Ideal para almuerzo.",
-  lat: 51.7075, lng: -2.0030
-},
-
-{
-  name: "Error común — Saltar de pueblo en pueblo",
-  category: "Oculto y Curioso",
-  imageTitle: "Carretera rural Cotswolds",
-  lugar: "Todo empieza a parecerse. Casas de piedra, ventanas pequeñas, calles tranquilas. Si no frenás, todo se mezcla y nada queda.",
-  historia: "El turismo impulsó rutas rápidas entre pueblos sin detenerse realmente en ninguno.",
-  curiosidades: "<ul><li>La mayoría intenta ver 5+ pueblos en un día.</li><li>Eso arruina la experiencia.</li></ul>",
-  paraLasTres: "Elegir menos. Quedarse más.",
-  comoVivirlo: "Máximo 2–3 pueblos por día.",
-  lat: 51.8500, lng: -1.7500
-},
-  {
-  name: "The Cornish Bakery — Bourton-on-the-Water",
-  category: "Barrios y Vida Local",
-  imageTitle: "Bakery simple Cotswolds",
-  lugar: "No tiene narrativa. Tiene comida que funciona. Pan caliente, café decente, mesas simples. Es una pausa real en medio de un pueblo que intenta ser demasiado perfecto.",
-  historia: "Cadena pequeña bien integrada en zonas turísticas.",
-  curiosidades: "<ul><li>Precios más bajos que restaurantes cercanos.</li><li>Opción sólida para desayuno o almuerzo rápido.</li></ul>",
-  paraLasTres: "No buscar nada especial. Solo comer.",
-  comoVivirlo: "Entrada rápida, salida rápida.",
-  lat: 51.8865, lng: -1.7580
-},
-
-{
-  name: "Lynwood & Co Café — Burford",
-  category: "Barrios y Vida Local",
-  imageTitle: "Café moderno Lynwood",
-  lugar: "Simple, moderno, sin intentar ser rural antiguo. Eso ya lo diferencia. Buen café, platos honestos, precios razonables para la zona.",
-  historia: "Café local con enfoque en brunch y productos frescos.",
-  curiosidades: "<ul><li>Muy popular entre locales.</li><li>Mejor café que la media de Cotswolds.</li></ul>",
-  paraLasTres: "Brunch sin pensar demasiado.",
-  comoVivirlo: "Evitar hora pico.",
-  lat: 51.8090, lng: -1.6360
-},
-
-{
-  name: "The Chip Shed — Bourton",
-  category: "Barrios y Vida Local",
-  imageTitle: "Fish and chips clásico",
-  lugar: "Nada sofisticado. Aceite, ruido, papas fritas. Pero en un lugar donde todo es caro, esto es un ancla a la realidad.",
-  historia: "Fish & chips moderno con foco en calidad y rapidez.",
-  curiosidades: "<ul><li>Porciones grandes.</li><li>Más barato que sentarse en un pub.</li></ul>",
-  paraLasTres: "Compartir.",
-  comoVivirlo: "Takeaway y comer afuera.",
-  lat: 51.8868, lng: -1.7575
-},
-
-{
-  name: "Huffkins Bakery — Stow-on-the-Wold",
-  category: "Barrios y Vida Local",
-  imageTitle: "Interior Huffkins Bakery",
-  lugar: "Mitad tradicional, mitad turístico. Pero funciona. Té, scones, platos simples. No es barato barato — pero dentro de Cotswolds, es razonable.",
-  historia: "Cadena histórica de panaderías en la región.",
-  curiosidades: "<ul><li>Famosos por sus scones.</li><li>Consistente en todas sus sucursales.</li></ul>",
-  paraLasTres: "Té + algo para compartir.",
-  comoVivirlo: "Parada corta.",
-  lat: 51.9305, lng: -1.7250
-},
-
-{
-  name: "Error común — Comer en pubs “bonitos”",
-  category: "Oculto y Curioso",
-  imageTitle: "Pub turístico Cotswolds",
-  lugar: "Todo parece perfecto: madera, flores, menú largo. Pero muchas veces es caro, promedio y olvidable. Estás pagando la estética, no la comida.",
-  historia: "El turismo elevó precios en pubs sin mejorar proporcionalmente la calidad.",
-  curiosidades: "<ul><li>Menús largos suelen ser mala señal.</li><li>Ubicación céntrica = precio inflado.</li></ul>",
-  paraLasTres: "Dudar antes de entrar.",
-  comoVivirlo: "Buscar lugares con menú corto.",
-  lat: 51.8500, lng: -1.7500
-},
-  {
-  name: "Warwick Castle (vista exterior)",
-  category: "Histórico",
-  imageTitle: "Warwick Castle desde el río",
-  lugar: "Un castillo que parece demasiado perfecto para ser real. Torres, murallas, todo intacto. Pero no hace falta entrar: desde afuera ya entendés todo. Es poder convertido en piedra.",
-  historia: "Construido en 1068 por Guillermo el Conquistador, expandido durante la Edad Media.",
-  curiosidades: "<ul><li>Uno de los castillos mejor conservados de Inglaterra.</li><li>Hoy es atracción turística completa (pero evitable).</li></ul>",
-  paraLasTres: "Mirarlo desde el puente o el parque.",
-  comoVivirlo: "Parada corta. No entrar.",
-  lat: 52.2790, lng: -1.5850
-},
-
-{
-  name: "Stratford-upon-Avon — Shakespeare quick stop",
-  category: "Cine y Cultura Pop",
-  imageTitle: "Casas Tudor Stratford",
-  lugar: "Casas de madera negra y blanca, demasiado alineadas para no ser observadas. Shakespeare nació acá, pero el pueblo entero parece construido para recordártelo.",
-  historia: "Lugar de nacimiento de William Shakespeare (1564).",
-  curiosidades: "<ul><li>Altamente turistificado.</li><li>Aún así, mantiene arquitectura Tudor auténtica.</li></ul>",
-  paraLasTres: "Caminar 20 minutos y seguir.",
-  comoVivirlo: "Parada rápida. No profundizar.",
-  lat: 52.1917, lng: -1.7073
-},
-
-{
-  name: "Coventry Cathedral (ruinas)",
-  category: "Histórico",
-  imageTitle: "Ruinas de Coventry Cathedral",
-  lugar: "Una catedral destruida, dejada así. No reconstruida, no tapada. Las paredes abiertas al cielo son más fuertes que cualquier edificio completo.",
-  historia: "Destruida por bombardeos alemanes en 1940 durante la Segunda Guerra Mundial. Se decidió conservar las ruinas como memorial.",
-  curiosidades: "<ul><li>La nueva catedral está justo al lado.</li><li>Es símbolo de reconciliación.</li></ul>",
-  paraLasTres: "Entrar y quedarse un momento.",
-  comoVivirlo: "Parada corta pero intensa.",
-  lat: 52.4080, lng: -1.5080
-},
-
-{
-  name: "Sherwood Forest — Major Oak",
-  category: "Parques y Naturaleza",
-  imageTitle: "Roble gigante Sherwood",
-  lugar: "Un árbol que parece más viejo que la idea de bosque. Tronco ancho, ramas pesadas, sostenidas por estructuras. No es solo un árbol: es un resto de otra escala de tiempo.",
-  historia: "Asociado a la leyenda de Robin Hood. El Major Oak tiene entre 800 y 1000 años.",
-  curiosidades: "<ul><li>Necesita soportes para no colapsar.</li><li>Uno de los árboles más famosos de Inglaterra.</li></ul>",
-  paraLasTres: "Caminar hasta el árbol y volver.",
-  comoVivirlo: "Desvío corto pero vale la pena.",
-  lat: 53.2050, lng: -1.0690
-},
-
-{
-  name: "Newark-on-Trent Castle (ruinas visibles)",
-  category: "Histórico",
-  imageTitle: "Ruinas del castillo Newark",
-  lugar: "Ruinas al borde del río. No restauradas, no dramatizadas. Solo piedra que quedó. Es un buen cierre antes de llegar a York.",
-  historia: "Castillo medieval clave durante la Guerra Civil Inglesa.",
-  curiosidades: "<ul><li>Se puede ver perfectamente sin entrar.</li><li>Poco visitado comparado con otros castillos.</li></ul>",
-  paraLasTres: "Bajar, mirar, seguir.",
-  comoVivirlo: "Última parada antes de York.",
-  lat: 53.0760, lng: -0.8080
-},
-  {
-  name: "Hidcote Manor Café (quick stop verde)",
-  category: "Parques y Naturaleza",
-  imageTitle: "Jardines Hidcote",
-  lugar: "Orden perfecto disfrazado de naturaleza. Senderos, muros, plantas que parecen crecer solas pero no. No hace falta recorrer todo: alcanza con entrar, mirar un poco y salir con otra velocidad.",
-  historia: "Jardines diseñados en el siglo XX por Lawrence Johnston, considerados de los más influyentes de Inglaterra.",
-  curiosidades: "<ul><li>Diseño en 'habitaciones verdes'.</li><li>Gestionado por National Trust.</li></ul>",
-  paraLasTres: "Entrar solo a una sección.",
-  comoVivirlo: "Parada breve + café.",
-  lat: 52.0430, lng: -1.7660
-},
-
-{
-  name: "Caffeine Project — Warwick",
-  category: "Barrios y Vida Local",
-  imageTitle: "Café moderno Warwick",
-  lugar: "Minimalista, limpio, sin nostalgia. En medio de tanto pasado, un café que funciona en presente. Buen espresso, buen ritmo.",
-  historia: "Café independiente enfocado en specialty coffee.",
-  curiosidades: "<ul><li>De los mejores cafés en esta parte de la ruta.</li><li>Frecuentado por locales.</li></ul>",
-  paraLasTres: "Café rápido, sin sentarse mucho.",
-  comoVivirlo: "Parada técnica real.",
-  lat: 52.2810, lng: -1.5865
-},
-
-{
-  name: "Kenilworth Castle (ruina abierta)",
-  category: "Histórico",
-  imageTitle: "Ruinas Kenilworth",
-  lugar: "Paredes sin techo, ventanas sin vidrio. No es reconstrucción: es lo que quedó. El viento pasa donde antes había salas. No hace falta imaginar demasiado.",
-  historia: "Castillo medieval parcialmente destruido tras la Guerra Civil Inglesa en el siglo XVII.",
-  curiosidades: "<ul><li>Uno de los castillos en ruinas más grandes de Inglaterra.</li><li>Se puede ver mucho sin entrar.</li></ul>",
-  paraLasTres: "Caminar un poco y salir.",
-  comoVivirlo: "Parada corta, no tour completo.",
-  lat: 52.3490, lng: -1.5750
-},
-
-{
-  name: "200 Degrees Coffee — Nottingham",
-  category: "Barrios y Vida Local",
-  imageTitle: "Café urbano Nottingham",
-  lugar: "Más ciudad, menos postal. Café fuerte, gente que va a trabajar, no a mirar. Un buen corte en medio de la ruta.",
-  historia: "Cadena nacida en Nottingham enfocada en café tostado localmente.",
-  curiosidades: "<ul><li>Consistente y rápido.</li><li>Buen punto para resetear energía.</li></ul>",
-  paraLasTres: "Parar sin pensarlo mucho.",
-  comoVivirlo: "Ideal mitad de camino.",
-  lat: 52.9548, lng: -1.1581
-},
-
-{
-  name: "Farnsfield — pueblo sin turistas",
-  category: "Oculto y Curioso",
-  imageTitle: "Pueblo inglés real",
-  lugar: "Nada diseñado para vos. Casas normales, ritmo lento, silencio real. Después de tanto lugar curado, esto te devuelve perspectiva.",
-  historia: "Pueblo histórico fuera del circuito turístico principal.",
-  curiosidades: "<ul><li>Casi sin turismo.</li><li>Representa mejor la vida rural actual.</li></ul>",
-  paraLasTres: "Bajar del auto 5 minutos.",
-  comoVivirlo: "No buscar nada. Solo estar.",
-  lat: 53.1020, lng: -1.0370
-},
-  {
-  name: "Broadway Tower",
-  category: "Histórico",
-  imageTitle: "Torre solitaria en colina",
-  lugar: "Una torre en medio de la nada. No defiende, no vigila, no sirve. Solo está. Y desde ahí, todo alrededor se vuelve más claro.",
-  historia: "Construida en 1798 como folly (estructura decorativa) para aristócratas.",
-  curiosidades: "<ul><li>En días claros se ven hasta 16 condados.</li><li>Fue usada por artistas y pensadores como refugio.</li></ul>",
-  paraLasTres: "Subir, mirar, no quedarse mucho.",
-  comoVivirlo: "Ir con buen clima.",
-  lat: 52.0363, lng: -1.8560
-},
-
-{
-  name: "Snowshill Manor (exterior)",
-  category: "Histórico",
-  imageTitle: "Casa de piedra Snowshill",
-  lugar: "Una casa que no parece casa. Más bien una acumulación de decisiones raras. Desde afuera ya se percibe que adentro hay algo obsesivo.",
-  historia: "Propiedad de Charles Wade, coleccionista excéntrico que llenó la casa con miles de objetos.",
-  curiosidades: "<ul><li>Contiene más de 20.000 objetos.</li><li>El jardín está tan diseñado como la casa.</li></ul>",
-  paraLasTres: "Mirarla desde afuera y seguir.",
-  comoVivirlo: "Parada corta.",
-  lat: 52.0100, lng: -1.8610
-},
-
-{
-  name: "Broadway High Street",
-  category: "Barrios y Vida Local",
-  imageTitle: "Calle amplia Broadway",
-  lugar: "Más ancho, más abierto, más elegante que otros pueblos. No tan perfecto como Bibury, pero más habitable.",
-  historia: "Importante punto comercial en rutas históricas entre Londres y Worcester.",
-  curiosidades: "<ul><li>Arquitectura más espaciosa que otros pueblos.</li><li>Menos sensación de “escenografía”.</li></ul>",
-  paraLasTres: "Caminar sin objetivo.",
-  comoVivirlo: "Buen punto base.",
-  lat: 52.0350, lng: -1.8615
-},
-
-{
-  name: "Stanton Village",
-  category: "Oculto y Curioso",
-  imageTitle: "Casas de piedra Stanton",
-  lugar: "Uno de los pocos pueblos donde no sentís que estás en una postal. Casas irregulares, piedra más cruda, menos intervención.",
-  historia: "Pueblo histórico menos desarrollado turísticamente.",
-  curiosidades: "<ul><li>Menos visitado que Broadway o Bourton.</li><li>Mantiene irregularidad original.</li></ul>",
-  paraLasTres: "Caminar sin sacar fotos al principio.",
-  comoVivirlo: "Ir como contraste.",
-  lat: 52.0205, lng: -1.9030
-},
-
-{
-  name: "Sezincote House (vista exterior)",
-  category: "Histórico",
-  imageTitle: "Arquitectura oriental en Cotswolds",
-  lugar: "No encaja. Y justamente por eso impacta. Cúpulas, curvas, formas que parecen de otro continente en medio del campo inglés.",
-  historia: "Casa del siglo XIX inspirada en arquitectura india mogol.",
-  curiosidades: "<ul><li>Influyó en el diseño del Royal Pavilion de Brighton.</li><li>Totalmente fuera de contexto local.</li></ul>",
-  paraLasTres: "Mirarla y cuestionar por qué está ahí.",
-  comoVivirlo: "Parada breve.",
-  lat: 51.9980, lng: -1.7300
-},
-  {
-  name: "St. Edward’s Church — Interior",
-  category: "Histórico",
-  imageTitle: "Interior oscuro iglesia medieval",
-  lugar: "Desde afuera es la puerta famosa. Pero adentro cambia el tono. Oscura, baja, contenida. La luz entra poco y eso hace que todo pese más.",
-  historia: "Iglesia medieval en Stow-on-the-Wold, con múltiples reconstrucciones a lo largo de siglos.",
-  curiosidades: "<ul><li>Contrasta completamente con la postal exterior.</li><li>Uso continuo durante cientos de años.</li></ul>",
-  paraLasTres: "Entrar en silencio total.",
-  comoVivirlo: "Parada corta pero consciente.",
-  lat: 51.9303, lng: -1.7249
-},
-
-{
-  name: "St. Peter’s Church — Upper Slaughter",
-  category: "Histórico",
-  imageTitle: "Iglesia rural Cotswolds",
-  lugar: "Pequeña, casi desapercibida. Pero rodeada de ese silencio que en Cotswolds aparece cuando no hay nada más pasando.",
-  historia: "Iglesia parroquial de origen medieval, reconstruida en el siglo XIX.",
-  curiosidades: "<ul><li>Muy poco visitada.</li><li>Ubicación completamente integrada al paisaje.</li></ul>",
-  paraLasTres: "Entrar aunque no haya nadie.",
-  comoVivirlo: "Sin apuro.",
-  lat: 51.8995, lng: -1.7605
-},
-
-{
-  name: "St. Mary’s Church — Bibury",
-  category: "Histórico",
-  imageTitle: "Iglesia junto al río Bibury",
-  lugar: "Todos van a Arlington Row. Nadie cruza hasta acá. Y sin embargo, es donde el pueblo se siente más real.",
-  historia: "Iglesia del siglo XI, una de las más antiguas de la zona.",
-  curiosidades: "<ul><li>Anterior a muchas de las construcciones famosas del pueblo.</li><li>Ambiente mucho más tranquilo.</li></ul>",
-  paraLasTres: "Ir después de la foto típica.",
-  comoVivirlo: "Contraste directo con el turismo.",
-  lat: 51.7592, lng: -1.8310
-},
-
-{
-  name: "Naunton — Vista sobre el valle",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista abierta Cotswolds",
-  lugar: "No hay monumento, no hay punto exacto. Solo una bajada suave donde de golpe el paisaje se abre y todo se ordena.",
-  historia: "Zona rural tradicional sin desarrollo turístico fuerte.",
-  curiosidades: "<ul><li>Uno de los paisajes más “reales” de Cotswolds.</li><li>Sin señalización específica.</li></ul>",
-  paraLasTres: "Frenar el auto sin planearlo.",
-  comoVivirlo: "Improvisar parada.",
-  lat: 51.9090, lng: -1.7200
-},
-
-{
-  name: "Dover’s Hill — Postal elevada",
-  category: "Parques y Naturaleza",
-  imageTitle: "Colina con vista amplia",
-  lugar: "Una subida leve y de repente todo abajo. Campos, curvas, distancias. Es el tipo de vista que no necesita explicación.",
-  historia: "Colina histórica usada para juegos tradicionales ingleses desde el siglo XVII.",
-  curiosidades: "<ul><li>Menos visitado que otros miradores.</li><li>Acceso fácil en auto.</li></ul>",
-  paraLasTres: "Bajar, mirar, seguir.",
-  comoVivirlo: "Parada rápida.",
-  lat: 52.0375, lng: -1.8430
-},
-  {
-  name: "York Minster — Nave central",
-  category: "Histórico",
-  imageTitle: "Interior nave York Minster",
-  lugar: "Entrás y el espacio no se explica: se impone. Columnas que no terminan nunca, vitrales que filtran la luz como si el tiempo fuera más lento ahí adentro. No es solo religión — es escala.",
-  historia: "Catedral gótica construida entre los siglos XIII y XV sobre antiguos sitios romanos y normandos.",
-  curiosidades: "<ul><li>El Great East Window tardó años en restaurarse recientemente.</li><li>Es una de las catedrales más grandes del norte de Europa.</li></ul>",
-  paraLasTres: "Quedarse quietas en el centro.",
-  comoVivirlo: "No recorrer rápido. Elegir un punto y quedarse.",
-  lat: 53.9626, lng: -1.0819
-},
-
-{
-  name: "Dean’s Park — Vista de Minster",
-  category: "Parques y Naturaleza",
-  imageTitle: "Minster desde el parque",
-  lugar: "La catedral aparece completa, sin obstáculos. Desde acá se entiende mejor que desde adentro: proporción, peso, intención.",
-  historia: "Parque histórico junto a la catedral, usado como espacio abierto desde hace siglos.",
-  curiosidades: "<ul><li>Uno de los mejores puntos para ver York Minster sin multitudes.</li><li>Muy usado por locales.</li></ul>",
-  paraLasTres: "Sentarse y mirar sin sacar fotos al principio.",
-  comoVivirlo: "Parada corta.",
-  lat: 53.9630, lng: -1.0828
-},
-
-{
-  name: "Holy Trinity Church — Goodramgate",
-  category: "Histórico",
-  imageTitle: "Interior medieval oscuro",
-  lugar: "Oscura, irregular, silenciosa. Bancos cerrados, piso inclinado. No está restaurada para gustar — está mantenida para existir.",
-  historia: "Iglesia medieval que conserva su interior prácticamente intacto desde el siglo XV.",
-  curiosidades: "<ul><li>Una de las iglesias más auténticas de Inglaterra.</li><li>Iluminación mínima, casi sin intervención moderna.</li></ul>",
-  paraLasTres: "Entrar en silencio total.",
-  comoVivirlo: "Parada breve pero fuerte.",
-  lat: 53.9613, lng: -1.0798
-},
-
-{
-  name: "The Shambles — Segunda pasada",
-  category: "Barrios y Vida Local",
-  imageTitle: "Calle medieval inclinada",
-  lugar: "La primera vez es postal. La segunda vez es lectura. Mirás los detalles: inclinaciones, estructuras, restos de lo que fue.",
-  historia: "Calle medieval de carniceros, con estructuras diseñadas para el comercio de carne.",
-  curiosidades: "<ul><li>Las vigas sobresalen para proteger mercancía.</li><li>Hoy está altamente turistificada.</li></ul>",
-  paraLasTres: "Volver sin mirar tiendas.",
-  comoVivirlo: "Ir fuera de hora pico.",
-  lat: 53.9590, lng: -1.0803
-},
-
-{
-  name: "Baños Públicos — Parliament Street",
-  category: "Baños Públicos",
-  imageTitle: "Entrada discreta baños York",
-  lugar: "No tiene historia. Tiene utilidad. Y en York, donde caminás todo el día, eso vale más que muchos lugares.",
-  historia: "Instalación pública céntrica mantenida por el council.",
-  curiosidades: "<ul><li>Ubicación estratégica.</li><li>Mejor estado que la media.</li></ul>",
-  paraLasTres: "Ubicarlo mentalmente.",
-  comoVivirlo: "Siempre llevar monedas.",
-  lat: 53.9595, lng: -1.0815
-},
-  {
-  name: "Clifford’s Tower — Lectura completa",
-  category: "Histórico",
-  imageTitle: "Torre sobre colina York",
-  lugar: "Desde lejos parece simple. Desde cerca, pesada. Pero lo importante no está en la piedra sino en lo que pasó acá. Es uno de esos lugares donde la historia no cierra del todo.",
-  historia: "En 1190, una comunidad judía se refugió aquí y terminó en una masacre masiva durante persecuciones antisemitas.",
-  curiosidades: "<ul><li>Uno de los episodios más oscuros de Inglaterra medieval.</li><li>Hoy no está dramatizado — y eso lo hace más fuerte.</li></ul>",
-  paraLasTres: "Subir, leer, bajar.",
-  comoVivirlo: "No quedarse demasiado.",
-  lat: 53.9583, lng: -1.0805
-},
-
-{
-  name: "Bedern Hall",
-  category: "Histórico",
-  imageTitle: "Sala medieval Bedern",
-  lugar: "Un espacio cerrado donde comían los niños del coro. Largo, simple, repetitivo. La vida cotidiana medieval, sin romanticismo.",
-  historia: "Salón del siglo XIV donde los coristas de York Minster vivían y comían.",
-  curiosidades: "<ul><li>Refleja disciplina estricta medieval.</li><li>Poco visitado comparado con otros sitios.</li></ul>",
-  paraLasTres: "Entrar rápido, observar estructura.",
-  comoVivirlo: "Parada breve.",
-  lat: 53.9598, lng: -1.0788
-},
-
-{
-  name: "Whip-Ma-Whop-Ma-Gate",
-  category: "Oculto y Curioso",
-  imageTitle: "Calle más corta York",
-  lugar: "Una calle que parece un chiste. Tan corta que casi no existe. Pero el nombre sobrevive, y eso ya es suficiente.",
-  historia: "Considerada una de las calles más cortas de Inglaterra.",
-  curiosidades: "<ul><li>El nombre no tiene significado claro.</li><li>Ejemplo perfecto de rareza urbana medieval.</li></ul>",
-  paraLasTres: "Pasar sin detenerse demasiado.",
-  comoVivirlo: "Micro parada.",
-  lat: 53.9593, lng: -1.0802
-},
-
-{
-  name: "Merchant Adventurers’ Hall",
-  category: "Histórico",
-  imageTitle: "Salón de comerciantes medieval",
-  lugar: "Madera, estructura, orden. No es decorativo: es funcional. Comercio, poder y organización en estado puro.",
-  historia: "Salón del siglo XIV usado por una de las guilds más importantes de York.",
-  curiosidades: "<ul><li>Sigue en uso hoy.</li><li>Uno de los guildhalls mejor conservados de Europa.</li></ul>",
-  paraLasTres: "Mirar la estructura más que el contenido.",
-  comoVivirlo: "Entrada opcional.",
-  lat: 53.9589, lng: -1.0795
-},
-
-{
-  name: "The Snickelway — Mad Alice Lane",
-  category: "Oculto y Curioso",
-  imageTitle: "Pasaje oscuro York",
-  lugar: "Oscuro, estrecho, casi incómodo. No es un atajo: es una forma de moverse distinta. York cambia cuando entrás en estos espacios.",
-  historia: "Parte de la red medieval de pasajes internos.",
-  curiosidades: "<ul><li>Muchos tienen nombres propios.</li><li>Algunos casi no se usan hoy.</li></ul>",
-  paraLasTres: "Entrar sin saber a dónde lleva.",
-  comoVivirlo: "Perderse un poco.",
-  lat: 53.9602, lng: -1.0810
-},
-  {
-  name: "The Blue Bell Pub",
-  category: "Barrios y Vida Local",
-  imageTitle: "Interior pequeño Blue Bell",
-  lugar: "Chico, lleno, casi incómodo. No hay música, no hay pantallas. Solo gente, cerveza y conversación. Parece detenido en otro siglo, pero no como decoración — como decisión.",
-  historia: "Pub tradicional con interiores protegidos históricamente, mantenidos casi sin cambios.",
-  curiosidades: "<ul><li>No se permite música ni pantallas.</li><li>Uno de los pubs más pequeños de York.</li></ul>",
-  paraLasTres: "Entrar aunque parezca lleno.",
-  comoVivirlo: "Parada corta, cerveza y salir.",
-  lat: 53.9598, lng: -1.0835
-},
-
-{
-  name: "The Market Cat — Cheap eats real",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pub moderno York",
-  lugar: "Nada especial visualmente. Pero comida barata, cerveza accesible y cero pretensión. Es lo opuesto a los pubs lindos del centro.",
-  historia: "Pub moderno orientado a locales y precios bajos.",
-  curiosidades: "<ul><li>Ofertas constantes en comida.</li><li>Frecuentado por residentes, no turistas.</li></ul>",
-  paraLasTres: "Comer sin pensar demasiado.",
-  comoVivirlo: "Almuerzo o cena informal.",
-  lat: 53.9605, lng: -1.0818
-},
-
-{
-  name: "Shambles Market Food Stalls",
-  category: "Barrios y Vida Local",
-  imageTitle: "Mercado callejero York",
-  lugar: "Comida rápida, olores mezclados, gente pasando. No es limpio ni perfecto — pero es uno de los pocos lugares donde York se siente actual.",
-  historia: "Mercado histórico adaptado a formato moderno con puestos de comida.",
-  curiosidades: "<ul><li>Opciones desde £5–10.</li><li>Variedad internacional real.</li></ul>",
-  paraLasTres: "Elegir distinto cada una.",
-  comoVivirlo: "Comer de pie o caminando.",
-  lat: 53.9595, lng: -1.0805
-},
-
-{
-  name: "Pairings Wine Bar",
-  category: "Barrios y Vida Local",
-  imageTitle: "Bar pequeño vino York",
-  lugar: "Pequeño, cuidado, sin exceso. Después de lo medieval y lo pesado, un lugar que baja el tono sin volverse banal.",
-  historia: "Wine bar independiente enfocado en combinaciones simples de vino y comida.",
-  curiosidades: "<ul><li>Muy bien valorado por locales.</li><li>Ambiente tranquilo, no turístico.</li></ul>",
-  paraLasTres: "Una copa y seguir.",
-  comoVivirlo: "Parada breve de noche.",
-  lat: 53.9600, lng: -1.0830
-},
-
-{
-  name: "Baños Públicos — Piccadilly",
-  category: "Baños Públicos",
-  imageTitle: "Baños Piccadilly York",
-  lugar: "No es memorable, pero es necesario. Y en una ciudad donde caminás todo el día, saber esto evita decisiones malas.",
-  historia: "Instalación pública céntrica renovada recientemente.",
-  curiosidades: "<ul><li>Mejor estado que otros en la ciudad.</li><li>Ubicación útil cerca del mercado.</li></ul>",
-  paraLasTres: "Ubicarlo antes de necesitarlo.",
-  comoVivirlo: "Uso práctico.",
-  lat: 53.9587, lng: -1.0790
-},
-  {
-  name: "York City Walls — Bootham Bar to Monk Bar",
-  category: "Parques y Naturaleza",
-  imageTitle: "Murallas con vista York",
-  lugar: "No es altura extrema. Es borde. Caminás entre la ciudad y lo que queda afuera. Las casas quedan de un lado, el vacío del otro. Es la mejor forma de entender York sin estar dentro del todo.",
-  historia: "Murallas romanas reforzadas en la Edad Media, aún transitables en gran parte.",
-  curiosidades: "<ul><li>Uno de los sistemas de murallas mejor conservados de Inglaterra.</li><li>Tramo particularmente bueno para vistas del Minster.</li></ul>",
-  paraLasTres: "Caminar un tramo completo.",
-  comoVivirlo: "No hacer todo el circuito.",
-  lat: 53.9628, lng: -1.0845
-},
-
-{
-  name: "Lendal Bridge — Vista río Ouse",
-  category: "Parques y Naturaleza",
-  imageTitle: "Río Ouse y arquitectura",
-  lugar: "El río abre la ciudad. Después de tanta calle estrecha, aparece espacio. Agua, reflejos, edificios que se ordenan.",
-  historia: "Puente del siglo XIX que conecta zonas clave de York.",
-  curiosidades: "<ul><li>Buen punto para ver el contraste entre arquitectura medieval y victoriana.</li><li>Menos turístico que otros cruces.</li></ul>",
-  paraLasTres: "Quedarse unos minutos mirando el agua.",
-  comoVivirlo: "Parada breve.",
-  lat: 53.9609, lng: -1.0870
-},
-
-{
-  name: "Skeldergate Bridge — Atardecer",
-  category: "Parques y Naturaleza",
-  imageTitle: "Puente al atardecer York",
-  lugar: "La luz baja y la ciudad cambia. Lo que era pesado se vuelve más suave. Es uno de los pocos momentos donde York no pesa tanto.",
-  historia: "Puente histórico sobre el río Ouse, reconstruido varias veces.",
-  curiosidades: "<ul><li>Mejor luz al atardecer.</li><li>Menos concurrido que otras zonas.</li></ul>",
-  paraLasTres: "Esperar el cambio de luz.",
-  comoVivirlo: "Ir sin apuro.",
-  lat: 53.9580, lng: -1.0860
-},
-
-{
-  name: "York Minster — Vista desde Chapter House Street",
-  category: "Histórico",
-  imageTitle: "Vista lateral Minster",
-  lugar: "No es la vista frontal. Es mejor. Más cruda, más cercana, menos diseñada. Acá la escala se siente más que se ve.",
-  historia: "Zona lateral histórica que permite ver detalles arquitectónicos menos evidentes.",
-  curiosidades: "<ul><li>Menos fotografiada que la fachada principal.</li><li>Permite ver contrafuertes y estructura real.</li></ul>",
-  paraLasTres: "Mirar detalles, no el conjunto.",
-  comoVivirlo: "Parada breve.",
-  lat: 53.9630, lng: -1.0810
-},
-
-{
-  name: "Rowntree Park — Pausa real",
-  category: "Parques y Naturaleza",
-  imageTitle: "Parque tranquilo York",
-  lugar: "Después de todo, esto. Un parque normal. Gente normal. Nada histórico. Y por eso es necesario.",
-  historia: "Parque urbano desarrollado en el siglo XX como espacio público.",
-  curiosidades: "<ul><li>Muy usado por locales.</li><li>Lejos del circuito turístico.</li></ul>",
-  paraLasTres: "Sentarse sin hablar del viaje.",
-  comoVivirlo: "Cierre o pausa larga.",
-  lat: 53.9545, lng: -1.0815
-},
-  {
-  name: "Edinburgh Castle — Vista desde abajo",
-  category: "Histórico",
-  imageTitle: "Castillo sobre roca volcánica",
-  lugar: "No es el castillo lo que impacta primero. Es la roca. Negra, abrupta, imposible. Y arriba, el castillo como una consecuencia natural. No parece construido: parece inevitable.",
-  historia: "Fortaleza sobre roca volcánica con ocupación desde al menos el siglo XII, aunque el sitio fue usado mucho antes.",
-  curiosidades: "<ul><li>Construido sobre un volcán extinto.</li><li>Ha sido asediado múltiples veces a lo largo de la historia.</li></ul>",
-  paraLasTres: "Mirarlo desde abajo antes de subir.",
-  comoVivirlo: "No entrar de inmediato.",
-  lat: 55.9486, lng: -3.1999
-},
-
-{
-  name: "Victoria Street",
-  category: "Barrios y Vida Local",
-  imageTitle: "Calle curva colorida",
-  lugar: "Curva perfecta, fachadas de colores, múltiples niveles. Parece diseñada para ser vista, pero fue construida para funcionar. Eso la hace más interesante.",
-  historia: "Calle del siglo XIX que conecta niveles de la ciudad vieja.",
-  curiosidades: "<ul><li>Inspiración para Diagon Alley en Harry Potter.</li><li>Tiene calles en dos niveles conectadas.</li></ul>",
-  paraLasTres: "Caminarla dos veces, arriba y abajo.",
-  comoVivirlo: "Evitar horas pico.",
-  lat: 55.9470, lng: -3.1975
-},
-
-{
-  name: "St. Giles’ Cathedral",
-  category: "Histórico",
-  imageTitle: "Interior gótico St Giles",
-  lugar: "Menos imponente que otras catedrales, pero más densa. No abruma: se filtra. Cada rincón tiene algo que no termina de explicarse.",
-  historia: "Iglesia principal de Edimburgo desde el siglo XIV, centro del presbiterianismo escocés.",
-  curiosidades: "<ul><li>Asociada a John Knox y la Reforma Escocesa.</li><li>La Thistle Chapel es una de las más elaboradas del Reino Unido.</li></ul>",
-  paraLasTres: "Buscar la Thistle Chapel.",
-  comoVivirlo: "Entrada breve pero atenta.",
-  lat: 55.9494, lng: -3.1900
-},
-
-{
-  name: "Calton Hill",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista con monumentos",
-  lugar: "La ciudad se abre. Monumentos que no encajan del todo: columnas griegas, estructuras incompletas. Edimburgo desde arriba no es ordenada — es acumulativa.",
-  historia: "Colina histórica con monumentos del siglo XIX inspirados en arquitectura clásica.",
-  curiosidades: "<ul><li>El National Monument quedó incompleto.</li><li>Una de las mejores vistas de la ciudad.</li></ul>",
-  paraLasTres: "Subir sin hablar.",
-  comoVivirlo: "Ideal al atardecer.",
-  lat: 55.9550, lng: -3.1820
-},
-
-{
-  name: "Baños Públicos — Princes Street Gardens",
-  category: "Baños Públicos",
-  imageTitle: "Entrada baños parque",
-  lugar: "Entre lo monumental, algo funcional. Edimburgo implica subir y bajar constantemente. Saber esto evita errores.",
-  historia: "Instalaciones públicas dentro del parque central.",
-  curiosidades: "<ul><li>Ubicación estratégica.</li><li>Mejor que depender de cafés.</li></ul>",
-  paraLasTres: "Ubicar antes de necesitar.",
-  comoVivirlo: "Parada técnica.",
-  lat: 55.9510, lng: -3.1985
-},
-  {
-  name: "The Royal Mile — Lectura completa",
-  category: "Histórico",
-  imageTitle: "Royal Mile Edimburgo",
-  lugar: "No es una calle. Es una columna vertebral. Turística, ruidosa, repetitiva — y sin embargo necesaria. Todo pasa por acá, pero nada se entiende si te quedás solo en la superficie.",
-  historia: "Eje principal que conecta el Castillo con Holyrood Palace, activo desde la Edad Media.",
-  curiosidades: "<ul><li>Exactamente una milla escocesa de largo.</li><li>Llena de closes (callejones ocultos).</li></ul>",
-  paraLasTres: "Caminarla una vez rápido y otra mirando detalles.",
-  comoVivirlo: "No quedarse solo acá.",
-  lat: 55.9497, lng: -3.1900
-},
-
-{
-  name: "Mary King’s Close",
-  category: "Oculto y Curioso",
-  imageTitle: "Callejón subterráneo",
-  lugar: "Calles enterradas bajo la ciudad actual. No recreadas — reales. Espacios donde la vida quedó atrapada debajo de otra capa.",
-  historia: "Parte de la ciudad sellada en el siglo XVII durante brotes de peste y expansión urbana.",
-  curiosidades: "<ul><li>Se cree que fue aislado durante epidemias.</li><li>Hoy se visita como experiencia guiada.</li></ul>",
-  paraLasTres: "Entrar con mente abierta.",
-  comoVivirlo: "Tour guiado obligatorio.",
-  lat: 55.9499, lng: -3.1903
-},
-
-{
-  name: "Greyfriars Kirkyard",
-  category: "Histórico",
-  imageTitle: "Cementerio antiguo Edimburgo",
-  lugar: "Lápidas, sombras, historia sin resolver. Es uno de los lugares donde Edimburgo deja de ser estética y se vuelve otra cosa.",
-  historia: "Cementerio del siglo XVI, asociado a persecuciones religiosas y ejecuciones.",
-  curiosidades: "<ul><li>Inspiración para nombres en Harry Potter.</li><li>Conocido por historias de actividad paranormal.</li></ul>",
-  paraLasTres: "Caminar sin buscar nada específico.",
-  comoVivirlo: "Ir con tiempo.",
-  lat: 55.9471, lng: -3.1910
-},
-
-{
-  name: "Greyfriars Bobby",
-  category: "Cine y Cultura Pop",
-  imageTitle: "Estatua del perro Bobby",
-  lugar: "Pequeña estatua, historia enorme. Un perro que se quedó junto a la tumba de su dueño durante años. La ciudad lo recuerda — y también lo romantiza.",
-  historia: "Greyfriars Bobby fue un Skye Terrier del siglo XIX conocido por su lealtad.",
-  curiosidades: "<ul><li>La historia está parcialmente idealizada.</li><li>Uno de los puntos más fotografiados.</li></ul>",
-  paraLasTres: "Verlo y seguir.",
-  comoVivirlo: "Parada rápida.",
-  lat: 55.9472, lng: -3.1915
-},
-
-{
-  name: "The Vennel — Vista del castillo",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista castillo desde escaleras",
-  lugar: "Una de las vistas más limpias del castillo. Sin multitudes, sin ruido. Solo la roca, la estructura y el espacio.",
-  historia: "Paso histórico que conecta diferentes niveles de la ciudad.",
-  curiosidades: "<ul><li>Poco conocido por turistas.</li><li>Perfecto para fotos sin saturación.</li></ul>",
-  paraLasTres: "Quedarse un momento.",
-  comoVivirlo: "Parada breve.",
-  lat: 55.9465, lng: -3.1990
-},
-  {
-  name: "Oink — Roast pork sandwich",
-  category: "Barrios y Vida Local",
-  imageTitle: "Sandwich cerdo Oink",
-  lugar: "Fila corta, menú mínimo, ejecución perfecta. Carne, pan, nada más. En una ciudad cara, esto es una rareza: simple y bien hecho.",
-  historia: "Negocio local especializado en pork rolls, muy popular entre locales.",
-  curiosidades: "<ul><li>Menú extremadamente limitado.</li><li>Porciones contundentes a buen precio.</li></ul>",
-  paraLasTres: "Pedir distinto tamaño y compartir.",
-  comoVivirlo: "Almuerzo rápido.",
-  lat: 55.9505, lng: -3.1905
-},
-
-{
-  name: "Mosque Kitchen",
-  category: "Barrios y Vida Local",
-  imageTitle: "Comida india simple",
-  lugar: "Platos grandes, precios bajos, cero estética. Uno de los pocos lugares donde comés bien sin pagar de más.",
-  historia: "Restaurante asociado a la comunidad musulmana local, conocido por su relación calidad-precio.",
-  curiosidades: "<ul><li>Muy popular entre estudiantes.</li><li>Porciones grandes.</li></ul>",
-  paraLasTres: "Ir con hambre.",
-  comoVivirlo: "Sin expectativas visuales.",
-  lat: 55.9449, lng: -3.1865
-},
-
-{
-  name: "The Bow Bar",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pub pequeño tradicional",
-  lugar: "Chico, lleno, con carácter. Nada de decoración falsa. Acá la cerveza importa más que la foto.",
-  historia: "Pub tradicional conocido por su selección de whisky y ale.",
-  curiosidades: "<ul><li>Frecuentado por locales.</li><li>Espacio limitado, ambiente intenso.</li></ul>",
-  paraLasTres: "Entrar aunque esté lleno.",
-  comoVivirlo: "Parada corta.",
-  lat: 55.9495, lng: -3.1920
-},
-
-{
-  name: "Union of Genius",
-  category: "Barrios y Vida Local",
-  imageTitle: "Sopas caseras Edimburgo",
-  lugar: "Sopa caliente en una ciudad fría. Simple, efectiva, sin vueltas. A veces eso es todo lo que necesitás.",
-  historia: "Pequeño local especializado en sopas frescas diarias.",
-  curiosidades: "<ul><li>Opciones vegetarianas constantes.</li><li>Menú cambia diariamente.</li></ul>",
-  paraLasTres: "Elegir sin pensar demasiado.",
-  comoVivirlo: "Ideal día frío.",
-  lat: 55.9480, lng: -3.1870
-},
-
-{
-  name: "Baños Públicos — Grassmarket",
-  category: "Baños Públicos",
-  imageTitle: "Baños zona Grassmarket",
-  lugar: "Zona de pubs, movimiento constante. Saber esto antes de necesitarlo evita decisiones apuradas.",
-  historia: "Instalaciones públicas en una de las plazas históricas más activas.",
-  curiosidades: "<ul><li>Ubicación útil de noche.</li><li>Cerca de pubs clave.</li></ul>",
-  paraLasTres: "Ubicarlo antes de salir de noche.",
-  comoVivirlo: "Uso práctico.",
-  lat: 55.9475, lng: -3.1980
-},
-  {
-  name: "Deacon Brodie’s Close",
-  category: "Oculto y Curioso",
-  imageTitle: "Callejón oscuro Edimburgo",
-  lugar: "Un callejón más. O no. Acá empieza una de las historias más incómodas de la ciudad: un hombre respetado de día, criminal de noche. La idea de doble vida no es ficción acá — es origen.",
-  historia: "William Brodie fue un concejal respetado del siglo XVIII que llevaba una vida secreta como ladrón.",
-  curiosidades: "<ul><li>Inspiró 'Dr. Jekyll and Mr. Hyde' de Robert Louis Stevenson.</li><li>Fue ejecutado públicamente.</li></ul>",
-  paraLasTres: "Leer la historia antes de entrar.",
-  comoVivirlo: "Parada breve pero clave.",
-  lat: 55.9498, lng: -3.1905
-},
-
-{
-  name: "Writers’ Museum",
-  category: "Cine y Cultura Pop",
-  imageTitle: "Museo escritores Edimburgo",
-  lugar: "Pequeño, escondido, casi ignorado. Pero acá están las raíces literarias de la ciudad. No es espectacular — es denso.",
-  historia: "Museo dedicado a Robert Louis Stevenson, Sir Walter Scott y Robert Burns.",
-  curiosidades: "<ul><li>Ubicado en Lady Stair’s Close.</li><li>Entrada gratuita.</li></ul>",
-  paraLasTres: "Entrar aunque sea 10 minutos.",
-  comoVivirlo: "No más de lo necesario.",
-  lat: 55.9497, lng: -3.1935
-},
-
-{
-  name: "Advocates Close — Vista al mar",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista callejón al fondo",
-  lugar: "Bajás entre edificios y de repente la ciudad se abre hacia el mar. Es una de esas vistas que aparecen sin aviso.",
-  historia: "Close medieval que conecta Royal Mile con la parte baja de la ciudad.",
-  curiosidades: "<ul><li>Uno de los mejores ejes visuales de Edimburgo.</li><li>Muy usado para fotografía, pero sigue funcionando igual.</li></ul>",
-  paraLasTres: "Bajar sin frenar.",
-  comoVivirlo: "Mejor con poca gente.",
-  lat: 55.9502, lng: -3.1885
-},
-
-{
-  name: "Dr. Jekyll & Mr. Hyde Pub",
-  category: "Cine y Cultura Pop",
-  imageTitle: "Interior teatral pub",
-  lugar: "Exagerado, teatral, casi ridículo. Pero funciona si lo entendés: no es un pub real, es una interpretación de la ciudad. Y eso también forma parte de Edimburgo.",
-  historia: "Pub temático inspirado en la obra de Stevenson.",
-  curiosidades: "<ul><li>Decoración exagerada a propósito.</li><li>Popular entre turistas.</li></ul>",
-  paraLasTres: "Entrar sabiendo qué es.",
-  comoVivirlo: "Parada breve.",
-  lat: 55.9508, lng: -3.1875
-},
-
-{
-  name: "Canongate Kirkyard",
-  category: "Histórico",
-  imageTitle: "Cementerio Canongate",
-  lugar: "Más abierto que Greyfriars, menos cargado, pero igual de profundo. Acá están enterradas figuras clave — sin espectáculo alrededor.",
-  historia: "Cementerio histórico donde descansan figuras como Adam Smith.",
-  curiosidades: "<ul><li>Menos turístico que otros cementerios.</li><li>Ubicado al final de Royal Mile.</li></ul>",
-  paraLasTres: "Buscar nombres sin apuro.",
-  comoVivirlo: "Parada tranquila.",
-  lat: 55.9515, lng: -3.1780
-},
-  {
-  name: "Arthur’s Seat",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista desde Arthur’s Seat",
-  lugar: "Subís y la ciudad desaparece. Lo que parecía complejo se vuelve claro: piedra, agua, líneas. Es la única forma de ver Edimburgo sin estar dentro de ella.",
-  historia: "Antiguo volcán extinto dentro de Holyrood Park.",
-  curiosidades: "<ul><li>Uno de los mejores miradores naturales de Europa.</li><li>Formación volcánica.</li></ul>",
-  paraLasTres: "Subir en silencio.",
-  comoVivirlo: "Elegir clima decente. No hacerlo apuradas.",
-  lat: 55.9445, lng: -3.1618
-},
-
-{
-  name: "Scott Monument — Vista vertical",
-  category: "Histórico",
-  imageTitle: "Monumento gótico Scott",
-  lugar: "Oscuro, puntiagudo, casi excesivo. Subir es entrar en una estructura que parece más emocional que arquitectónica.",
-  historia: "Construido en 1844 en honor a Sir Walter Scott.",
-  curiosidades: "<ul><li>Uno de los monumentos a escritores más grandes del mundo.</li><li>Se puede subir (es estrecho).</li></ul>",
-  paraLasTres: "Subir si se animan.",
-  comoVivirlo: "No apto si odian espacios cerrados.",
-  lat: 55.9524, lng: -3.1934
-},
-
-{
-  name: "Elephant House Café (HP)",
-  category: "Cine y Cultura Pop",
-  imageTitle: "Café Elephant House",
-  lugar: "Turístico, sí. Pero no irrelevante. Acá Rowling escribió partes de Harry Potter mirando al castillo. La historia no está en el café — está en la conexión.",
-  historia: "Uno de los cafés donde J.K. Rowling escribió durante los años 90.",
-  curiosidades: "<ul><li>Muy concurrido por fans.</li><li>Vista directa al castillo desde algunas mesas.</li></ul>",
-  paraLasTres: "Entrar o solo mirar.",
-  comoVivirlo: "No esperar magia real.",
-  lat: 55.9477, lng: -3.1910
-},
-
-{
-  name: "George Heriot’s School (HP inspiración)",
-  category: "Cine y Cultura Pop",
-  imageTitle: "Escuela tipo Hogwarts",
-  lugar: "Torres, patios internos, estructura cerrada. No es Hogwarts — pero es lo más cercano a su lógica real.",
-  historia: "Escuela del siglo XVII que pudo haber influido en la creación de Hogwarts.",
-  curiosidades: "<ul><li>Tiene 4 casas, como Hogwarts.</li><li>Visible desde Greyfriars.</li></ul>",
-  paraLasTres: "Mirarla desde afuera.",
-  comoVivirlo: "Parada visual.",
-  lat: 55.9470, lng: -3.1920
-},
-
-{
-  name: "Victoria Street — Harry Potter lectura",
-  category: "Cine y Cultura Pop",
-  imageTitle: "Calle curva Edimburgo",
-  lugar: "No es Diagon Alley. Pero es lo más cercano a su energía: curva, niveles, tiendas apretadas. No es copia — es origen.",
-  historia: "Calle del siglo XIX que inspiró visualmente elementos de Harry Potter.",
-  curiosidades: "<ul><li>No es locación oficial de filmación.</li><li>Inspiración conceptual.</li></ul>",
-  paraLasTres: "Caminarla con esa idea.",
-  comoVivirlo: "Evitar horas pico.",
-  lat: 55.9470, lng: -3.1975
-},
-  {
-  name: "Drummond Street — Cheap eats reales",
-  category: "Barrios y Vida Local",
-  imageTitle: "Calle comida local Edimburgo",
-  lugar: "Sin estética, sin intención turística. Restaurantes pequeños, olores fuertes, gente comiendo sin pensar en la experiencia. Acá se come mejor y más barato que en el centro.",
-  historia: "Zona cercana a la universidad, históricamente más diversa y accesible.",
-  curiosidades: "<ul><li>Gran concentración de comida india y mediterránea.</li><li>Precios más bajos que Royal Mile.</li></ul>",
-  paraLasTres: "Elegir sin mirar reviews.",
-  comoVivirlo: "Almuerzo ideal.",
-  lat: 55.9460, lng: -3.1850
-},
-
-{
-  name: "Dunbar’s Close Garden",
-  category: "Parques y Naturaleza",
-  imageTitle: "Jardín oculto Edimburgo",
-  lugar: "Un jardín que no debería estar ahí. Cerrado, contenido, casi secreto. Después del ruido de la Royal Mile, este silencio es inesperado.",
-  historia: "Jardín reconstruido siguiendo diseño del siglo XVII.",
-  curiosidades: "<ul><li>Muchos pasan sin verlo.</li><li>Acceso gratuito.</li></ul>",
-  paraLasTres: "Sentarse sin hablar.",
-  comoVivirlo: "Parada breve.",
-  lat: 55.9515, lng: -3.1795
-},
-
-{
-  name: "John Knox House",
-  category: "Histórico",
-  imageTitle: "Casa medieval Edimburgo",
-  lugar: "Oscura, cerrada, cargada. No intenta ser linda. Es una de las pocas casas medievales que quedan intactas — y se siente.",
-  historia: "Casa del siglo XV asociada a John Knox, figura clave de la Reforma escocesa.",
-  curiosidades: "<ul><li>Una de las construcciones más antiguas de la ciudad.</li><li>Interior muy poco intervenido.</li></ul>",
-  paraLasTres: "Mirarla desde afuera ya alcanza.",
-  comoVivirlo: "Parada corta.",
-  lat: 55.9505, lng: -3.1805
-},
-
-{
-  name: "Circus Lane — Postal inesperada",
-  category: "Barrios y Vida Local",
-  imageTitle: "Calle tranquila New Town",
-  lugar: "Después de la densidad medieval, esto: orden, luz, silencio. Parece otro país. Y eso es justamente Edimburgo.",
-  historia: "Parte del desarrollo georgiano de New Town en el siglo XVIII.",
-  curiosidades: "<ul><li>Una de las calles más fotografiadas… pero poco transitadas.</li><li>Contraste total con Old Town.</li></ul>",
-  paraLasTres: "Caminar lento.",
-  comoVivirlo: "Mejor temprano.",
-  lat: 55.9570, lng: -3.2010
-},
-
-{
-  name: "Stockbridge Market (fin de semana)",
-  category: "Barrios y Vida Local",
-  imageTitle: "Mercado local Edimburgo",
-  lugar: "Comida, ruido, gente real. Nada medieval, nada oscuro. Solo ciudad viva. Es el contrapunto necesario.",
-  historia: "Mercado semanal que refleja la vida local contemporánea.",
-  curiosidades: "<ul><li>Solo fines de semana.</li><li>Opciones de comida accesible y variada.</li></ul>",
-  paraLasTres: "Probar algo distinto cada una.",
-  comoVivirlo: "Ideal domingo.",
-  lat: 55.9575, lng: -3.2070
-},
-  {
-  name: "Palace of Holyroodhouse",
-  category: "Histórico",
-  imageTitle: "Palacio de Holyroodhouse",
-  lugar: "Al final de la Royal Mile, cuando la ciudad ya parece haber dicho todo, aparece esto. Menos agresivo que el castillo, más cortesano, más silencioso. Acá el poder no se defiende: se ejerce con otro tono.",
-  historia: "Residencia oficial de la monarquía británica en Escocia. El palacio actual se desarrolló principalmente entre los siglos XVI y XVII, sobre una antigua abadía agustina fundada en 1128.",
-  curiosidades: "<ul><li>Mary, Queen of Scots vivió acá y uno de los episodios más violentos de su vida ocurrió dentro del palacio: el asesinato de su secretario David Rizzio en 1566.</li><li>Las ruinas de Holyrood Abbey, junto al palacio, son de las imágenes más fuertes del conjunto.</li></ul>",
-  paraLasTres: "Mirar primero las ruinas de la abadía. Después recién el palacio.",
-  comoVivirlo: "No hace falta quedarse horas. Vale por el eje histórico completo.",
-  lat: 55.9523, lng: -3.1727
-},
-
-{
-  name: "Dean Village",
-  category: "Barrios y Vida Local",
-  imageTitle: "Casas junto al agua en Dean Village",
-  lugar: "Después de tanta piedra negra, pendientes y densidad, esto parece otra ciudad. Agua, casas bajas, un ritmo que no compite con nada. Es de los pocos lugares de Edimburgo donde la ciudad deja de empujar.",
-  historia: "Antiguo poblado molinero sobre el Water of Leith, integrado luego a la expansión de Edimburgo. Durante siglos fue un núcleo de producción de harina.",
-  curiosidades: "<ul><li>El nombre 'Dean' viene de 'dene', valle.</li><li>Muchas personas lo visitan solo por la foto, pero el valor real está en el contraste absoluto con Old Town.</li></ul>",
-  paraLasTres: "Caminar despacio y no hacer nada más que mirar cómo cambia el tono de la ciudad.",
-  comoVivirlo: "Mejor temprano o al final del día, cuando hay menos gente.",
-  lat: 55.9529, lng: -3.2162
-},
-
-{
-  name: "National Museum of Scotland — Terrace View",
-  category: "Histórico",
-  imageTitle: "Vista desde la terraza del museo",
-  lugar: "Adentro hay de todo, quizá demasiado. Pero arriba, en la terraza, la ciudad vuelve a ordenarse. Tejas, agujas, colinas, humo si hace frío. Una vista menos vendida que otras y por eso más útil.",
-  historia: "El museo reúne colecciones de historia escocesa, ciencia, diseño y mundo natural. El edificio actual mezcla una gran estructura victoriana con ampliaciones contemporáneas.",
-  curiosidades: "<ul><li>La terraza es gratuita y tiene una de las mejores vistas urbanas sin necesidad de subir una colina.</li><li>El gran hall victoriano interior también vale por sí solo, incluso aunque no recorras el museo completo.</li></ul>",
-  paraLasTres: "Subir a la terraza aunque no entren al museo en serio.",
-  comoVivirlo: "Usarlo como pausa visual y de orientación.",
-  lat: 55.9470, lng: -3.1906
-},
-
-{
-  name: "Surgeons’ Hall Museums",
-  category: "Oculto y Curioso",
-  imageTitle: "Museo médico en Edimburgo",
-  lugar: "No hay nada amable acá. Huesos, instrumentos, enfermedad, cortes, obsesión científica. Edimburgo tiene una relación fuerte con la medicina y también con su lado más brutal; este lugar lo muestra sin suavizar demasiado.",
-  historia: "Museo ligado al Royal College of Surgeons of Edinburgh, una institución clave en la historia médica escocesa desde el siglo XVI.",
-  curiosidades: "<ul><li>Incluye colecciones anatómicas, patologías y herramientas quirúrgicas de épocas donde la medicina era tan valiente como aterradora.</li><li>Conecta indirectamente con la historia de Burke y Hare y con la demanda de cadáveres para estudio anatómico.</li></ul>",
-  paraLasTres: "Entrar si están dispuestas a ver algo incómodo de verdad.",
-  comoVivirlo: "No es para cualquiera. Pero si entran, entra completo en la lógica de la ciudad.",
-  lat: 55.9463, lng: -3.1847
-},
-
-{
-  name: "Leith Shore",
-  category: "Barrios y Vida Local",
-  imageTitle: "Canal y muelles en Leith",
-  lugar: "Acá Edimburgo deja de ser postal medieval y se convierte en puerto, borde, ciudad trabajada. El agua ya no enmarca castillos ni monumentos: sostiene otra historia, más material, más baja, menos romántica.",
-  historia: "Leith fue durante siglos el puerto principal de Edimburgo y un núcleo comercial clave. Hoy mezcla restos de su identidad marítima con cafés, bares y reconversión urbana.",
-  curiosidades: "<ul><li>Muchos turistas nunca llegan hasta acá, lo cual es un error si querés entender la ciudad fuera del centro histórico.</li><li>El Royal Yacht Britannia está en esta zona, aunque el valor de Leith no depende de eso.</li></ul>",
-  paraLasTres: "Ir aunque sea una vez para salir de la Edimburgo más obvia.",
-  comoVivirlo: "Ideal para una comida o una caminata más tranquila, lejos del peso del centro.",
-  lat: 55.9750, lng: -3.1715
-},
-  {
-  name: "Blackford Hill",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista amplia Edimburgo",
-  lugar: "Más silencioso, más abierto, menos dramático que Arthur’s Seat — y por eso más claro. Desde acá la ciudad deja de ser escenario y pasa a ser territorio.",
-  historia: "Colina al sur de la ciudad utilizada históricamente como punto de observación.",
-  curiosidades: "<ul><li>Mucho menos concurrido que Arthur’s Seat.</li><li>Vista más limpia y panorámica.</li></ul>",
-  paraLasTres: "Quedarse unos minutos en silencio.",
-  comoVivirlo: "Ideal si quieren evitar multitudes.",
-  lat: 55.9228, lng: -3.1870
-},
-
-{
-  name: "Princes Street Gardens — Vista a Old Town",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista Old Town desde jardines",
-  lugar: "Todo se ordena en un solo cuadro: roca, castillo, casas apiladas. Es la imagen que explica la ciudad mejor que cualquier recorrido.",
-  historia: "Jardines creados en el siglo XIX tras el drenaje del antiguo Nor Loch.",
-  curiosidades: "<ul><li>Marca la división entre Old Town y New Town.</li><li>Antes era un lago contaminado.</li></ul>",
-  paraLasTres: "Mirar sin sacar fotos al principio.",
-  comoVivirlo: "Parada corta pero clave.",
-  lat: 55.9513, lng: -3.1955
-},
-
-{
-  name: "The Star Bar",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pub local Edimburgo",
-  lugar: "Nada pensado para turistas. Pantallas, gente local, ruido real. Es donde Edimburgo deja de actuar.",
-  historia: "Pub tradicional en New Town con fuerte presencia local.",
-  curiosidades: "<ul><li>Muy poco turístico.</li><li>Ambiente completamente distinto a Royal Mile.</li></ul>",
-  paraLasTres: "Entrar sin expectativas.",
-  comoVivirlo: "Ideal para ver un partido o tomar algo tranquilo.",
-  lat: 55.9555, lng: -3.1990
-},
-
-{
-  name: "South Bridge — Ciudad sobre ciudad",
-  category: "Oculto y Curioso",
-  imageTitle: "Puente urbano Edimburgo",
-  lugar: "No parece un puente. Pero lo es. Debajo hay calles, arriba hay ciudad. Edimburgo no solo crece — se superpone.",
-  historia: "Construido en el siglo XVIII para expandir la ciudad sin modificar la topografía.",
-  curiosidades: "<ul><li>Debajo existen espacios que fueron usados como viviendas y almacenes.</li><li>Parte de la lógica de ciudad en capas.</li></ul>",
-  paraLasTres: "Cruzar prestando atención.",
-  comoVivirlo: "Más para entender que para ver.",
-  lat: 55.9490, lng: -3.1880
-},
-
-{
-  name: "North Bridge — Conexión invisible",
-  category: "Oculto y Curioso",
-  imageTitle: "Puente urbano amplio",
-  lugar: "Amplio, abierto, casi anodino. Pero conecta mundos distintos sin que lo notes. Es uno de esos lugares donde la ciudad cambia sin avisar.",
-  historia: "Puente del siglo XVIII que conecta Old Town con New Town.",
-  curiosidades: "<ul><li>Muchos no notan que están cruzando un puente.</li><li>Clave para entender la expansión urbana.</li></ul>",
-  paraLasTres: "Cruzar sin detenerse demasiado.",
-  comoVivirlo: "Sentir el cambio de ciudad.",
-  lat: 55.9505, lng: -3.1865
-},
-  {
-  name: "Luss Village — Loch Lomond",
-  category: "Parques y Naturaleza",
-  imageTitle: "Pueblo Luss lago",
-  lugar: "Pequeño, ordenado, casi demasiado prolijo. Pero lo importante no es el pueblo: es el lago. Agua quieta, montañas bajas, una primera introducción suave a lo que viene después.",
-  historia: "Pueblo tradicional a orillas del Loch Lomond, históricamente ligado al clan Colquhoun.",
-  curiosidades: "<ul><li>Uno de los accesos más fáciles al lago.</li><li>Muy usado como punto inicial para visitantes.</li></ul>",
-  paraLasTres: "Bajar hasta el agua.",
-  comoVivirlo: "Parada de 30–45 min máximo.",
-  lat: 56.1010, lng: -4.6410
-},
-
-{
-  name: "Loch Lomond Shore — Vista abierta",
-  category: "Parques y Naturaleza",
-  imageTitle: "Orilla amplia lago",
-  lugar: "Más abierto, más accesible, menos íntimo que Luss. Pero te permite entender la escala del lago sin esfuerzo.",
-  historia: "Zona desarrollada para acceso público al lago.",
-  curiosidades: "<ul><li>Fácil acceso desde ruta principal.</li><li>Buen punto si no querés desviarte demasiado.</li></ul>",
-  paraLasTres: "Parada rápida.",
-  comoVivirlo: "Alternativa a Luss si van justas de tiempo.",
-  lat: 56.0080, lng: -4.5850
-},
-
-{
-  name: "Rest and Be Thankful Viewpoint",
-  category: "Parques y Naturaleza",
-  imageTitle: "Valle montañoso Escocia",
-  lugar: "Nombre extraño, pero sentido claro. Una subida larga y de golpe el valle se abre. Es uno de esos lugares donde parás sin discutirlo.",
-  historia: "Paso histórico utilizado por tropas en el siglo XVIII, de ahí el nombre.",
-  curiosidades: "<ul><li>Uno de los miradores clásicos de las Highlands.</li><li>Muy accesible desde la ruta.</li></ul>",
-  paraLasTres: "Bajar del auto sí o sí.",
-  comoVivirlo: "Parada corta pero obligatoria.",
-  lat: 56.2450, lng: -4.7830
-},
-
-{
-  name: "Inveraray Castle (vista exterior)",
-  category: "Histórico",
-  imageTitle: "Castillo Inveraray",
-  lugar: "Demasiado perfecto para ser defensivo. Más palacio que castillo. No necesitás entrar: desde afuera ya entendés su lógica.",
-  historia: "Castillo del siglo XVIII, residencia del Duque de Argyll.",
-  curiosidades: "<ul><li>Aparece en series como 'Downton Abbey'.</li><li>Arquitectura más ornamental que militar.</li></ul>",
-  paraLasTres: "Mirarlo desde lejos.",
-  comoVivirlo: "Parada breve o incluso vista desde ruta.",
-  lat: 56.2310, lng: -5.0730
-},
-
-{
-  name: "Kilchurn Castle (ruinas)",
-  category: "Histórico",
-  imageTitle: "Ruinas junto al lago",
-  lugar: "Ruinas al borde del agua, aisladas, abiertas. Esto sí es Escocia sin maquillaje: piedra, clima, silencio.",
-  historia: "Castillo del siglo XV, abandonado tras daños por tormentas.",
-  curiosidades: "<ul><li>Uno de los castillos más fotogénicos de Escocia.</li><li>No restaurado — permanece como ruina real.</li></ul>",
-  paraLasTres: "Caminar un poco hacia el lago.",
-  comoVivirlo: "Parada corta pero muy recomendable.",
-  lat: 56.4030, lng: -5.0270
-},
-  {
-  name: "Three Sisters of Glencoe",
-  category: "Parques y Naturaleza",
-  imageTitle: "Montañas Three Sisters",
-  lugar: "Tres picos alineados como si alguien los hubiera colocado ahí a propósito. Pero no hay orden real — es pura fuerza. Este es el momento donde Escocia deja de ser paisaje y se vuelve presencia.",
-  historia: "Formación montañosa icónica del valle de Glencoe, esculpida por glaciares durante la última era glacial.",
-  curiosidades: "<ul><li>Uno de los puntos más fotografiados de Escocia.</li><li>Asociado a la masacre de Glencoe en 1692.</li></ul>",
-  paraLasTres: "Bajar del auto y quedarse mirando.",
-  comoVivirlo: "Parada obligatoria.",
-  lat: 56.6530, lng: -5.0300
-},
-
-{
-  name: "Glencoe Viewpoint (A82)",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista amplia valle",
-  lugar: "La vista más abierta del valle. Todo aparece junto: montaña, vacío, escala. Es el punto donde entendés Glencoe como conjunto.",
-  historia: "Punto de observación natural sobre la ruta A82.",
-  curiosidades: "<ul><li>Muy accesible desde la carretera.</li><li>Frecuentemente ignorado por quienes no saben dónde parar.</li></ul>",
-  paraLasTres: "No bajar solo para foto rápida.",
-  comoVivirlo: "Pararse unos minutos.",
-  lat: 56.6800, lng: -5.0400
-},
-
-{
-  name: "Buachaille Etive Mòr (entrada a Glencoe)",
-  category: "Parques y Naturaleza",
-  imageTitle: "Montaña icónica Escocia",
-  lugar: "Una montaña sola que parece colocada para marcar el inicio de algo. No es la más alta, pero sí una de las más reconocibles. Es la puerta.",
-  historia: "Una de las montañas más icónicas de las Highlands.",
-  curiosidades: "<ul><li>Aparece en 'Skyfall'.</li><li>Uno de los picos más fotografiados de Escocia.</li></ul>",
-  paraLasTres: "Parar antes de entrar al valle.",
-  comoVivirlo: "Mejor luz = mejor experiencia.",
-  lat: 56.6370, lng: -4.9700
-},
-
-{
-  name: "Glencoe Lochan",
-  category: "Parques y Naturaleza",
-  imageTitle: "Lago pequeño bosque",
-  lugar: "Después de la escala brutal, esto: agua quieta, árboles, silencio. Es más íntimo, más contenido. Sirve para bajar la intensidad del valle.",
-  historia: "Área forestal creada en el siglo XIX para recordar paisajes canadienses.",
-  curiosidades: "<ul><li>Mucho más tranquilo que el resto de Glencoe.</li><li>Menos turístico.</li></ul>",
-  paraLasTres: "Caminar unos minutos.",
-  comoVivirlo: "Parada corta de transición.",
-  lat: 56.6875, lng: -5.1020
-},
-
-{
-  name: "Ben Nevis Viewpoint — Fort William",
-  category: "Parques y Naturaleza",
-  imageTitle: "Montaña Ben Nevis",
-  lugar: "No impresiona como esperás. No es dramático. Pero es el más alto del Reino Unido. Y eso se siente distinto: más pesado, menos teatral.",
-  historia: "Ben Nevis es la montaña más alta del Reino Unido (1.345 m).",
-  curiosidades: "<ul><li>Muchos la suben sin preparación suficiente.</li><li>El clima cambia extremadamente rápido.</li></ul>",
-  paraLasTres: "Mirarlo sin intentar conquistarlo.",
-  comoVivirlo: "Vista suficiente si no van a subir.",
-  lat: 56.7969, lng: -5.0036
-},
-  {
-  name: "The Grog & Gruel",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pub interior Fort William",
-  lugar: "Oscuro, madera, cerveza fuerte. Después de Glencoe, esto funciona. No es espectacular — es suficiente. Y eso es lo que necesitás.",
-  historia: "Pub tradicional con buena reputación entre locales y viajeros.",
-  curiosidades: "<ul><li>Buena selección de ales y whisky.</li><li>Comida consistente sin ser pretenciosa.</li></ul>",
-  paraLasTres: "Cerveza y algo simple.",
-  comoVivirlo: "Cena relajada.",
-  lat: 56.8198, lng: -5.1060
-},
-
-{
-  name: "Black Isle Bar — Cheap eats",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pizza artesanal pub",
-  lugar: "Más moderno, más ruidoso, más accesible. Pizza, cerveza, gente joven. Es la opción fácil que no falla.",
-  historia: "Bar escocés enfocado en productos locales y comida simple.",
-  curiosidades: "<ul><li>Ingredientes locales.</li><li>Precios razonables para la zona.</li></ul>",
-  paraLasTres: "Compartir pizza.",
-  comoVivirlo: "Sin formalidad.",
-  lat: 56.8195, lng: -5.1045
-},
-
-{
-  name: "Old Inverlochy Castle (ruinas)",
-  category: "Histórico",
-  imageTitle: "Ruinas castillo Fort William",
-  lugar: "Ruinas abiertas, sin protección, sin montaje. Es de los pocos lugares donde podés caminar dentro de la historia sin filtro.",
-  historia: "Castillo del siglo XIII, escenario de batallas clave en la historia escocesa.",
-  curiosidades: "<ul><li>Muchos no lo visitan aunque está muy cerca.</li><li>Acceso libre.</li></ul>",
-  paraLasTres: "Caminar entre las paredes.",
-  comoVivirlo: "Parada corta antes o después de cenar.",
-  lat: 56.8325, lng: -5.1040
-},
-
-{
-  name: "West End Parking — Vista Loch Linnhe",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista lago Fort William",
-  lugar: "Nada marcado, nada espectacular. Pero el lago aparece tranquilo, abierto, como cierre del día. Es el contraste perfecto con Glencoe.",
-  historia: "Zona costera de Fort William con vistas al Loch Linnhe.",
-  curiosidades: "<ul><li>Muy poco turístico.</li><li>Mejor al atardecer si el clima acompaña.</li></ul>",
-  paraLasTres: "Bajar del auto 5 minutos.",
-  comoVivirlo: "Cierre del día.",
-  lat: 56.8165, lng: -5.1120
-},
-
-{
-  name: "Error común — Fort William como destino",
-  category: "Oculto y Curioso",
-  imageTitle: "Centro Fort William",
-  lugar: "Tiendas, restaurantes, movimiento. Pero no es un destino en sí. Es base, paso, descanso. Intentar sacarle más de lo que es suele decepcionar.",
-  historia: "Ciudad desarrollada como punto estratégico y logístico en las Highlands.",
-  curiosidades: "<ul><li>Muchos viajeros esperan demasiado del pueblo.</li><li>Su valor está en la ubicación, no en el contenido.</li></ul>",
-  paraLasTres: "No sobreanalizar.",
-  comoVivirlo: "Usarlo como base y seguir.",
-  lat: 56.8190, lng: -5.1050
-},
-  {
-  name: "Fountains Abbey (ruinas)",
-  category: "Histórico",
-  imageTitle: "Ruinas Fountains Abbey",
-  lugar: "Piedra abierta, arcos sin techo, escala que no se termina de procesar. No está reconstruido: está abandonado en grande. Es de las ruinas más impactantes de Inglaterra.",
-  historia: "Abadía cisterciense fundada en 1132, disuelta durante la reforma de Enrique VIII.",
-  curiosidades: "<ul><li>Patrimonio UNESCO.</li><li>Una de las abadías en ruinas mejor conservadas de Europa.</li></ul>",
-  paraLasTres: "Entrar aunque sea 30 min.",
-  comoVivirlo: "Único desvío que realmente vale.",
-  lat: 54.1105, lng: -1.5820
-},
-
-{
-  name: "Ripon Cathedral (quick stop)",
-  category: "Histórico",
-  imageTitle: "Interior catedral Ripon",
-  lugar: "Menos famosa, más íntima. No impresiona por tamaño, sino por historia acumulada.",
-  historia: "Orígenes en el siglo VII, una de las iglesias más antiguas de Inglaterra.",
-  curiosidades: "<ul><li>Tiene una cripta anglosajona original.</li><li>Mucho menos turística.</li></ul>",
-  paraLasTres: "Parada corta.",
-  comoVivirlo: "Complemento a Fountains.",
-  lat: 54.1358, lng: -1.5215
-},
-
-{
-  name: "Richmond Castle (vista rápida)",
-  category: "Histórico",
-  imageTitle: "Castillo Richmond",
-  lugar: "Compacto, sólido, bien plantado sobre el río. No necesita dramatismo.",
-  historia: "Castillo normando del siglo XI, uno de los mejor conservados.",
-  curiosidades: "<ul><li>Dio nombre a Richmond (Londres y Virginia).</li><li>Menos visitado que otros castillos.</li></ul>",
-  paraLasTres: "Mirarlo desde afuera.",
-  comoVivirlo: "Parada breve.",
-  lat: 54.4035, lng: -1.7355
-},
-
-{
-  name: "Aysgarth Falls",
-  category: "Parques y Naturaleza",
-  imageTitle: "Cascadas Aysgarth",
-  lugar: "No son altas, pero sí anchas, constantes, pesadas. El agua no cae — avanza.",
-  historia: "Formaciones naturales en el río Ure dentro de Yorkshire Dales.",
-  curiosidades: "<ul><li>Aparecen en la película 'Robin Hood: Prince of Thieves'.</li><li>Fáciles de acceder.</li></ul>",
-  paraLasTres: "Caminar unos minutos.",
-  comoVivirlo: "Parada corta.",
-  lat: 54.2940, lng: -1.9620
-},
-
-{
-  name: "Tebay Services (parada estratégica)",
-  category: "Barrios y Vida Local",
-  imageTitle: "Rest stop premium UK",
-  lugar: "No parece estación de servicio. Parece un mercado rural. Comida real, productos locales. Es la única parada de ruta que no arruina el viaje.",
-  historia: "Área de servicio familiar conocida por su enfoque en productos locales.",
-  curiosidades: "<ul><li>Considerada la mejor estación de servicio del Reino Unido.</li><li>Evita todas las demás.</li></ul>",
-  paraLasTres: "Comer algo bien.",
-  comoVivirlo: "Parada técnica inteligente.",
-  lat: 54.4390, lng: -2.5810
-},
-  {
-  name: "Durham Cathedral Viewpoint (river loop)",
-  category: "Histórico",
-  imageTitle: "Durham desde el río",
-  lugar: "La catedral y el castillo juntos sobre una curva perfecta del río. No es una vista: es una composición. Es de los pocos lugares donde no hace falta explicación.",
-  historia: "Complejo normando del siglo XI, Patrimonio UNESCO.",
-  curiosidades: "<ul><li>Filmaciones de Harry Potter.</li><li>Una de las mejores vistas medievales de UK.</li></ul>",
-  paraLasTres: "Bajar al río, no quedarse arriba.",
-  comoVivirlo: "Parada de 20–30 min.",
-  lat: 54.7760, lng: -1.5760
-},
-
-{
-  name: "Angel of the North",
-  category: "Oculto y Curioso",
-  imageTitle: "Escultura gigante acero",
-  lugar: "Una figura enorme, abierta, casi absurda en el paisaje. No es histórica, pero es imposible no mirarla.",
-  historia: "Escultura contemporánea de Antony Gormley (1998).",
-  curiosidades: "<ul><li>20 metros de alto.</li><li>Uno de los íconos modernos del norte de Inglaterra.</li></ul>",
-  paraLasTres: "Parada rápida o vista desde ruta.",
-  comoVivirlo: "5–10 min.",
-  lat: 54.9142, lng: -1.5890
-},
-
-{
-  name: "Jedburgh Abbey",
-  category: "Histórico",
-  imageTitle: "Ruinas Jedburgh",
-  lugar: "Arcos abiertos, piedra sin techo, verticalidad inesperada. Es una de esas ruinas que no parecen terminar.",
-  historia: "Abadía del siglo XII, destruida en conflictos fronterizos.",
-  curiosidades: "<ul><li>Menos turística que otras.</li><li>Muy accesible desde ruta.</li></ul>",
-  paraLasTres: "Mirar hacia arriba.",
-  comoVivirlo: "Parada corta.",
-  lat: 55.4765, lng: -2.5515
-},
-
-{
-  name: "Scott’s View",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista Borders Escocia",
-  lugar: "Colinas suaves, río serpenteando, nada dramático pero todo en equilibrio. Es la Escocia más silenciosa.",
-  historia: "Punto favorito del escritor Sir Walter Scott.",
-  curiosidades: "<ul><li>Nombrado en su honor.</li><li>Parada histórica en viajes funerarios.</li></ul>",
-  paraLasTres: "Bajar y mirar sin apuro.",
-  comoVivirlo: "Parada breve.",
-  lat: 55.5800, lng: -2.7000
-},
-
-{
-  name: "Melrose Abbey",
-  category: "Histórico",
-  imageTitle: "Ruinas Melrose",
-  lugar: "Más detallada, más trabajada. Cada arco parece diseñado para durar más de lo que duró.",
-  historia: "Abadía gótica del siglo XII, vinculada a Robert the Bruce.",
-  curiosidades: "<ul><li>Se cree que su corazón está enterrado aquí.</li><li>Arquitectura muy refinada.</li></ul>",
-  paraLasTres: "Elegir esta o Jedburgh.",
-  comoVivirlo: "No ambas.",
-  lat: 55.5985, lng: -2.7220
-},
-  {
-  name: "Old Man of Storr",
-  category: "Parques y Naturaleza",
-  imageTitle: "Formación rocosa icónica Skye",
-  lugar: "Una aguja de roca que no debería estar ahí. Se eleva como si hubiera sido empujada desde abajo. Es uno de esos lugares donde el paisaje parece una decisión, no un accidente.",
-  historia: "Formación geológica producto de deslizamientos antiguos en la península de Trotternish.",
-  curiosidades: "<ul><li>Uno de los puntos más fotografiados de Escocia.</li><li>Acceso con caminata moderada.</li></ul>",
-  paraLasTres: "Subir aunque cueste.",
-  comoVivirlo: "Ir temprano o muy tarde.",
-  lat: 57.5065, lng: -6.1820
-},
-
-{
-  name: "Quiraing",
-  category: "Parques y Naturaleza",
-  imageTitle: "Paisaje surreal Skye",
-  lugar: "No parece Escocia. Parece otra cosa. Formas suaves, caídas imposibles, verdes que cambian con la luz. Es más raro que espectacular — y por eso es mejor.",
-  historia: "Paisaje formado por deslizamientos continuos de tierra.",
-  curiosidades: "<ul><li>El terreno sigue moviéndose hoy.</li><li>Escenario de películas como 'The Northman'.</li></ul>",
-  paraLasTres: "Caminar un poco, no solo mirar.",
-  comoVivirlo: "Niebla = mejor.",
-  lat: 57.6380, lng: -6.2650
-},
-
-{
-  name: "Fairy Pools",
-  category: "Parques y Naturaleza",
-  imageTitle: "Cascadas agua clara Skye",
-  lugar: "Agua transparente, roca oscura, fondo montañoso. Es de los pocos lugares donde el paisaje es limpio, casi simple.",
-  historia: "Serie de cascadas naturales al pie de las Cuillin Mountains.",
-  curiosidades: "<ul><li>Popular para nadar (muy frío).</li><li>Acceso caminando fácil.</li></ul>",
-  paraLasTres: "Llegar hasta alguna piscina más alejada.",
-  comoVivirlo: "Evitar mediodía.",
-  lat: 57.2500, lng: -6.2710
-},
-
-{
-  name: "Neist Point Lighthouse",
-  category: "Parques y Naturaleza",
-  imageTitle: "Faro acantilado Skye",
-  lugar: "Acantilado, mar abierto, viento constante. Es el borde. Acá Skye termina.",
-  historia: "Faro construido en 1909 para guiar navegación en la costa oeste.",
-  curiosidades: "<ul><li>Uno de los mejores atardeceres de Skye.</li><li>Acceso con caminata corta pero inclinada.</li></ul>",
-  paraLasTres: "Esperar un poco.",
-  comoVivirlo: "Ideal sunset.",
-  lat: 57.4230, lng: -6.7860
-},
-
-{
-  name: "Portree Harbour",
-  category: "Barrios y Vida Local",
-  imageTitle: "Puerto colorido Skye",
-  lugar: "Casas de colores, barcos, calma relativa. Es el único momento donde Skye parece accesible.",
-  historia: "Principal pueblo de la isla, centro logístico y turístico.",
-  curiosidades: "<ul><li>Base ideal para dormir.</li><li>Más funcional que interesante.</li></ul>",
-  paraLasTres: "Usarlo como base, no como destino.",
-  comoVivirlo: "Cena o descanso.",
-  lat: 57.4125, lng: -6.1940
-},
-  {
-  name: "Fairy Glen",
-  category: "Parques y Naturaleza",
-  imageTitle: "Colinas pequeñas surrealistas",
-  lugar: "Nada épico, nada grande. Solo colinas suaves, formas raras, como si el paisaje se hubiera encogido. Es más extraño que impresionante, y por eso funciona.",
-  historia: "Formación geológica natural, sin relación real con hadas (nombre turístico).",
-  curiosidades: "<ul><li>No es un lugar 'oficial' — no hay senderos claros.</li><li>Mucha gente lo compara con miniatura del Quiraing, pero es otra cosa.</li></ul>",
-  paraLasTres: "No intentar entenderlo, solo recorrer.",
-  comoVivirlo: "Parada corta.",
-  lat: 57.5855, lng: -6.3200
-},
-
-{
-  name: "Kilt Rock & Mealt Falls",
-  category: "Parques y Naturaleza",
-  imageTitle: "Acantilado y cascada al mar",
-  lugar: "Acantilado recto, caída directa al mar, viento constante. No necesitás caminar: el impacto es inmediato.",
-  historia: "Formación volcánica con columnas de basalto similares a las de Giant’s Causeway.",
-  curiosidades: "<ul><li>La cascada cae directamente al océano.</li><li>Acceso directo desde parking.</li></ul>",
-  paraLasTres: "Parada de 10 minutos.",
-  comoVivirlo: "No quedarse de más.",
-  lat: 57.5830, lng: -6.1790
-},
-
-{
-  name: "Staffin Beach (huellas de dinosaurio)",
-  category: "Oculto y Curioso",
-  imageTitle: "Rocas con marcas fósiles",
-  lugar: "Parece una playa más, hasta que mirás el suelo. Marcas en piedra, circulares, antiguas. No es espectacular visualmente, pero es uno de esos lugares que cambian cuando sabés qué estás viendo.",
-  historia: "Huellas de dinosaurios preservadas en roca del Jurásico.",
-  curiosidades: "<ul><li>Solo visibles con marea baja.</li><li>No señalizado claramente.</li></ul>",
-  paraLasTres: "Buscar las huellas.",
-  comoVivirlo: "Depende de la marea.",
-  lat: 57.6040, lng: -6.1920
-},
-
-{
-  name: "Sligachan Old Bridge",
-  category: "Histórico",
-  imageTitle: "Puente con montañas Cuillin",
-  lugar: "Un puente simple con uno de los mejores fondos de Skye. Montañas Cuillin atrás, agua adelante. No es el puente: es el encuadre.",
-  historia: "Puente histórico en una de las rutas principales de la isla.",
-  curiosidades: "<ul><li>Lugar popular para fotografía.</li><li>Leyenda: si te mojás la cara con el agua, conservás la juventud.</li></ul>",
-  paraLasTres: "Foto rápida y seguir.",
-  comoVivirlo: "Parada breve.",
-  lat: 57.2910, lng: -6.1750
-},
-
-{
-  name: "Elgol Viewpoint",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista Cuillin desde mar",
-  lugar: "Esto cambia todo: ves las Cuillin desde el mar, no desde tierra. Más oscuras, más agresivas. Es una de las vistas más distintas de la isla.",
-  historia: "Punto costero remoto con vistas únicas de la cordillera Cuillin.",
-  curiosidades: "<ul><li>Acceso por camino angosto (manejo lento).</li><li>Muy poco turístico comparado con el norte.</li></ul>",
-  paraLasTres: "Solo ir si tienen tiempo.",
-  comoVivirlo: "Vale la pena el desvío si el clima acompaña.",
-  lat: 57.1480, lng: -6.0980
-},
-  {
-  name: "The Oyster Shed",
-  category: "Barrios y Vida Local",
-  imageTitle: "Ostras frescas Skye",
-  lugar: "Nada de restaurante armado. Mesas simples, vista al agua, producto directo. Ostras, marisco, sin vueltas. Es de los pocos lugares donde la comida está a la altura del paisaje.",
-  historia: "Negocio familiar enfocado en mariscos frescos de la zona.",
-  curiosidades: "<ul><li>Ostras y mejillones locales.</li><li>No siempre abierto — chequear horario.</li></ul>",
-  paraLasTres: "Comer algo chico y seguir.",
-  comoVivirlo: "Parada breve pero clave.",
-  lat: 57.2730, lng: -6.2870
-},
-
-{
-  name: "The Old Inn — Carbost",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pub tradicional Skye",
-  lugar: "Música, madera, gente local mezclada con viajeros. No es perfecto, pero es real. Después de todo el día de ruta, funciona.",
-  historia: "Pub histórico cercano a la destilería Talisker.",
-  curiosidades: "<ul><li>Frecuente música en vivo.</li><li>Ambiente relajado.</li></ul>",
-  paraLasTres: "Cerveza o whisky.",
-  comoVivirlo: "Cena o parada nocturna.",
-  lat: 57.3005, lng: -6.3530
-},
-
-{
-  name: "Talisker Distillery (vista rápida)",
-  category: "Histórico",
-  imageTitle: "Destilería costa Skye",
-  lugar: "Industrial, baja, integrada al paisaje. No es espectacular visualmente, pero representa algo esencial de la isla.",
-  historia: "Fundada en 1830, una de las destilerías más famosas de Escocia.",
-  curiosidades: "<ul><li>Whisky con perfil ahumado característico.</li><li>Ubicación costera única.</li></ul>",
-  paraLasTres: "Parada rápida, no necesariamente tour.",
-  comoVivirlo: "Solo si interesa el whisky.",
-  lat: 57.3009, lng: -6.3542
-},
-
-{
-  name: "Portree — Scorrybreac Viewpoint",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista bahía Portree",
-  lugar: "Portree desde arriba cambia. Menos turístico, más ordenado. Es la forma correcta de verlo.",
-  historia: "Mirador natural sobre la bahía principal.",
-  curiosidades: "<ul><li>Muchos no lo conocen.</li><li>Mejor vista que desde el puerto.</li></ul>",
-  paraLasTres: "Parada corta.",
-  comoVivirlo: "Antes o después de cenar.",
-  lat: 57.4175, lng: -6.1920
-},
-
-{
-  name: "Error común — Subestimar distancias en Skye",
-  category: "Oculto y Curioso",
-  imageTitle: "Carretera angosta Skye",
-  lugar: "El mapa dice una cosa. La ruta es otra. Caminos angostos, tráfico lento, clima cambiante. Skye no se recorre rápido.",
-  historia: "Infraestructura limitada en una isla con geografía compleja.",
-  curiosidades: "<ul><li>Single track roads en muchas zonas.</li><li>Tiempo real de viaje siempre mayor al estimado.</li></ul>",
-  paraLasTres: "Planificar menos.",
-  comoVivirlo: "Aceptar el ritmo.",
-  lat: 57.3500, lng: -6.2500
-},
-  {
-  name: "Neptune’s Staircase",
-  category: "Histórico",
-  imageTitle: "Escaleras de esclusas",
-  lugar: "Una serie de esclusas que suben en escalones, ordenando el agua como si fuera mecánica. No es espectacular, pero sí raro de ver.",
-  historia: "Construido a principios del siglo XIX como parte del Caledonian Canal para conectar costas escocesas.",
-  curiosidades: "<ul><li>Una de las escaleras de esclusas más largas de Gran Bretaña.</li><li>Se puede caminar al lado.</li></ul>",
-  paraLasTres: "Caminar unos minutos.",
-  comoVivirlo: "Parada de 10–15 min.",
-  lat: 56.8720, lng: -5.0900
-},
-
-{
-  name: "Commando Memorial",
-  category: "Histórico",
-  imageTitle: "Monumento con montañas",
-  lugar: "Tres figuras mirando hacia las montañas. El viento, el vacío y el paisaje hacen el resto. Es simple, pero fuerte.",
-  historia: "Memorial dedicado a los comandos británicos de la Segunda Guerra Mundial.",
-  curiosidades: "<ul><li>Vistas directas a Ben Nevis y alrededores.</li><li>Muy fácil acceso desde la ruta.</li></ul>",
-  paraLasTres: "Mirar hacia las montañas.",
-  comoVivirlo: "Parada corta.",
-  lat: 56.9010, lng: -4.9680
-},
-
-{
-  name: "Spean Bridge Viewpoint",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista valle Escocia",
-  lugar: "Nada marcado como “wow”, pero el valle se abre y te da esa sensación de amplitud que empieza a anticipar Loch Ness.",
-  historia: "Zona de paso histórico en las Highlands.",
-  curiosidades: "<ul><li>Muchos lo pasan sin notarlo.</li><li>Buen punto para estirar las piernas.</li></ul>",
-  paraLasTres: "Parada breve si están con tiempo.",
-  comoVivirlo: "Opcional.",
-  lat: 56.8900, lng: -4.9200
-},
-
-{
-  name: "Loch Lochy — Vista desde la A82",
-  category: "Parques y Naturaleza",
-  imageTitle: "Lago largo tranquilo",
-  lugar: "Menos famoso que Loch Ness, más tranquilo. Agua larga, casi sin interrupciones. Es una antesala perfecta.",
-  historia: "Uno de los lagos conectados por el Caledonian Canal.",
-  curiosidades: "<ul><li>Mucho menos turístico que Loch Ness.</li><li>Mejor para parar tranquilo.</li></ul>",
-  paraLasTres: "Bajar en algún layby.",
-  comoVivirlo: "Parada espontánea.",
-  lat: 56.9270, lng: -4.8500
-},
-
-{
-  name: "Fort Augustus (Loch Ness inicio)",
-  category: "Barrios y Vida Local",
-  imageTitle: "Canal y lago Fort Augustus",
-  lugar: "Donde el canal se abre al lago. Movimiento, agua, transición. Es el punto donde Loch Ness empieza a sentirse.",
-  historia: "Pueblo en el extremo sur del Loch Ness, desarrollado alrededor del canal.",
-  curiosidades: "<ul><li>Buena parada para café o baño.</li><li>Zona más activa del lago.</li></ul>",
-  paraLasTres: "Parar 20 min.",
-  comoVivirlo: "Pausa antes de seguir bordeando el lago.",
-  lat: 57.1430, lng: -4.6810
-},
-  {
-  name: "Laggan Locks (Caledonian Canal)",
-  category: "Histórico",
-  imageTitle: "Canal con esclusas abiertas",
-  lugar: "Más tranquilo que Neptune’s Staircase. Agua quieta, compuertas, casi sin gente. Es el canal sin espectáculo.",
-  historia: "Parte del sistema del Caledonian Canal del siglo XIX.",
-  curiosidades: "<ul><li>Menos turístico que otras esclusas.</li><li>Buen lugar para ver barcos pasar.</li></ul>",
-  paraLasTres: "Caminar unos minutos.",
-  comoVivirlo: "Parada corta.",
-  lat: 56.9690, lng: -4.7200
-},
-
-{
-  name: "Invergarry Castle (ruinas rápidas)",
-  category: "Histórico",
-  imageTitle: "Ruinas junto al lago",
-  lugar: "Ruina pequeña, medio escondida, medio ignorada. Pero con el lago detrás y sin intervención, funciona mejor que muchos castillos restaurados.",
-  historia: "Castillo del clan MacDonell, destruido tras las rebeliones jacobitas.",
-  curiosidades: "<ul><li>Acceso libre.</li><li>Muchos pasan sin verlo.</li></ul>",
-  paraLasTres: "Bajar 5–10 minutos.",
-  comoVivirlo: "Parada espontánea.",
-  lat: 57.0690, lng: -4.8030
-},
-
-{
-  name: "Loch Oich — Punto silencioso",
-  category: "Parques y Naturaleza",
-  imageTitle: "Lago tranquilo reflejo",
-  lugar: "Plano, calmo, casi sin viento. Es el lago que nadie recuerda, pero que te da el respiro antes de Loch Ness.",
-  historia: "Parte del sistema de lagos conectados por el canal.",
-  curiosidades: "<ul><li>Mucho menos visitado.</li><li>Reflejos muy buenos en días sin viento.</li></ul>",
-  paraLasTres: "Frenar sin planearlo.",
-  comoVivirlo: "Parada breve.",
-  lat: 57.0710, lng: -4.6900
-},
-
-{
-  name: "General Wade’s Military Road (tramo)",
-  category: "Histórico",
-  imageTitle: "Camino recto Highlands",
-  lugar: "Recto, antiguo, casi fuera de lugar en este paisaje. Es una marca de control humano en un territorio que no se deja controlar.",
-  historia: "Red de caminos militares construidos en el siglo XVIII para controlar las Highlands tras rebeliones jacobitas.",
-  curiosidades: "<ul><li>Algunos tramos siguen visibles desde la ruta actual.</li><li>Base de muchas carreteras modernas.</li></ul>",
-  paraLasTres: "Identificarlo más que recorrerlo.",
-  comoVivirlo: "Lectura de paisaje.",
-  lat: 57.0500, lng: -4.7500
-},
-
-{
-  name: "Loch Ness — Layby sin nombre (clave)",
-  category: "Parques y Naturaleza",
-  imageTitle: "Orilla abierta Loch Ness",
-  lugar: "No es Urquhart. No hay castillo. Solo agua oscura, profunda, sin referencias. Es acá donde Loch Ness se siente de verdad.",
-  historia: "Lago glaciar de gran profundidad, parte del Great Glen.",
-  curiosidades: "<ul><li>Más profundo que el Mar del Norte en partes.</li><li>Color oscuro por turba.</li></ul>",
-  paraLasTres: "Bajar en cualquier layby.",
-  comoVivirlo: "No buscar un punto exacto.",
-  lat: 57.2000, lng: -4.5000
-},
-  {
-  name: "Urquhart Castle — Vista desde arriba (no entrada)",
-  category: "Histórico",
-  imageTitle: "Castillo sobre Loch Ness",
-  lugar: "Ruinas abiertas sobre el lago, pero lo importante no es caminar dentro: es ver la relación entre piedra y agua. Desde arriba se entiende mejor que desde adentro.",
-  historia: "Castillo medieval destruido en el siglo XVII para evitar su uso por fuerzas jacobitas.",
-  curiosidades: "<ul><li>Uno de los castillos más visitados de Escocia.</li><li>Ubicación estratégica sobre el lago.</li></ul>",
-  paraLasTres: "No entrar automáticamente.",
-  comoVivirlo: "Primero verlo desde arriba (parking/viewpoint), después decidir si entrar.",
-  lat: 57.3240, lng: -4.4410
-},
-
-{
-  name: "Urquhart Bay (orilla real)",
-  category: "Parques y Naturaleza",
-  imageTitle: "Orilla oscura Loch Ness",
-  lugar: "Sin castillo, sin gente. Solo agua oscura, profunda, sin referencia. Esto es Loch Ness sin interpretación.",
-  historia: "Parte del lago sin intervención turística directa.",
-  curiosidades: "<ul><li>Color oscuro por materia orgánica.</li><li>Profundidad extrema.</li></ul>",
-  paraLasTres: "Bajar hasta el agua.",
-  comoVivirlo: "Parada silenciosa.",
-  lat: 57.3200, lng: -4.4300
-},
-
-{
-  name: "Divach Falls",
-  category: "Parques y Naturaleza",
-  imageTitle: "Cascada escondida bosque",
-  lugar: "Corta caminata, cascada cerrada, rodeada de verde. No es enorme, pero sí íntima. Funciona como contraste total con el lago.",
-  historia: "Cascada natural cerca de Drumnadrochit.",
-  curiosidades: "<ul><li>Aparece en la película 'Rob Roy'.</li><li>Poco señalizada.</li></ul>",
-  paraLasTres: "Caminar sin apuro.",
-  comoVivirlo: "Parada de 20–30 min.",
-  lat: 57.3170, lng: -4.5050
-},
-
-{
-  name: "Drumnadrochit — quick stop útil",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pueblo pequeño Loch Ness",
-  lugar: "Nada especial, pero funcional. Es donde podés parar, comer algo rápido o reorganizar antes de seguir.",
-  historia: "Pueblo desarrollado alrededor del turismo del Loch Ness.",
-  curiosidades: "<ul><li>Centro de visitantes del Nessie.</li><li>Más útil que interesante.</li></ul>",
-  paraLasTres: "Parada técnica si hace falta.",
-  comoVivirlo: "No quedarse de más.",
-  lat: 57.3340, lng: -4.4790
-},
-
-{
-  name: "Error común — Esperar demasiado de Loch Ness",
-  category: "Oculto y Curioso",
-  imageTitle: "Lago oscuro sin referencias",
-  lugar: "No hay picos dramáticos, no hay cascadas enormes. Es un lago oscuro, profundo, repetitivo. Y ahí está el punto.",
-  historia: "Formado por glaciares, parte de la falla geológica Great Glen.",
-  curiosidades: "<ul><li>Famoso por el mito de Nessie.</li><li>Visualmente más sutil que otros paisajes escoceses.</li></ul>",
-  paraLasTres: "Aceptar lo que es.",
-  comoVivirlo: "No compararlo con Glencoe o Skye.",
-  lat: 57.3000, lng: -4.4500
-},
-  {
-  name: "Eilean Donan Castle (vista rápida)",
-  category: "Histórico",
-  imageTitle: "Castillo sobre isla Skye bridge",
-  lugar: "Castillo sobre una pequeña isla, conectado por un puente. Es probablemente el castillo más fotografiado de Escocia — y con razón. No hace falta entrar.",
-  historia: "Castillo del siglo XIII reconstruido en el siglo XX tras quedar en ruinas.",
-  curiosidades: "<ul><li>Aparece en 'Highlander' y James Bond.</li><li>Totalmente restaurado, no original en su estado actual.</li></ul>",
-  paraLasTres: "Mirarlo desde el puente o parking.",
-  comoVivirlo: "Parada de 10–15 min.",
-  lat: 57.2730, lng: -5.5160
-},
-
-{
-  name: "Loch Cluanie Viewpoint",
-  category: "Parques y Naturaleza",
-  imageTitle: "Lago abierto Highlands",
-  lugar: "Nada construido, nada armado. Solo agua, montaña y viento. Es una de las primeras despedidas reales de Skye.",
-  historia: "Lago de las Highlands conectado a sistemas hidroeléctricos.",
-  curiosidades: "<ul><li>Poco turístico.</li><li>Buen punto para parar sin presión.</li></ul>",
-  paraLasTres: "Bajar aunque sea 5 minutos.",
-  comoVivirlo: "Parada breve.",
-  lat: 57.2060, lng: -5.2400
-},
-
-{
-  name: "Glen Shiel — tramo escénico",
-  category: "Parques y Naturaleza",
-  imageTitle: "Valle abierto Highlands",
-  lugar: "Menos dramático que Glencoe, pero más extendido. Es un paisaje que no se impone — se acumula.",
-  historia: "Valle histórico, escenario de la batalla de Glen Shiel (1719).",
-  curiosidades: "<ul><li>Menos turístico que Glencoe.</li><li>Ruta escénica clave.</li></ul>",
-  paraLasTres: "No dormir en el auto.",
-  comoVivirlo: "Disfrutar manejando.",
-  lat: 57.2040, lng: -5.2600
-},
-
-{
-  name: "Falls of Falloch",
-  category: "Parques y Naturaleza",
-  imageTitle: "Cascada accesible Escocia",
-  lugar: "Corta caminata, caída fuerte, agua clara. Es una de las pocas cascadas que valen sin desviarse mucho.",
-  historia: "Cascada natural en el Parque Nacional Loch Lomond & The Trossachs.",
-  curiosidades: "<ul><li>Acceso fácil desde parking.</li><li>Parada popular pero breve.</li></ul>",
-  paraLasTres: "Caminar hasta la base.",
-  comoVivirlo: "Parada de 15–20 min.",
-  lat: 56.3240, lng: -4.7220
-},
-
-{
-  name: "Rest and Be Thankful (segunda pasada)",
-  category: "Parques y Naturaleza",
-  imageTitle: "Paso montaña Escocia",
-  lugar: "Si no lo hiciste antes, este es el momento. Uno de los mejores pasos de montaña accesibles.",
-  historia: "Ruta histórica militar del siglo XVIII.",
-  curiosidades: "<ul><li>Muy usado como mirador.</li><li>Nombre simbólico del esfuerzo del camino.</li></ul>",
-  paraLasTres: "Parar sí o sí.",
-  comoVivirlo: "Parada breve.",
-  lat: 56.2450, lng: -4.7830
-},
-  {
-  name: "Loch Lomond — Lado oeste (drive)",
-  category: "Parques y Naturaleza",
-  imageTitle: "Carretera junto al lago",
-  lugar: "Ruta pegada al agua, curvas lentas, árboles cerrando el paisaje. Es más interesante manejarlo que pararlo.",
-  historia: "Parte del parque nacional más visitado de Escocia.",
-  curiosidades: "<ul><li>Tráfico lento frecuente.</li><li>Muy distinto al lado este.</li></ul>",
-  paraLasTres: "Mirar desde el auto.",
-  comoVivirlo: "No parar demasiado.",
-  lat: 56.0500, lng: -4.6500
-},
-
-{
-  name: "Inveraray (quick stop)",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pueblo blanco ordenado",
-  lugar: "Ordenado, blanco, casi artificial. Pero funciona como pausa mental después de tanta montaña.",
-  historia: "Pueblo planificado del siglo XVIII.",
-  curiosidades: "<ul><li>Arquitectura muy uniforme.</li><li>Más estético que auténtico.</li></ul>",
-  paraLasTres: "Café rápido.",
-  comoVivirlo: "Parada breve.",
-  lat: 56.2310, lng: -5.0730
-},
-
-{
-  name: "Loch Fyne — Vista amplia",
-  category: "Parques y Naturaleza",
-  imageTitle: "Lago largo oeste Escocia",
-  lugar: "Más ancho, más marítimo, menos contenido. Es el cambio hacia la costa oeste.",
-  historia: "Fiordo largo en la costa oeste escocesa.",
-  curiosidades: "<ul><li>Importante para mariscos.</li><li>Menos dramático visualmente.</li></ul>",
-  paraLasTres: "Mirar desde ruta.",
-  comoVivirlo: "Sin detenerse mucho.",
-  lat: 56.2000, lng: -5.1000
-},
-
-{
-  name: "Lochgilphead — parada técnica",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pueblo funcional Escocia",
-  lugar: "Nada especial. Pero necesario. Baños, combustible, comida básica.",
-  historia: "Centro administrativo de la región de Argyll.",
-  curiosidades: "<ul><li>Muy poco turístico.</li><li>Útil en tramo largo.</li></ul>",
-  paraLasTres: "Reorganizarse.",
-  comoVivirlo: "No quedarse.",
-  lat: 56.0370, lng: -5.4330
-},
-
-{
-  name: "Error común — Subestimar este tramo",
-  category: "Oculto y Curioso",
-  imageTitle: "Ruta larga Escocia",
-  lugar: "Parece manejable en mapa. No lo es. Es largo, variable, y puede cansar más que Skye.",
-  historia: "Infraestructura rural con distancias engañosas.",
-  curiosidades: "<ul><li>Tiempo real mayor al estimado.</li><li>Pocas opciones de parada de calidad.</li></ul>",
-  paraLasTres: "No apurarse.",
-  comoVivirlo: "Aceptar el ritmo.",
-  lat: 55.9000, lng: -5.0000
-},
-  {
-  name: "Inveraray Castle (último castillo real del tramo)",
-  category: "Histórico",
-  imageTitle: "Castillo Inveraray exterior",
-  lugar: "Este sí es tu última oportunidad de castillo con presencia antes de que el paisaje baje. Elegante, abierto, menos defensivo y más aristocrático.",
-  historia: "Residencia del Duque de Argyll desde el siglo XVIII.",
-  curiosidades: "<ul><li>Más palacio que fortaleza.</li><li>Aparece en 'Downton Abbey'.</li></ul>",
-  paraLasTres: "Mirarlo desde afuera.",
-  comoVivirlo: "Parada breve.",
-  lat: 56.2310, lng: -5.0730
-},
-
-{
-  name: "The Tree Shop Café — Cheap eats real",
-  category: "Barrios y Vida Local",
-  imageTitle: "Café simple ruta Escocia",
-  lugar: "Nada sofisticado, pero comida caliente, porciones razonables y precios decentes. En esta ruta, eso ya es mucho.",
-  historia: "Café de ruta popular entre viajeros.",
-  curiosidades: "<ul><li>Ubicación estratégica en A83.</li><li>Mucho mejor que estaciones genéricas.</li></ul>",
-  paraLasTres: "Comer algo simple.",
-  comoVivirlo: "Parada funcional.",
-  lat: 56.2460, lng: -4.7780
-},
-
-{
-  name: "Rest and Be Thankful — última buena vista",
-  category: "Parques y Naturaleza",
-  imageTitle: "Paso montaña final",
-  lugar: "Después de esto, el paisaje empieza a bajar. Es tu última parada realmente fuerte antes de entrar en zonas más planas.",
-  historia: "Paso histórico militar del siglo XVIII.",
-  curiosidades: "<ul><li>Uno de los puntos más icónicos de la ruta.</li><li>Fácil acceso.</li></ul>",
-  paraLasTres: "Parar sí o sí si no lo hicieron antes.",
-  comoVivirlo: "Último momento Highlands.",
-  lat: 56.2450, lng: -4.7830
-},
-
-{
-  name: "Loch Lomond — quick lakeside stop (última pausa real)",
-  category: "Parques y Naturaleza",
-  imageTitle: "Orilla Loch Lomond",
-  lugar: "Después de horas de manejo, esto funciona como pausa final antes del tramo más plano. No es espectacular — es necesario.",
-  historia: "Parque nacional escocés.",
-  curiosidades: "<ul><li>Última zona realmente escénica del tramo.</li><li>Muchos laybys disponibles.</li></ul>",
-  paraLasTres: "Bajar aunque sea 5 minutos.",
-  comoVivirlo: "Reset mental.",
-  lat: 56.0500, lng: -4.6500
-},
-
-{
-  name: "Cairnryan Ferry Terminal — timing clave",
-  category: "Oculto y Curioso",
-  imageTitle: "Puerto ferry Escocia",
-  lugar: "Nada interesante visualmente. Todo funcional. Pero si llegás mal, arruinás todo el tramo.",
-  historia: "Puerto principal de ferries hacia Irlanda del Norte.",
-  curiosidades: "<ul><li>Check-in cierra antes de la salida.</li><li>Pocas opciones alrededor si llegás temprano.</li></ul>",
-  paraLasTres: "Llegar con tiempo pero no demasiado.",
-  comoVivirlo: "Planificar llegada.",
-  lat: 54.9720, lng: -5.0250
-},
-  {
-  name: "Titanic Belfast (exterior + contexto)",
-  category: "Histórico",
-  imageTitle: "Edificio Titanic Belfast",
-  lugar: "Más que un museo, es una declaración. Acero, ángulos, reflejos. El lugar donde se construyó el Titanic no intenta emocionar: te enfrenta con ambición, orgullo y desastre.",
-  historia: "Ubicado en el sitio original de los astilleros Harland & Wolff donde se construyó el Titanic.",
-  curiosidades: "<ul><li>El edificio tiene la misma altura que el casco del Titanic.</li><li>Zona completamente regenerada en las últimas décadas.</li></ul>",
-  paraLasTres: "Verlo desde afuera primero.",
-  comoVivirlo: "Entrar solo si realmente interesa.",
-  lat: 54.6080, lng: -5.9090
-},
-
-{
-  name: "SS Nomadic",
-  category: "Histórico",
-  imageTitle: "Barco histórico Belfast",
-  lugar: "Pequeño, discreto, pero real. Este sí estuvo ahí. Transportó pasajeros al Titanic. No es una recreación: es un fragmento sobreviviente.",
-  historia: "Último barco restante de la White Star Line, utilizado como tender para el Titanic.",
-  curiosidades: "<ul><li>Restaurado y abierto al público.</li><li>Mucho más auténtico que el museo.</li></ul>",
-  paraLasTres: "Vale más que el museo.",
-  comoVivirlo: "Parada breve pero significativa.",
-  lat: 54.6075, lng: -5.9080
-},
-
-{
-  name: "Crumlin Road Gaol",
-  category: "Histórico",
-  imageTitle: "Prisión antigua Belfast",
-  lugar: "Fría, pesada, directa. No hay estética, no hay suavidad. Acá la historia reciente se vuelve física: encierro, conflicto, decisiones.",
-  historia: "Prisión del siglo XIX usada hasta 1996, especialmente durante The Troubles.",
-  curiosidades: "<ul><li>Conectada por túnel a los tribunales.</li><li>Escenario de ejecuciones.</li></ul>",
-  paraLasTres: "Entrar si están dispuestas a sentirlo.",
-  comoVivirlo: "Experiencia intensa.",
-  lat: 54.6169, lng: -5.9455
-},
-
-{
-  name: "Belfast City Hall",
-  category: "Histórico",
-  imageTitle: "Ayuntamiento Belfast",
-  lugar: "Orden, simetría, orgullo imperial. Es la cara oficial de la ciudad, la que intenta mostrar estabilidad.",
-  historia: "Inaugurado en 1906, símbolo del crecimiento industrial de Belfast.",
-  curiosidades: "<ul><li>Estilo barroco renacentista.</li><li>Jardines públicos alrededor.</li></ul>",
-  paraLasTres: "Verlo desde afuera y caminar alrededor.",
-  comoVivirlo: "Parada breve.",
-  lat: 54.5973, lng: -5.9301
-},
-
-{
-  name: "St. George’s Market",
-  category: "Barrios y Vida Local",
-  imageTitle: "Mercado cubierto Belfast",
-  lugar: "Ruido, comida, mezcla de gente. Es uno de los pocos lugares donde Belfast se relaja un poco.",
-  historia: "Mercado victoriano restaurado, activo desde el siglo XIX.",
-  curiosidades: "<ul><li>Funciona principalmente fines de semana.</li><li>Gran variedad de comida local.</li></ul>",
-  paraLasTres: "Comer algo simple.",
-  comoVivirlo: "Ir con hambre.",
-  lat: 54.5965, lng: -5.9235
-},
-  {
-  name: "Falls Road Murals (zona republicana)",
-  category: "Histórico",
-  imageTitle: "Murales políticos Falls Road",
-  lugar: "Paredes que hablan sin filtro. Rostros, consignas, memoria. No es arte urbano decorativo: es narrativa política en tiempo real.",
-  historia: "Zona tradicionalmente católica/nacionalista. Durante The Troubles (finales de 1960s–1998), apoyaba la reunificación con Irlanda y fue bastión del IRA (Irish Republican Army).",
-  curiosidades: "<ul><li>Los murales cambian con el tiempo.</li><li>Muchos homenajean a presos políticos y eventos históricos.</li></ul>",
-  paraLasTres: "Leer lo que dicen, no solo mirarlos.",
-  comoVivirlo: "Ideal con contexto previo.",
-  lat: 54.5970, lng: -5.9600
-},
-
-{
-  name: "Shankill Road Murals (zona unionista)",
-  category: "Histórico",
-  imageTitle: "Murales unionistas Belfast",
-  lugar: "Más rígidos, más agresivos visualmente. Acá la narrativa es otra: identidad británica, resistencia, memoria de conflicto.",
-  historia: "Zona protestante/unionista, partidaria de permanecer en el Reino Unido. Asociada a grupos paramilitares lealistas durante The Troubles.",
-  curiosidades: "<ul><li>Simbolismo militar más explícito.</li><li>Murales con figuras encapuchadas son comunes.</li></ul>",
-  paraLasTres: "Compararlo con Falls Road.",
-  comoVivirlo: "No romantizar.",
-  lat: 54.6005, lng: -5.9550
-},
-
-{
-  name: "Peace Wall (Belfast Interface)",
-  category: "Histórico",
-  imageTitle: "Muro de separación Belfast",
-  lugar: "Un muro que separa barrios. No simbólicamente — físicamente. Puertas que se cierran de noche. No es pasado: sigue existiendo.",
-  historia: "Construido desde 1969 para separar comunidades católicas y protestantes durante el conflicto.",
-  curiosidades: "<ul><li>Algunas puertas se siguen cerrando por la noche.</li><li>Visitantes pueden dejar mensajes en el muro.</li></ul>",
-  paraLasTres: "Caminar a lo largo del muro.",
-  comoVivirlo: "Tomarse el tiempo.",
-  lat: 54.5985, lng: -5.9630
-},
-
-{
-  name: "Divis Tower (contexto urbano)",
-  category: "Histórico",
-  imageTitle: "Edificio Divis Flats",
-  lugar: "Un edificio alto, gris, aparentemente común. Pero fue uno de los puntos más tensos del conflicto. No se destaca — pesa.",
-  historia: "Complejo de viviendas asociado a vigilancia militar británica durante The Troubles.",
-  curiosidades: "<ul><li>Fue utilizado como puesto del ejército británico.</li><li>Ubicado en zona altamente conflictiva en su momento.</li></ul>",
-  paraLasTres: "Entender su contexto más que mirarlo.",
-  comoVivirlo: "Parada breve.",
-  lat: 54.5968, lng: -5.9625
-},
-
-{
-  name: "Taxi Tour (black cab experience)",
-  category: "Oculto y Curioso",
-  imageTitle: "Taxi político Belfast",
-  lugar: "Un conductor que vivió el conflicto te lo explica. No es neutral, no es objetivo — y por eso es valioso.",
-  historia: "Tours guiados por conductores locales que crecieron durante The Troubles.",
-  curiosidades: "<ul><li>Cada conductor tiene su versión.</li><li>Mejor forma de entender rápidamente el conflicto.</li></ul>",
-  paraLasTres: "Hacerlo si tienen poco tiempo.",
-  comoVivirlo: "Experiencia clave.",
-  lat: 54.5975, lng: -5.9605
-},
-  {
-  name: "The Crown Liquor Saloon",
-  category: "Barrios y Vida Local",
-  imageTitle: "Interior victoriano pub",
-  lugar: "Oscuro, madera tallada, vitrales, pequeños compartimentos privados. Es uno de los pocos pubs donde la decoración no es recreación — es original.",
-  historia: "Pub victoriano del siglo XIX, protegido como patrimonio histórico.",
-  curiosidades: "<ul><li>Cabinas privadas llamadas 'snugs'.</li><li>Uno de los pubs más antiguos de Belfast.</li></ul>",
-  paraLasTres: "Entrar aunque esté lleno.",
-  comoVivirlo: "Cerveza y observar.",
-  lat: 54.5940, lng: -5.9330
-},
-
-{
-  name: "Kelly’s Cellars",
-  category: "Barrios y Vida Local",
-  imageTitle: "Pub histórico Belfast",
-  lugar: "Bajo, ruidoso, sin pulir. Este sí es un pub vivido. Piso irregular, gente mezclada, historia en las paredes.",
-  historia: "Fundado en 1720, uno de los pubs más antiguos de la ciudad.",
-  curiosidades: "<ul><li>Frecuente música tradicional irlandesa.</li><li>Ambiente muy local.</li></ul>",
-  paraLasTres: "Quedarse un rato.",
-  comoVivirlo: "Ideal de noche.",
-  lat: 54.5978, lng: -5.9345
-},
-
-{
-  name: "Bittles Bar",
-  category: "Barrios y Vida Local",
-  imageTitle: "Bar triangular Belfast",
-  lugar: "Un triángulo de bar lleno de carácter. Pequeño, intenso, especializado en cerveza. No es cómodo, pero es memorable.",
-  historia: "Bar histórico conocido por su selección de ales.",
-  curiosidades: "<ul><li>Forma triangular única.</li><li>Interior lleno de retratos.</li></ul>",
-  paraLasTres: "Una cerveza y salir.",
-  comoVivirlo: "Parada breve.",
-  lat: 54.5968, lng: -5.9280
-},
-
-{
-  name: "Established Coffee",
-  category: "Barrios y Vida Local",
-  imageTitle: "Café moderno Belfast",
-  lugar: "Luz, minimalismo, pausa. Belfast también tiene esto: espacios contemporáneos que equilibran la ciudad.",
-  historia: "Café moderno con enfoque en specialty coffee.",
-  curiosidades: "<ul><li>Muy popular entre locales jóvenes.</li><li>Buen lugar para frenar el ritmo.</li></ul>",
-  paraLasTres: "Desayuno o pausa.",
-  comoVivirlo: "Ir temprano.",
-  lat: 54.5995, lng: -5.9285
-},
-
-{
-  name: "John Long’s Fish & Chips",
-  category: "Barrios y Vida Local",
-  imageTitle: "Fish and chips clásico",
-  lugar: "Simple, sin estética, directo. Uno de los mejores fish & chips de la ciudad sin volverse turístico.",
-  historia: "Negocio tradicional de comida rápida irlandesa.",
-  curiosidades: "<ul><li>Muy valorado por locales.</li><li>Porciones grandes.</li></ul>",
-  paraLasTres: "Compartir.",
-  comoVivirlo: "Almuerzo barato.",
-  lat: 54.5920, lng: -5.9300
-},
-  {
-  name: "Victoria Square Shopping Centre — Baños",
-  category: "Baños Públicos",
-  imageTitle: "Shopping moderno Belfast",
-  lugar: "Centro comercial moderno, limpio, fácil. No es parte del viaje, pero te salva cuando lo necesitás.",
-  historia: "Complejo comercial central inaugurado en 2008.",
-  curiosidades: "<ul><li>Baños gratuitos y bien mantenidos.</li><li>Ubicación perfecta en el centro.</li></ul>",
-  paraLasTres: "Ubicarlo desde el inicio.",
-  comoVivirlo: "Uso práctico.",
-  lat: 54.5970, lng: -5.9260
-},
-
-{
-  name: "St. George’s Market — Baños",
-  category: "Baños Públicos",
-  imageTitle: "Interior mercado Belfast",
-  lugar: "Mientras comés o recorrés, tenés acceso fácil. De los pocos baños bien ubicados en zona turística real.",
-  historia: "Mercado histórico restaurado del siglo XIX.",
-  curiosidades: "<ul><li>Disponibles durante horario de mercado.</li><li>Mejor que depender de cafés.</li></ul>",
-  paraLasTres: "Aprovechar mientras estén ahí.",
-  comoVivirlo: "Uso oportuno.",
-  lat: 54.5965, lng: -5.9235
-},
-
-{
-  name: "City Hall Visitor Facilities",
-  category: "Baños Públicos",
-  imageTitle: "Ayuntamiento Belfast",
-  lugar: "Zona cuidada, céntrica, accesible. Una de las opciones más confiables en pleno centro.",
-  historia: "Instalaciones del ayuntamiento abiertas al público.",
-  curiosidades: "<ul><li>Ubicación estratégica.</li><li>Buen mantenimiento.</li></ul>",
-  paraLasTres: "Recordarlo cuando estén en el centro.",
-  comoVivirlo: "Parada rápida.",
-  lat: 54.5973, lng: -5.9301
-},
-
-{
-  name: "Titanic Quarter Visitor Area — Baños",
-  category: "Baños Públicos",
-  imageTitle: "Zona Titanic moderna",
-  lugar: "Zona nueva, ordenada, con servicios. Si están en esta parte de la ciudad, es la mejor opción.",
-  historia: "Área regenerada alrededor de los antiguos astilleros.",
-  curiosidades: "<ul><li>Baños modernos y limpios.</li><li>Menos concurridos que el centro.</li></ul>",
-  paraLasTres: "Usarlos antes de moverse.",
-  comoVivirlo: "Planificación simple.",
-  lat: 54.6080, lng: -5.9090
-},
-
-{
-  name: "Error común — Depender de pubs",
-  category: "Oculto y Curioso",
-  imageTitle: "Interior pub Belfast",
-  lugar: "Los pubs no siempre permiten uso libre, y en horarios pico se complica. No es Londres.",
-  historia: "Diferencia cultural en acceso a servicios.",
-  curiosidades: "<ul><li>Algunos requieren consumo.</li><li>No todos tienen instalaciones cómodas.</li></ul>",
-  paraLasTres: "No confiar en esto.",
-  comoVivirlo: "Tener ubicaciones claras.",
-  lat: 54.5975, lng: -5.9300
-},
-  {
-  name: "Cave Hill — Napoleon’s Nose",
-  category: "Parques y Naturaleza",
-  imageTitle: "Vista panorámica Belfast",
-  lugar: "La ciudad deja de ser calles y conflicto, y se vuelve mapa. Abajo, Belfast ordenada; arriba, viento, verde y roca. Es el único lugar donde todo encaja.",
-  historia: "Colina volcánica que domina Belfast, asociada a la inspiración de Jonathan Swift para 'Gulliver’s Travels'.",
-  curiosidades: "<ul><li>‘Napoleon’s Nose’ por la forma del perfil.</li><li>Una de las mejores vistas de Irlanda del Norte.</li></ul>",
-  paraLasTres: "Subir hasta tener vista completa.",
-  comoVivirlo: "No hace falta trekking largo, pero sí caminar un poco.",
-  lat: 54.6420, lng: -5.9450
-},
-
-{
-  name: "Belfast Castle (exterior)",
-  category: "Histórico",
-  imageTitle: "Castillo Belfast en colina",
-  lugar: "Más elegante que defensivo, más decorativo que real. Pero ubicado donde importa: entre la ciudad y la colina.",
-  historia: "Castillo del siglo XIX reconstruido tras incendio del original.",
-  curiosidades: "<ul><li>Ubicado en las laderas de Cave Hill.</li><li>Jardines bien cuidados.</li></ul>",
-  paraLasTres: "No entrar necesariamente.",
-  comoVivirlo: "Parada breve antes o después de Cave Hill.",
-  lat: 54.6425, lng: -5.9440
-},
-
-{
-  name: "Queen’s University Belfast",
-  category: "Histórico",
-  imageTitle: "Edificio universitario gótico",
-  lugar: "Ladrillo rojo, simetría, estudiantes. Acá Belfast cambia de tono: deja de ser conflicto y se vuelve ciudad joven.",
-  historia: "Fundada en 1845, una de las principales universidades de Irlanda.",
-  curiosidades: "<ul><li>Arquitectura neogótica característica.</li><li>Centro cultural activo.</li></ul>",
-  paraLasTres: "Caminar por el campus.",
-  comoVivirlo: "Parada tranquila.",
-  lat: 54.5840, lng: -5.9340
-},
-
-{
-  name: "Botanic Gardens & Palm House",
-  category: "Parques y Naturaleza",
-  imageTitle: "Invernadero victoriano",
-  lugar: "Vidrio, hierro y plantas. Un espacio que no intenta imponerse. Sirve para bajar todo lo que Belfast carga.",
-  historia: "Jardines del siglo XIX con uno de los primeros invernaderos curvos de hierro y vidrio.",
-  curiosidades: "<ul><li>Palm House es una estructura pionera en diseño.</li><li>Muy usado por locales.</li></ul>",
-  paraLasTres: "Entrar al invernadero.",
-  comoVivirlo: "Pausa real.",
-  lat: 54.5825, lng: -5.9335
-},
-
-{
-  name: "Lagan Towpath (río Belfast)",
-  category: "Parques y Naturaleza",
-  imageTitle: "Camino junto al río",
-  lugar: "Agua lenta, camino largo, ciudad a un costado. No es espectacular, pero es honesto. Es Belfast sin narrativa.",
-  historia: "Ruta peatonal a lo largo del río Lagan.",
-  curiosidades: "<ul><li>Muy usado por locales para caminar o correr.</li><li>Conecta distintas zonas de la ciudad.</li></ul>",
-  paraLasTres: "Caminar un tramo corto.",
-  comoVivirlo: "No forzar.",
-  lat: 54.5900, lng: -5.9200
-},
-  {
   name: "Carnaby Street — El Londres que inventó los 60",
   category: "Barrios y Vida Local",
   imageTitle: "Carnaby Street en los años 60",
@@ -4991,15 +2237,11 @@ function createPin(category) {
   comoVivirlo: "Hoy es turística pero el trazado original sigue intacto. Vale más como contexto histórico que como experiencia de compras.",
   personaje: "jimi-hendrix",
   lat: 51.5138, lng: -0.1403
-},
-      
+}
 
-      
-
-    
     ];
 
-    /* 3) REEMPLAZAR completa la función buildPopup(place) por esta */
+/* 3) REEMPLAZAR completa la función buildPopup(place) por esta */
 
 function buildPopup(place) {
   var id = 'popup-' + Math.random().toString(36).substr(2,9);
@@ -5282,6 +2524,8 @@ allMarkers.forEach(function(obj) {
     var horasPlan = 0;
 var modoPlan = false;
 var puntoPlan = null;
+var planDragging = false;
+var planMouseDownPoint = null;
 
 function normalizarNombreLugar(nombre) {
   return (nombre || '').replace(/[^a-zA-Z0-9]/g, '');
@@ -5308,6 +2552,26 @@ function setPlanInteraction(active) {
   }
 }
 
+function esLugarDeComida(place) {
+  var texto = ((place.name || '') + ' ' + (place.lugar || '') + ' ' + (place.historia || '') + ' ' + (place.paraLasTres || '') + ' ' + (place.comoVivirlo || '')).toLowerCase();
+  return texto.indexOf('pizza') !== -1 || texto.indexOf('falafel') !== -1 || texto.indexOf('fish & chips') !== -1 || texto.indexOf('bagel') !== -1 || texto.indexOf('desayuno') !== -1 || texto.indexOf('almuerzo') !== -1 || texto.indexOf('comer') !== -1 || texto.indexOf('comida') !== -1 || texto.indexOf('mercado') !== -1 || texto.indexOf('market') !== -1 || texto.indexOf('café') !== -1 || texto.indexOf('cafe') !== -1 || texto.indexOf('panadería') !== -1 || texto.indexOf('panaderia') !== -1 || texto.indexOf('restaurant') !== -1 || texto.indexOf('restaurante') !== -1;
+}
+
+function esLugarDeCerveza(place) {
+  var texto = ((place.name || '') + ' ' + (place.lugar || '') + ' ' + (place.historia || '') + ' ' + (place.paraLasTres || '') + ' ' + (place.comoVivirlo || '')).toLowerCase();
+  return texto.indexOf('pub') !== -1 || texto.indexOf('wine bar') !== -1 || texto.indexOf('bar') !== -1 || texto.indexOf('pinta') !== -1 || texto.indexOf('beer') !== -1 || texto.indexOf('cerveza') !== -1 || texto.indexOf('ale') !== -1 || texto.indexOf('vino') !== -1;
+}
+
+function tipoPlan(place) {
+  if (esLugarDeCerveza(place) && !esLugarDeComida(place)) return 'cerveza';
+  if (esLugarDeComida(place)) return 'comida';
+  return 'general';
+}
+
+function distanciaMetrosDesde(latlng, place) {
+  return map.distance([latlng.lat, latlng.lng], [place.lat, place.lng]);
+}
+
 function confirmarPuntoPlan(latlng) {
   if (!horasPlan) return;
   puntoPlan = latlng;
@@ -5317,7 +2581,117 @@ function confirmarPuntoPlan(latlng) {
 
 function handlePlanMapClick(e) {
   if (!modoPlan || !horasPlan) return;
+  if (planDragging) return;
   confirmarPuntoPlan(e.latlng);
+}
+
+map.on('mousedown', function(e) {
+  planDragging = false;
+  planMouseDownPoint = e.containerPoint;
+});
+
+map.on('mousemove', function(e) {
+  if (!planMouseDownPoint) return;
+  var dx = e.containerPoint.x - planMouseDownPoint.x;
+  var dy = e.containerPoint.y - planMouseDownPoint.y;
+  if (Math.abs(dx) > 6 || Math.abs(dy) > 6) planDragging = true;
+});
+
+map.on('mouseup', function() {
+  setTimeout(function() {
+    planMouseDownPoint = null;
+    planDragging = false;
+  }, 0);
+});
+
+function activarModoPlan() {
+  horasPlan = 0;
+  puntoPlan = null;
+  setPlanInteraction(false);
+  document.getElementById('plan-panel').style.display = 'block';
+  document.getElementById('plan-step1').style.display = 'block';
+  document.getElementById('plan-result').style.display = 'none';
+  var status = document.getElementById('plan-status');
+  status.style.display = 'none';
+  status.textContent = '';
+}
+
+function seleccionarHoras(horas) {
+  horasPlan = horas;
+  puntoPlan = null;
+  setPlanInteraction(true);
+  var status = document.getElementById('plan-status');
+  status.style.display = 'block';
+  status.textContent = 'Ahora hacé click en cualquier parte del mapa para elegir la zona. Podés arrastrar y moverte antes de elegir.';
+  document.getElementById('plan-result').style.display = 'none';
+  document.getElementById('plan-panel').style.display = 'none';
+}
+
+function elegirParadasParaPlan(candidatos, horas) {
+  var limite = horas === 2 ? 3 : horas === 4 ? 5 : 8;
+  var seleccion = [];
+  var ultimaComida = -999;
+  for (var i = 0; i < candidatos.length; i++) {
+    var item = candidatos[i];
+    var tipo = tipoPlan(item.place);
+    if (tipo === 'comida') {
+      if (horas <= 2 && ultimaComida !== -999) continue;
+      if (horas === 4 && (seleccion.length - ultimaComida) < 3) continue;
+      if (horas >= 8 && (seleccion.length - ultimaComida) < 4) continue;
+    }
+    seleccion.push(item);
+    if (tipo === 'comida') ultimaComida = seleccion.length - 1;
+    if (seleccion.length >= limite) break;
+  }
+  return seleccion;
+}
+
+function renderPlanDesdePunto(latlng, horas) {
+  var cantLugares = horas === 2 ? 3 : horas === 4 ? 5 : 8;
+  var categoriasFiltradas = ['Histórico','Cine y Cultura Pop','Barrios y Vida Local','Parques y Naturaleza','Oculto y Curioso'];
+  var candidatos = allMarkers.filter(function(obj) {
+    return categoriasFiltradas.indexOf(obj.place.category) !== -1;
+  }).map(function(obj) {
+    return { place: obj.place, marker: obj.marker, dist: distanciaMetrosDesde(latlng, obj.place) };
+  }).sort(function(a, b) {
+    return a.dist - b.dist;
+  });
+  var seleccionados = elegirParadasParaPlan(candidatos, horas).slice(0, cantLugares);
+  var result = document.getElementById('plan-result');
+  var status = document.getElementById('plan-status');
+  result.innerHTML = '';
+  status.style.display = 'none';
+  status.textContent = '';
+  var horasTexto = horas === 2 ? '2 horas' : horas === 4 ? '4 horas' : 'día completo';
+  result.innerHTML += '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:14px;color:#6a6860;margin-bottom:20px;">Plan para ' + horasTexto + ' — armado desde la zona que elegiste, evitando comidas pegadas salvo que haya horas reales para eso.</div>';
+  var tiempoAcum = 0;
+  var minutosBase = horas === 2 ? 35 : horas === 4 ? 45 : 55;
+  seleccionados.forEach(function(obj) {
+    var tipo = tipoPlan(obj.place);
+    var minutosLugar = minutosBase;
+    if (tipo === 'comida') minutosLugar += 20;
+    if (tipo === 'cerveza') minutosLugar += 10;
+    var hora = 9 + Math.floor(tiempoAcum / 60);
+    var min = tiempoAcum % 60;
+    var horaStr = hora + ':' + (min < 10 ? '0' : '') + min;
+    tiempoAcum += minutosLugar;
+    var metros = Math.round(obj.dist);
+    var etiqueta = obj.place.category;
+    if (tipo === 'comida') etiqueta += ' · comida';
+    if (tipo === 'cerveza') etiqueta += ' · cerveza';
+    var item = document.createElement('div');
+    item.style.cssText = 'padding:16px 0;border-bottom:1px solid #1e1d1a;cursor:pointer;display:flex;gap:14px;align-items:flex-start;';
+    item.innerHTML = '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;color:var(--red);min-width:44px;padding-top:2px;">' + horaStr + '</div>' + '<div>' + '<div style="font-family:\'Playfair Display\',serif;font-size:15px;color:var(--white);margin-bottom:4px;">' + obj.place.name + '</div>' + '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;color:#4a4944;letter-spacing:0.1em;text-transform:uppercase;">' + etiqueta + ' · ' + minutosLugar + ' min · a ' + metros + ' m</div>' + '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:12px;color:#6a6860;margin-top:6px;">' + obj.place.lugar.substring(0, 120) + '...</div>' + '</div>';
+    item.onclick = function() {
+      document.getElementById('plan-panel').style.display = 'none';
+      map.setView([obj.place.lat, obj.place.lng], 16);
+      obj.marker.openPopup();
+    };
+    result.appendChild(item);
+  });
+  document.getElementById('plan-step1').style.display = 'block';
+  document.getElementById('plan-result').style.display = 'block';
+  document.getElementById('plan-panel').style.display = 'block';
 }
 var desafiosLondres = [
   'Tomar un desayuno inglés completo — huevos, bacon, beans, toast',
@@ -6378,4 +3752,3 @@ function marcarVisitado(btn, nombre) {
 "></div>
 </body>
 </html>
-
