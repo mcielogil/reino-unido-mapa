@@ -1260,7 +1260,6 @@ map.boxZoom.enable();
 map.keyboard.enable();
 
 startWatchingUserLocation();
-startWatchingUserLocation();
 
 map.on('popupclose', function() { stopSpeech(); });
 
@@ -2543,30 +2542,13 @@ function uniqueList(list) {
 function buildLocalImageCandidates(place) {
   var candidates = [];
   var fullName = String(place && place.name || '').trim();
-  var mappedFilename = PLACE_LOCAL_IMAGE_MAP[fullName] || '';
-  var baseNoExt = mappedFilename ? mappedFilename.replace(/\.(jpg|jpeg|png|webp)$/i, '') : '';
+  var baseManual = PLACE_LOCAL_IMAGE_MAP[fullName] || '';
+  var baseNoExt = baseManual ? baseManual.replace(/\.(jpg|jpeg|png|webp)$/i, '') : '';
   var slugFull = slugifyText(fullName);
   var firstDash = fullName.split('—')[0].trim();
   var firstColon = fullName.split(':')[0].trim();
   var firstPlus = fullName.split('+')[0].trim();
   var extraBases = [];
-  var repoBases = [
-    'https://mcielogil.github.io/reino-unido-mapa/',
-    'https://mcielogil.github.io/reino-unido-mapa/images/',
-    'https://mcielogil.github.io/reino-unido-mapa/img/',
-    'https://mcielogil.github.io/reino-unido-mapa/assets/',
-    'https://mcielogil.github.io/reino-unido-mapa/assets/images/',
-    'https://cdn.jsdelivr.net/gh/mcielogil/reino-unido-mapa@main/',
-    'https://cdn.jsdelivr.net/gh/mcielogil/reino-unido-mapa@main/images/',
-    'https://cdn.jsdelivr.net/gh/mcielogil/reino-unido-mapa@main/img/',
-    'https://cdn.jsdelivr.net/gh/mcielogil/reino-unido-mapa@main/assets/',
-    'https://cdn.jsdelivr.net/gh/mcielogil/reino-unido-mapa@main/assets/images/',
-    'https://raw.githubusercontent.com/mcielogil/reino-unido-mapa/main/',
-    'https://raw.githubusercontent.com/mcielogil/reino-unido-mapa/main/images/',
-    'https://raw.githubusercontent.com/mcielogil/reino-unido-mapa/main/img/',
-    'https://raw.githubusercontent.com/mcielogil/reino-unido-mapa/main/assets/',
-    'https://raw.githubusercontent.com/mcielogil/reino-unido-mapa/main/assets/images/'
-  ];
 
   if (baseNoExt) extraBases.push(baseNoExt);
   if (slugFull) extraBases.push(slugFull);
@@ -2584,9 +2566,9 @@ function buildLocalImageCandidates(place) {
   if (fullName.indexOf('Pelicans en St. James') === 0) extraBases.push('pelicans-st-james', 'pelicans');
   if (fullName.indexOf('El Fantasma de la Ópera') === 0) extraBases.push('fantasma-opera', 'her-majestys-theatre');
   if (fullName.indexOf('Xi’an Impression') === 0 || fullName.indexOf("Xi'an Impression") === 0) extraBases.push('xian-impression', 'xian');
-  if (fullName.indexOf('Max’s Sandwich Shop') === 0 || fullName.indexOf("Max\'s Sandwich Shop") === 0) extraBases.push('maxs-sandwich-shop', 'maxs');
-  if (fullName.indexOf('Wilton’s Music Hall') === 0 || fullName.indexOf("Wilton\'s Music Hall") === 0) extraBases.push('wiltons-music-hall', 'wiltons');
-  if (fullName.indexOf('Neal’s Yard') === 0 || fullName.indexOf("Neal\'s Yard") === 0) extraBases.push('neals-yard', 'neals');
+  if (fullName.indexOf('Max’s Sandwich Shop') === 0 || fullName.indexOf("Max's Sandwich Shop") === 0) extraBases.push('maxs-sandwich-shop', 'maxs');
+  if (fullName.indexOf('Wilton’s Music Hall') === 0 || fullName.indexOf("Wilton's Music Hall") === 0) extraBases.push('wiltons-music-hall', 'wiltons');
+  if (fullName.indexOf('Neal’s Yard') === 0 || fullName.indexOf("Neal's Yard") === 0) extraBases.push('neals-yard', 'neals');
   if (fullName.indexOf('Postman') === 0) extraBases.push('postmans-park', 'postmans');
   if (fullName.indexOf('La Escalera del Ángel') === 0) extraBases.push('angel', 'angel-islington');
 
@@ -2599,16 +2581,10 @@ function buildLocalImageCandidates(place) {
       return;
     }
     if (/\.(jpg|jpeg|png|webp)$/i.test(base)) {
-      repoBases.forEach(function(prefix) {
-        candidates.push(prefix + base.replace(/^\.?\//, ''));
-      });
       candidates.push('./' + base.replace(/^\.?\//, ''));
       return;
     }
     LOCAL_IMAGE_EXTENSIONS.forEach(function(ext) {
-      repoBases.forEach(function(prefix) {
-        candidates.push(prefix + base.replace(/^\.?\//, '') + ext);
-      });
       candidates.push('./' + base.replace(/^\.?\//, '') + ext);
     });
   });
@@ -2638,7 +2614,27 @@ function createSvgPlaceholder(place) {
   return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
 }
 
+var IMAGE_VERSION = '20260422b';
+var IMAGE_REPO_BASES = [
+  'https://mcielogil.github.io/reino-unido-mapa/',
+  'https://cdn.jsdelivr.net/gh/mcielogil/reino-unido-mapa@main/',
+  'https://raw.githubusercontent.com/mcielogil/reino-unido-mapa/main/'
+];
+
+function buildAbsoluteImageCandidates(place) {
+  var fileName = PLACE_LOCAL_IMAGE_MAP[String(place && place.name || '').trim()] || '';
+  if (!fileName) return [];
+  return IMAGE_REPO_BASES.map(function(base) {
+    return base + encodeURIComponent(fileName).replace(/%2F/g, '/') + '?v=' + IMAGE_VERSION;
+  });
+}
+
 function getPlaceImageCandidates(place) {
+  var absolute = buildAbsoluteImageCandidates(place);
+  if (absolute.length) {
+    absolute.push(createSvgPlaceholder(place));
+    return uniqueList(absolute);
+  }
   var list = buildLocalImageCandidates(place);
   list.push(createSvgPlaceholder(place));
   return uniqueList(list);
@@ -2699,6 +2695,7 @@ function hydratePopupImages(root) {
     };
 
     img.onerror = function() {
+      console.warn('No se pudo cargar imagen para', placeData && placeData.name ? placeData.name : 'lugar', 'URL:', candidates[index]);
       index += 1;
       if (index < candidates.length) {
         showCurrent();
