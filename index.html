@@ -427,7 +427,7 @@
 
     /* POPUP CARD */
     .popup-card { max-width: 300px; min-width: 240px; }
-    .popup-card.has-image { max-width: 620px; min-width: 520px; }
+    .popup-card.has-image { width: min(560px, calc(100vw - 40px)); max-width: min(620px, calc(100vw - 40px)); min-width: 0; }
 
     .popup-header {
       background: transparent;
@@ -690,6 +690,7 @@
       border-bottom: 1px solid #d9d0c3;
       background: #ece4d7;
       min-height: 230px;
+      isolation: isolate;
     }
 
     .popup-img-caption {
@@ -864,6 +865,19 @@
     .personaje-foto {
       filter: grayscale(1) contrast(1.08) brightness(0.94);
       transform: scale(1.01);
+    }
+
+    @media (max-width: 768px) {
+      .popup-card.has-image {
+        width: min(92vw, 420px);
+        max-width: min(92vw, 420px);
+      }
+
+      .popup-card.has-image img,
+      .popup-img-wrap {
+        min-height: 180px;
+        height: 180px;
+      }
     }
 
     @media (max-width: 768px) {
@@ -1259,7 +1273,6 @@ map.doubleClickZoom.enable();
 map.boxZoom.enable();
 map.keyboard.enable();
 
-startWatchingUserLocation();
 startWatchingUserLocation();
 
 map.on('popupclose', function() { stopSpeech(); });
@@ -2541,47 +2554,82 @@ function hydratePopupImages(root) {
   scope.querySelectorAll('img[data-place-image]').forEach(function(img) {
     if (img.dataset.ready === '1') return;
     img.dataset.ready = '1';
+
     var wrap = img.closest('.popup-img-wrap');
+    var popupEl = img.closest('.leaflet-popup') || img.closest('#bottom-sheet-content');
     var placeData = null;
+
     try {
       placeData = JSON.parse(img.getAttribute('data-place-meta') || '{}');
     } catch (e) {
       placeData = {};
     }
+
     var candidates = [];
     try {
       candidates = JSON.parse(img.getAttribute('data-place-candidates') || '[]');
     } catch (e) {
       candidates = [];
     }
-    if (!candidates.length) candidates = [createSvgPlaceholder(placeData)];
-    var index = 0;
 
-    function showCurrent() {
-      img.src = candidates[index];
+    if (!candidates.length) candidates = [createSvgPlaceholder(placeData)];
+
+    var index = 0;
+    var finished = false;
+
+    function removeSkeleton() {
+      if (!wrap) return;
+      var sk = wrap.querySelector('.popup-img-skeleton');
+      if (sk) sk.remove();
     }
 
-    img.onload = function() {
-      img.style.display = 'block';
-      img.style.opacity = '1';
-      if (wrap) {
-        var sk = wrap.querySelector('.popup-img-skeleton');
-        if (sk) sk.remove();
-        var fallback = wrap.querySelector('.popup-fallback');
-        if (fallback) fallback.style.display = 'none';
-      }
-    };
+    function updatePopupLayout() {
+      setTimeout(function() {
+        if (map && map._popup && map._popup.update) {
+          map._popup.update();
+        }
+      }, 0);
+    }
 
-    img.onerror = function() {
-      index += 1;
-      if (index < candidates.length) {
-        showCurrent();
-      } else {
-        ensurePopupFallbackVisible(wrap, placeData);
-      }
-    };
+    function showFallback() {
+      if (finished) return;
+      finished = true;
+      ensurePopupFallbackVisible(wrap, placeData);
+      updatePopupLayout();
+    }
 
-    showCurrent();
+    function tryCandidate() {
+      if (index >= candidates.length) {
+        showFallback();
+        return;
+      }
+
+      var url = candidates[index];
+
+      img.onload = function() {
+        if (finished) return;
+        finished = true;
+        img.style.display = 'block';
+        img.style.opacity = '1';
+        if (wrap) {
+          var fallback = wrap.querySelector('.popup-fallback');
+          if (fallback) fallback.style.display = 'none';
+        }
+        removeSkeleton();
+        updatePopupLayout();
+      };
+
+      img.onerror = function() {
+        finished = false;
+        index += 1;
+        tryCandidate();
+      };
+
+      img.removeAttribute('srcset');
+      img.src = url;
+    }
+
+    tryCandidate();
   });
 }
 
@@ -2655,7 +2703,7 @@ function buildPopup(place) {
         '<div class="popup-img-wrap">' +
           '<div class="popup-img-skeleton"></div>' +
           '<div class="popup-fallback"><div class="popup-fallback-inner"><div class="popup-fallback-kicker">Imagen de referencia</div><div class="popup-fallback-title">' + place.imageTitle + '</div></div></div>' +
-          '<img data-place-image="' + imageUrl + '" data-place-meta="' + imageMeta + '" data-place-candidates="' + imageCandidateAttr + '" alt="' + place.imageTitle + '" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" style="opacity:0;transition:opacity 0.25s ease;">' +
+          '<img data-place-image="' + imageUrl + '" data-place-meta="' + imageMeta + '" data-place-candidates="' + imageCandidateAttr + '" alt="' + place.imageTitle + '" loading="eager" decoding="async" referrerpolicy="no-referrer" style="display:block;opacity:0;transition:opacity 0.25s ease;background:#ece4d7;">' +
           '<div class="popup-img-caption">' + place.imageTitle + '</div>' +
         '</div>' +
         '<div class="popup-inner"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
@@ -2716,6 +2764,9 @@ function buildPopup(place) {
       var ac = document.getElementById(id + '-' + tab);
       if (at) at.classList.add('active');
       if (ac) ac.classList.add('active');
+      if (map && map._popup && map._popup.update) {
+        setTimeout(function() { map._popup.update(); }, 0);
+      }
     };
 
     function syncFilterButtons() {
@@ -2744,8 +2795,10 @@ function buildPopup(place) {
   var marker = L.marker([place.lat, place.lng], { icon: createPin(place.category) }).addTo(map);
 
   marker.bindPopup(buildPopup(place), {
-    maxWidth: place.category === 'Baños Públicos' ? 300 : 560,
-    minWidth: place.category === 'Baños Públicos' ? 280 : 460
+    maxWidth: place.category === 'Baños Públicos' ? 320 : 620,
+    minWidth: place.category === 'Baños Públicos' ? 280 : 280,
+    autoPan: true,
+    keepInView: true
   });
      var markerClickHandler = function() {
   marker.openPopup();
