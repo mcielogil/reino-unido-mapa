@@ -1063,18 +1063,10 @@ startWatchingUserLocation();
 startWatchingUserLocation();
 
 map.on('popupclose', function() { stopSpeech(); });
-  map.getContainer().addEventListener('click', function(e) {
-  handlePlanMapTap(e.clientX, e.clientY);
-});
-
-map.getContainer().addEventListener('touchend', function(e) {
-  if (!e.changedTouches || !e.changedTouches.length) return;
-  var touch = e.changedTouches[0];
-  handlePlanMapTap(touch.clientX, touch.clientY);
-}, { passive: true });
 map.on('click', handlePlanMapClick);
 map.on('touchend', handlePlanMapClick);
-    
+});
+
     var categoryColors = {
   'Histórico':          '#d4321c',
   'Cine y Cultura Pop': '#c8920a',
@@ -2717,7 +2709,6 @@ function seleccionarHoras(horas) {
   document.getElementById('plan-result').style.display = 'none';
   document.getElementById('plan-panel').style.display = 'none';
 }
-  function handlePlanMapTap(clientX, clientY) {
   if (!modoPlan || !horasPlan) return;
 
   var mapEl = map.getContainer();
@@ -2733,7 +2724,7 @@ function seleccionarHoras(horas) {
 }
   function handlePlanMapClick(e) {
   if (!modoPlan || !horasPlan) return;
-  if (planDragging) return;
+  if (!e || !e.latlng) return;
   confirmarPuntoPlan(e.latlng);
 }
 
