@@ -1070,7 +1070,6 @@ map.on('moveend', function () {
 });
 
 map.on('click', function (e) {
-  if (!planMode) return;
   if (isDraggingMap) return;
 
   selectedLatLng = e.latlng;
@@ -1129,7 +1128,6 @@ map.on('moveend', function () {
 });
 
 map.on('click', function (e) {
-  if (!planMode) return;
   if (isDraggingMap) return;
 
   selectedLatLng = e.latlng;
