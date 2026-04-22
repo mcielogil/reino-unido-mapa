@@ -427,7 +427,7 @@
 
     /* POPUP CARD */
     .popup-card { max-width: 300px; min-width: 240px; }
-    .popup-card.has-image { width: min(560px, calc(100vw - 40px)); max-width: min(620px, calc(100vw - 40px)); min-width: 0; }
+    .popup-card.has-image { max-width: 620px; min-width: 520px; }
 
     .popup-header {
       background: transparent;
@@ -690,7 +690,6 @@
       border-bottom: 1px solid #d9d0c3;
       background: #ece4d7;
       min-height: 230px;
-      isolation: isolate;
     }
 
     .popup-img-caption {
@@ -865,19 +864,6 @@
     .personaje-foto {
       filter: grayscale(1) contrast(1.08) brightness(0.94);
       transform: scale(1.01);
-    }
-
-    @media (max-width: 768px) {
-      .popup-card.has-image {
-        width: min(92vw, 420px);
-        max-width: min(92vw, 420px);
-      }
-
-      .popup-card.has-image img,
-      .popup-img-wrap {
-        min-height: 180px;
-        height: 180px;
-      }
     }
 
     @media (max-width: 768px) {
@@ -2538,98 +2524,76 @@ function getPlaceImageUrl(place) {
   return getPlaceImageCandidates(place)[0];
 }
 
-function ensurePopupFallbackVisible(wrap, place) {
+window.__popupImageRegistry = window.__popupImageRegistry || {};
+window.registerPopupImageCandidates = function(key, candidates) {
+  window.__popupImageRegistry[key] = Array.isArray(candidates) ? candidates.slice() : [];
+};
+
+function updatePopupLayout() {
+  setTimeout(function() {
+    try {
+      if (map && map._popup) map._popup.update();
+      if (window.isMobile && typeof closeBottomSheet === 'function') {
+        var sheet = document.getElementById('bottom-sheet');
+        if (sheet) sheet.style.willChange = 'transform';
+      }
+    } catch (e) {}
+  }, 0);
+}
+
+function ensurePopupFallbackVisible(wrap) {
   if (!wrap) return;
   var fallback = wrap.querySelector('.popup-fallback');
-  if (!fallback) return;
-  fallback.style.display = 'flex';
+  if (fallback) fallback.style.display = 'flex';
   var sk = wrap.querySelector('.popup-img-skeleton');
   if (sk) sk.remove();
-  var img = wrap.querySelector('img[data-place-image]');
-  if (img) img.style.display = 'none';
+  var img = wrap.querySelector('img[data-place-image-key]');
+  if (img) {
+    img.style.opacity = '0';
+    img.style.display = 'none';
+  }
+  updatePopupLayout();
 }
+
+window.handlePlaceImageLoad = function(img) {
+  if (!img) return;
+  img.dataset.loaded = '1';
+  img.style.display = 'block';
+  img.style.opacity = '1';
+  var wrap = img.closest('.popup-img-wrap');
+  if (wrap) {
+    var sk = wrap.querySelector('.popup-img-skeleton');
+    if (sk) sk.remove();
+    var fallback = wrap.querySelector('.popup-fallback');
+    if (fallback) fallback.style.display = 'none';
+  }
+  updatePopupLayout();
+};
+
+window.handlePlaceImageError = function(img) {
+  if (!img) return;
+  var key = img.getAttribute('data-place-image-key') || '';
+  var list = window.__popupImageRegistry[key] || [];
+  var currentIndex = parseInt(img.getAttribute('data-place-image-index') || '0', 10);
+  var nextIndex = currentIndex + 1;
+  if (nextIndex < list.length) {
+    img.setAttribute('data-place-image-index', String(nextIndex));
+    img.src = list[nextIndex];
+    return;
+  }
+  ensurePopupFallbackVisible(img.closest('.popup-img-wrap'));
+};
 
 function hydratePopupImages(root) {
   var scope = root && root.querySelectorAll ? root : document;
-  scope.querySelectorAll('img[data-place-image]').forEach(function(img) {
-    if (img.dataset.ready === '1') return;
-    img.dataset.ready = '1';
-
-    var wrap = img.closest('.popup-img-wrap');
-    var popupEl = img.closest('.leaflet-popup') || img.closest('#bottom-sheet-content');
-    var placeData = null;
-
-    try {
-      placeData = JSON.parse(img.getAttribute('data-place-meta') || '{}');
-    } catch (e) {
-      placeData = {};
+  scope.querySelectorAll('img[data-place-image-key]').forEach(function(img) {
+    if (img.dataset.hydrated === '1') return;
+    img.dataset.hydrated = '1';
+    if (img.complete && img.naturalWidth > 0) {
+      window.handlePlaceImageLoad(img);
+    } else if (img.complete && !img.naturalWidth) {
+      window.handlePlaceImageError(img);
     }
-
-    var candidates = [];
-    try {
-      candidates = JSON.parse(img.getAttribute('data-place-candidates') || '[]');
-    } catch (e) {
-      candidates = [];
-    }
-
-    if (!candidates.length) candidates = [createSvgPlaceholder(placeData)];
-
-    var index = 0;
-    var finished = false;
-
-    function removeSkeleton() {
-      if (!wrap) return;
-      var sk = wrap.querySelector('.popup-img-skeleton');
-      if (sk) sk.remove();
-    }
-
-    function updatePopupLayout() {
-      setTimeout(function() {
-        if (map && map._popup && map._popup.update) {
-          map._popup.update();
-        }
-      }, 0);
-    }
-
-    function showFallback() {
-      if (finished) return;
-      finished = true;
-      ensurePopupFallbackVisible(wrap, placeData);
-      updatePopupLayout();
-    }
-
-    function tryCandidate() {
-      if (index >= candidates.length) {
-        showFallback();
-        return;
-      }
-
-      var url = candidates[index];
-
-      img.onload = function() {
-        if (finished) return;
-        finished = true;
-        img.style.display = 'block';
-        img.style.opacity = '1';
-        if (wrap) {
-          var fallback = wrap.querySelector('.popup-fallback');
-          if (fallback) fallback.style.display = 'none';
-        }
-        removeSkeleton();
-        updatePopupLayout();
-      };
-
-      img.onerror = function() {
-        finished = false;
-        index += 1;
-        tryCandidate();
-      };
-
-      img.removeAttribute('srcset');
-      img.src = url;
-    }
-
-    tryCandidate();
   });
 }
 
@@ -2694,16 +2658,15 @@ function buildPopup(place) {
 
   var lugarContent;
   if (hasImage) {
-    var imageUrl = getPlaceImageUrl(place);
     var imageCandidates = getPlaceImageCandidates(place);
-    var imageMeta = JSON.stringify({ name: place.name, imageTitle: place.imageTitle, category: place.category }).replace(/"/g, '&quot;');
-    var imageCandidateAttr = JSON.stringify(imageCandidates).replace(/"/g, '&quot;');
+    var imageKey = 'img-' + slugifyText(place.name) + '-' + Math.random().toString(36).slice(2, 8);
+    window.registerPopupImageCandidates(imageKey, imageCandidates);
     lugarContent =
       '<div id="' + id + '-lugar" class="popup-tab-content active">' +
         '<div class="popup-img-wrap">' +
           '<div class="popup-img-skeleton"></div>' +
           '<div class="popup-fallback"><div class="popup-fallback-inner"><div class="popup-fallback-kicker">Imagen de referencia</div><div class="popup-fallback-title">' + place.imageTitle + '</div></div></div>' +
-          '<img data-place-image="' + imageUrl + '" data-place-meta="' + imageMeta + '" data-place-candidates="' + imageCandidateAttr + '" alt="' + place.imageTitle + '" loading="eager" decoding="async" referrerpolicy="no-referrer" style="display:block;opacity:0;transition:opacity 0.25s ease;background:#ece4d7;">' +
+          '<img src="' + imageCandidates[0] + '" data-place-image-key="' + imageKey + '" data-place-image-index="0" alt="' + place.imageTitle + '" loading="eager" decoding="async" referrerpolicy="no-referrer" onload="handlePlaceImageLoad(this)" onerror="handlePlaceImageError(this)" style="display:block;opacity:0;transition:opacity 0.25s ease;">' +
           '<div class="popup-img-caption">' + place.imageTitle + '</div>' +
         '</div>' +
         '<div class="popup-inner"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
@@ -2764,9 +2727,6 @@ function buildPopup(place) {
       var ac = document.getElementById(id + '-' + tab);
       if (at) at.classList.add('active');
       if (ac) ac.classList.add('active');
-      if (map && map._popup && map._popup.update) {
-        setTimeout(function() { map._popup.update(); }, 0);
-      }
     };
 
     function syncFilterButtons() {
@@ -2795,10 +2755,8 @@ function buildPopup(place) {
   var marker = L.marker([place.lat, place.lng], { icon: createPin(place.category) }).addTo(map);
 
   marker.bindPopup(buildPopup(place), {
-    maxWidth: place.category === 'Baños Públicos' ? 320 : 620,
-    minWidth: place.category === 'Baños Públicos' ? 280 : 280,
-    autoPan: true,
-    keepInView: true
+    maxWidth: place.category === 'Baños Públicos' ? 300 : 560,
+    minWidth: place.category === 'Baños Públicos' ? 280 : 460
   });
      var markerClickHandler = function() {
   marker.openPopup();
