@@ -427,26 +427,28 @@
 
     /* POPUP CARD */
     .popup-card {
-      width: min(320px, calc(100vw - 32px));
-      max-width: calc(100vw - 32px);
+      width: min(320px, calc(100vw - 40px));
+      max-width: calc(100vw - 40px);
       min-width: 240px;
       overflow: hidden;
     }
     .popup-card.has-image {
-      width: min(620px, calc(100vw - 32px));
-      max-width: calc(100vw - 32px);
-      min-width: 0;
+      width: min(620px, calc(100vw - 40px));
+      max-width: calc(100vw - 40px);
+      min-width: 280px;
       overflow: hidden;
     }
 
     .leaflet-popup-content-wrapper {
       overflow: hidden !important;
-      max-width: calc(100vw - 32px);
+      max-width: calc(100vw - 32px) !important;
     }
 
     @media (max-width: 1024px) {
       .popup-card.has-image {
         width: min(540px, calc(100vw - 32px));
+        max-width: calc(100vw - 32px);
+        min-width: 0;
       }
     }
 
@@ -461,7 +463,6 @@
         width: calc(100vw - 20px);
         max-width: calc(100vw - 20px);
         min-width: 0;
-        border-radius: 16px;
       }
 
       .popup-img-wrap,
@@ -2898,12 +2899,12 @@ function buildPopup(place) {
   var marker = L.marker([place.lat, place.lng], { icon: createPin(place.category) }).addTo(map);
 
   marker.bindPopup(buildPopup(place), {
-    maxWidth: place.category === 'Baños Públicos' ? 300 : 640,
+    maxWidth: place.category === 'Baños Públicos' ? 300 : 620,
     minWidth: place.category === 'Baños Públicos' ? 260 : 240,
     autoPan: true,
     keepInView: true,
     autoPanPaddingTopLeft: [20, 20],
-    autoPanPaddingBottomRight: [340, 90]
+    autoPanPaddingBottomRight: [340, 100]
   });
      var markerClickHandler = function() {
   marker.openPopup();
@@ -3020,7 +3021,7 @@ map.on('popupopen', function(e) {
       try {
         map.panInside(e.popup.getLatLng(), {
           paddingTopLeft: [24, 24],
-          paddingBottomRight: [320, 100]
+          paddingBottomRight: [320, 110]
         });
       } catch (err) {}
     }, 80);
