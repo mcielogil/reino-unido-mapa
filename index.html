@@ -2667,9 +2667,7 @@ function seleccionarHoras(horas) {
   clearPlanPointMarker();
   setPlanInteraction(true);
 
-  var status = document.getElementById('plan-status');
-  status.style.display = 'block';
-  status.textContent = 'Ahora tocá un punto del mapa para armar el recorrido desde esa zona.';
+  alert('Ahora tocá un punto del mapa para armar el recorrido desde esa zona.');
 
   document.getElementById('plan-result').style.display = 'none';
   document.getElementById('plan-panel').style.display = 'none';
