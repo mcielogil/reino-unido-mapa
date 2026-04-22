@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Londres — Mapa de Viaje</title>
+  <title>Londres, punto por punto</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -20,11 +20,16 @@
       --red-pale: #fdf0ed;
       --gold: #c8920a;
       --olive: #4a6741;
-      --sidebar-w: 290px;
+      --sidebar-w: 0px;
+      --paper: rgba(247, 242, 232, 0.94);
+      --paper-solid: #f6f1e8;
+      --paper-line: rgba(74, 73, 68, 0.14);
+      --shadow-soft: 0 18px 40px rgba(0,0,0,0.16);
+      --shadow-card: 0 22px 48px rgba(0,0,0,0.18);
     }
     
 
-    body { font-family: 'DM Sans', sans-serif; background: var(--black); overflow: hidden; }
+    body { font-family: 'DM Sans', sans-serif; background: #ede7dc; overflow: hidden; color: var(--off-black); }
 
   #map {
   position: absolute;
@@ -79,7 +84,7 @@
 }
 
     .leaflet-tile-pane {
-      filter: saturate(1.6) contrast(1.1) brightness(0.96) hue-rotate(-5deg);
+      filter: saturate(0.82) contrast(1.02) brightness(1.03) sepia(0.08);
     }
     .leaflet-marker-pane {
   pointer-events: auto;
@@ -145,7 +150,7 @@
       font-family: 'Playfair Display', serif;
       font-size: clamp(56px, 9vw, 108px);
       font-weight: 700;
-      color: var(--white);
+      color: #1d1714;
       line-height: 0.95;
       letter-spacing: -0.03em;
       margin-bottom: 32px;
@@ -191,136 +196,162 @@
 
     .opening-btn:hover { background: var(--red-dark); transform: translateY(-1px); }
 
-    /* SIDEBAR */
+    /* OVERLAY PANELS */
     #sidebar {
       position: absolute;
-      top: 0; left: 0; bottom: 0;
+      inset: 0;
       z-index: 1000;
-      width: var(--sidebar-w);
-      background: var(--black);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .sidebar-top,
+    .sidebar-body {
+      pointer-events: auto;
+      background: var(--paper);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--paper-line);
+      box-shadow: var(--shadow-soft);
+      border-radius: 18px;
     }
 
     .sidebar-top {
-      padding: 36px 28px 28px;
-      border-bottom: 1px solid #1e1d1a;
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      width: min(360px, calc(100vw - 36px));
+      padding: 18px 20px 16px;
     }
 
     .sidebar-eyebrow {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 10px;
+      display: none;
     }
 
     .sidebar-brand {
       font-family: 'Playfair Display', serif;
-      font-size: 30px;
+      font-size: clamp(34px, 4vw, 52px);
       font-weight: 700;
-      color: var(--white);
-      line-height: 0.95;
-      letter-spacing: -0.02em;
-      margin-bottom: 10px;
+      color: #1d1714;
+      line-height: 0.94;
+      letter-spacing: -0.04em;
+      margin-bottom: 0;
     }
 
     .sidebar-brand em {
       font-style: italic;
       font-weight: 400;
-      color: var(--red);
-      display: block;
+      color: #1d1714;
+      display: inline;
     }
 
     .sidebar-tagline {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 13px;
-      font-weight: 400;
-      color: #4a4944;
-      line-height: 1.5;
+      display: none;
     }
 
     .sidebar-body {
-      padding: 28px;
-      flex: 1;
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: min(280px, calc(100vw - 36px));
+      max-height: calc(100vh - 110px);
       overflow-y: auto;
-      scrollbar-width: none;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 14px;
     }
 
-    .sidebar-body::-webkit-scrollbar { display: none; }
+    .sidebar-body::-webkit-scrollbar { width: 6px; }
+    .sidebar-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 999px; }
+
+    .sidebar-body > div {
+      background: rgba(255,255,255,0.28);
+      border: 1px solid rgba(74, 73, 68, 0.1);
+      border-radius: 14px;
+      padding: 10px;
+    }
 
     .sidebar-section-label {
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 500;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: #3a3934;
+      color: #7d7368;
       margin-bottom: 10px;
     }
 
     .filter-list {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 8px;
     }
 
     .filter-btn {
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: transparent;
-      border: none;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(255,255,255,0.45);
+      border: 1px solid rgba(74,73,68,0.12);
+      border-radius: 999px;
       cursor: pointer;
-      padding: 8px 10px;
+      padding: 9px 12px;
       font-family: 'DM Sans', sans-serif;
       font-size: 13px;
-      font-weight: 300;
-      color: #3a3934;
+      font-weight: 400;
+      color: #4d473f;
       text-align: left;
       transition: all 0.2s;
       letter-spacing: 0.01em;
-      border-left: 2px solid transparent;
+      position: relative;
     }
 
-    .filter-btn.active { color: var(--white); border-left-color: var(--red); background: #161512; }
-    .filter-btn:hover { color: var(--white); }
+    .filter-btn::after {
+      content: '';
+      width: 34px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.10);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+      margin-left: auto;
+      flex-shrink: 0;
+      transition: background 0.2s ease;
+    }
+
+    .filter-btn::before {
+      content: '';
+      position: absolute;
+      right: 28px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.22);
+      transition: transform 0.2s ease;
+      z-index: 1;
+    }
+
+    .filter-btn.active {
+      color: #241d18;
+      background: rgba(255,255,255,0.7);
+      border-color: rgba(74,73,68,0.16);
+    }
+    .filter-btn.active::after { background: rgba(200,146,10,0.26); }
+    .filter-btn.active::before { transform: translateX(16px); }
+    .filter-btn:hover { background: rgba(255,255,255,0.78); }
 
     .filter-pip {
       width: 7px; height: 7px;
       border-radius: 50%;
       flex-shrink: 0;
-      opacity: 0.5;
+      opacity: 0.9;
       transition: opacity 0.2s;
     }
 
-    .filter-btn.active .filter-pip { opacity: 1; }
-
-    .sidebar-about {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 13px;
-      font-weight: 400;
-      color: #3a3934;
-      line-height: 1.8;
-    }
-
-    .sidebar-footer {
-      padding: 20px 28px;
-      border-top: 1px solid #1e1d1a;
-    }
-
+    .sidebar-about,
+    .sidebar-footer,
     .sidebar-footer-text {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 12px;
-      color: #2a2926;
-      line-height: 1.7;
+      display: none;
     }
 
     /* LEAFLET OVERRIDES */
@@ -329,10 +360,10 @@
   margin: 0 !important;
   padding: 0 !important;
   width: auto !important;
-  border-radius: 0 !important;
-  background: var(--white);
-  border: none;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.1);
+  border-radius: 18px !important;
+  background: var(--paper-solid);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-card);
 }
 
 .leaflet-popup {
@@ -345,7 +376,7 @@
   margin: 0 !important;
   padding: 0 !important;
   width: 280px !important;
-  border-radius: 0 !important;
+  border-radius: 18px !important;
   background: var(--black) !important;
 }
     .leaflet-popup-content { margin: 0 !important; padding: 0 !important; width: 100% !important; }
@@ -366,7 +397,7 @@
 
     .leaflet-control-zoom {
       border: none !important;
-      border-radius: 0 !important;
+      border-radius: 18px !important;
       box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
     }
 
@@ -374,7 +405,7 @@
       background: var(--white) !important;
       color: var(--black) !important;
       border-bottom: 1px solid #eee !important;
-      border-radius: 0 !important;
+      border-radius: 18px !important;
       font-family: 'DM Sans', sans-serif !important;
       font-weight: 300 !important;
       width: 32px !important; height: 32px !important; line-height: 32px !important;
@@ -386,7 +417,7 @@
       background: rgba(250,250,248,0.85) !important;
       color: #aaa !important;
       font-size: 9px !important;
-      border-radius: 0 !important;
+      border-radius: 18px !important;
     }
 
     /* POPUP CARD */
@@ -394,8 +425,8 @@
     .popup-card.has-image { max-width: 540px; min-width: 460px; }
 
     .popup-header {
-      background: var(--black);
-      padding: 16px 22px 14px;
+      background: transparent;
+      padding: 18px 20px 8px;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
@@ -434,7 +465,7 @@
       font-size: 9px;
       font-weight: 400;
       letter-spacing: 0.1em;
-      color: #4a4944;
+      color: #8a7f72;
       font-family: 'DM Sans', sans-serif;
       font-style: italic;
     }
@@ -468,7 +499,7 @@
   width: 44px;
   height: 44px;
   border: none;
-  background: var(--white);
+  background: var(--paper-solid);
   color: var(--black);
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   cursor: pointer;
@@ -488,7 +519,7 @@
   z-index: 1001;
   padding: 10px 12px;
   border: none;
-  background: var(--white);
+  background: var(--paper-solid);
   color: var(--black);
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   cursor: pointer;
@@ -518,7 +549,7 @@
   display: flex;
   gap: 10px;
   padding: 0 20px 18px;
-  background: var(--white);
+  background: var(--paper-solid);
 }
 
 .popup-link-btn {
@@ -545,9 +576,9 @@
     /* TABS */
     .popup-tabs {
       display: flex;
-      border-bottom: 1px solid #ebe9e4;
+      border-bottom: 1px solid rgba(74,73,68,0.10);
       padding: 0 20px;
-      background: var(--white);
+      background: var(--paper-solid);
       overflow-x: auto;
       scrollbar-width: none;
     }
@@ -573,7 +604,7 @@
     .popup-tab.active { color: var(--black); border-bottom-color: var(--red); }
     .popup-tab:hover { color: var(--black); }
 
-    .popup-tab-content { display: none; background: var(--white); }
+    .popup-tab-content { display: none; background: var(--paper-solid); }
 
     .popup-tab-content.active {
       display: flex;
@@ -584,7 +615,7 @@
       display: none;
       flex-direction: column;
       padding: 22px 24px;
-      background: var(--white);
+      background: var(--paper-solid);
     }
 
     .popup-tab-content.simple-content.active { display: flex; }
@@ -665,7 +696,7 @@
       font-style: italic;
     }
 
-    .popup-inner { padding: 20px 22px; flex: 1; min-width: 0; background: var(--white); }
+    .popup-inner { padding: 20px 22px; flex: 1; min-width: 0; background: var(--paper-solid); }
 
     .popup-text p {
       font-family: 'Playfair Display', serif;
@@ -679,7 +710,7 @@
 
     .popup-text p:last-child { margin-bottom: 0; }
 
-    .popup-no-tabs { padding: 22px 24px; background: var(--white); }
+    .popup-no-tabs { padding: 22px 24px; background: var(--paper-solid); }
 
     /* SCROLLABLE TAB CONTENT */
     .popup-tab-content.simple-content {
@@ -709,6 +740,29 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
+  
+    @media (max-width: 768px) {
+      .sidebar-top {
+        top: 16px;
+        left: 64px;
+        right: 16px;
+        width: auto;
+        padding: 14px 16px;
+      }
+
+      .sidebar-brand {
+        font-size: 28px;
+      }
+
+      .sidebar-body {
+        top: 92px;
+        left: 16px;
+        right: 16px;
+        width: auto;
+        max-height: calc(100vh - 180px);
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -749,10 +803,7 @@
   <div id="sidebar">
    <div class="sidebar-top">
   <div class="sidebar-eyebrow">Recorrido</div>
-  <div class="sidebar-brand">Gran Bretaña,<br><em>punto por punto</em></div>
-  <div class="sidebar-tagline">
-    Lugares que valen por lo que esconden, no por lo que prometen.
-  </div>
+  <div class="sidebar-brand">Londres,<br><em>punto por punto</em></div>
 </div>
     <div class="sidebar-body">
       <div>
@@ -761,33 +812,11 @@
   <input 
     id="search-input"
     type="text" 
-    placeholder="Ej: pub, Shakespeare, torre..."
+    placeholder="Buscar lugar"
     oninput="searchPlaces(this.value)"
-    style="
-      width: 100%;
-      background: #161512;
-      border: 1px solid #2a2926;
-      border-left: 2px solid var(--red);
-      color: var(--white);
-      padding: 8px 12px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
-      outline: none;
-      box-sizing: border-box;
-    "
+    style="width:100%;background:rgba(255,255,255,0.86);border:1px solid rgba(74,73,68,0.14);border-radius:10px;color:#2b241f;padding:10px 12px;font-family:\'DM Sans\',sans-serif;font-size:12px;outline:none;box-sizing:border-box;"
   />
-  <div id="search-results" style="display:none; margin-top:8px; display:flex; flex-direction:column; gap:2px;"></div>
-</div>
-        <div>
-  <div class="sidebar-section-label">Buscar lugar</div>
-  <input 
-    id="search-input"
-    type="text" 
-    placeholder="Ej: pub, Shakespeare, torre..."
-    oninput="searchPlaces(this.value)"
-    style="width:100%;background:#161512;border:1px solid #2a2926;border-left:2px solid var(--red);color:var(--white);padding:8px 12px;font-family:\'DM Sans\',sans-serif;font-size:12px;outline:none;box-sizing:border-box;"
-  />
-  <div id="search-results" style="margin-top:4px;display:flex;flex-direction:column;gap:2px;"></div>
+  <div id="search-results" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;"></div>
 </div>
         <div class="sidebar-section-label">Filtrar por tipo</div>
         <div class="filter-list">
@@ -813,44 +842,37 @@
           </button>
         </div>
       </div>
-      <div>
-        <div class="sidebar-section-label">Sobre este mapa</div>
-        <div class="sidebar-about">Una guía de Londres para tres — madre e hijas. Lugares conocidos y lugares que casi nadie encuentra. Cada pin tiene una historia, una curiosidad y algo para hacer juntas.</div>
-      </div>
     </div>
-<div class="sidebar-footer-text">
-  Mirar dos veces cambia todo.
-</div>
   </div>
 
-  <button class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')" style="display:none;position:fixed;top:16px;left:16px;z-index:1002;width:44px;height:44px;background:var(--black);border:none;cursor:pointer;align-items:center;justify-content:center;">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  <button class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')" style="display:none;position:fixed;top:16px;left:16px;z-index:1002;width:44px;height:44px;background:rgba(246,241,232,0.96);border:1px solid rgba(74,73,68,0.12);box-shadow:var(--shadow-soft);border-radius:14px;cursor:pointer;align-items:center;justify-content:center;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1d1714" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
-    <div id="mobile-search" style="display:none;position:fixed;top:0;left:0;right:0;z-index:1002;padding:10px 12px;background:var(--black);border-bottom:1px solid #1e1d1a;">
+    <div id="mobile-search" style="display:none;position:fixed;top:0;left:0;right:0;z-index:1002;padding:10px 12px;background:rgba(246,241,232,0.96);border-bottom:1px solid rgba(74,73,68,0.12);backdrop-filter:blur(8px);">
   <input 
     id="search-input-mobile"
     type="text"
     placeholder="Buscar lugar..."
     oninput="searchPlaces(this.value)"
-    style="width:100%;background:#161512;border:1px solid #2a2926;border-left:2px solid var(--red);color:var(--white);padding:10px 14px;font-family:\'DM Sans\',sans-serif;font-size:14px;outline:none;box-sizing:border-box;border-radius:2px;"
+    style="width:100%;background:#fffdf9;border:1px solid rgba(74,73,68,0.14);color:#2b241f;padding:10px 14px;font-family:\'DM Sans\',sans-serif;font-size:14px;outline:none;box-sizing:border-box;border-radius:12px;"
   />
   <div id="search-results-mobile" style="margin-top:4px;display:flex;flex-direction:column;gap:2px;"></div>
 </div>
 
  <div id="map"></div>
  <div id="plan-pick-layer"></div>
-  <div id="bottom-nav" style="position:fixed;bottom:0;left:var(--sidebar-w);right:0;z-index:1001;background:#0f0e0c;border-top:1px solid #1e1d1a;padding:12px 0 16px;display:flex;justify-content:space-around;align-items:center;">
- <button onclick="document.getElementById('city-card').style.display='flex';cargarDesafios();" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;" onmouseenter="this.querySelectorAll('svg')[0].style.stroke='#d4321c';this.querySelectorAll('span')[0].style.color='#d4321c'" onmouseleave="this.querySelectorAll('svg')[0].style.stroke='#fafaf8';this.querySelectorAll('span')[0].style.color='#fafaf8'">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fafaf8" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-    <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#fafaf8;font-family:\'DM Sans\',sans-serif;">Londres</span>
+  <div id="bottom-nav" style="position:fixed;bottom:0;left:0;right:0;z-index:1001;background:rgba(246,241,232,0.96);backdrop-filter:blur(10px);border-top:1px solid rgba(74,73,68,0.12);padding:12px 0 14px;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -6px 18px rgba(0,0,0,0.06);">
+ <button onclick="document.getElementById('city-card').style.display='flex';cargarDesafios();" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;" onmouseenter="this.querySelectorAll('svg')[0].style.stroke='#d4321c';this.querySelectorAll('span')[0].style.color='#d4321c'" onmouseleave="this.querySelectorAll('svg')[0].style.stroke='#1d1714';this.querySelectorAll('span')[0].style.color='#1d1714'">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1d1714" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#1d1714;font-family:\'DM Sans\',sans-serif;">Londres</span>
   </button>
- <button onclick="activarModoPlan()" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;" onmouseenter="this.querySelectorAll('svg')[0].style.stroke='#d4321c';this.querySelectorAll('span')[0].style.color='#d4321c'" onmouseleave="this.querySelectorAll('svg')[0].style.stroke='#fafaf8';this.querySelectorAll('span')[0].style.color='#fafaf8'">
-  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fafaf8" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-  <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#fafaf8;font-family:\'DM Sans\',sans-serif;">Plan del día</span>
+ <button onclick="activarModoPlan()" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;" onmouseenter="this.querySelectorAll('svg')[0].style.stroke='#d4321c';this.querySelectorAll('span')[0].style.color='#d4321c'" onmouseleave="this.querySelectorAll('svg')[0].style.stroke='#1d1714';this.querySelectorAll('span')[0].style.color='#1d1714'">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1d1714" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+  <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#1d1714;font-family:\'DM Sans\',sans-serif;">Plan del día</span>
 </button>
-  <button onclick="abrirPersonajes()" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;" onmouseenter="this.querySelectorAll('svg')[0].style.stroke='#d4321c';this.querySelectorAll('span')[0].style.color='#d4321c'" onmouseleave="this.querySelectorAll('svg')[0].style.stroke='#4a4944';this.querySelectorAll('span')[0].style.color='#4a4944'">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fafaf8" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.1-7 7-7s7 3 7 7"/></svg>
-    <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#fafaf8;font-family:\'DM Sans\',sans-serif;">Personajes</span>
+  <button onclick="abrirPersonajes()" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;" onmouseenter="this.querySelectorAll('svg')[0].style.stroke='#d4321c';this.querySelectorAll('span')[0].style.color='#d4321c'" onmouseleave="this.querySelectorAll('svg')[0].style.stroke='#1d1714';this.querySelectorAll('span')[0].style.color='#1d1714'">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1d1714" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.1-7 7-7s7 3 7 7"/></svg>
+    <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#1d1714;font-family:\'DM Sans\',sans-serif;">Personajes</span>
   </button>
 </div>
 
@@ -2604,7 +2626,7 @@ function createPlanPointMarker(latlng) {
           '<path d="M14 0C6.268 0 0 6.268 0 14c0 10.5 14 26 14 26s14-15.5 14-26C28 6.268 21.732 0 14 0z" fill="#fafaf8"/>' +
           '<circle cx="14" cy="14" r="5.8" fill="#d4321c"/>' +
         '</svg>' +
-        '<div style="position:absolute;left:50%;top:46px;transform:translateX(-50%);white-space:nowrap;background:#0f0e0c;border:1px solid #2a2926;color:#fafaf8;padding:4px 7px;font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;">Punto elegido</div>' +
+        '<div style="position:absolute;left:50%;top:46px;transform:translateX(-50%);white-space:nowrap;background:#0f0e0c;border:1px solid #2a2926;color:#1d1714;padding:4px 7px;font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;">Punto elegido</div>' +
       '</div>',
     iconSize: [28, 54],
     iconAnchor: [14, 40]
@@ -3717,7 +3739,7 @@ var fabAbierto = false;
               '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#b8b2a8;line-height:1.5;margin-bottom:14px;">' + p.titulo + '</div>' +
               '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.7;color:#8d877e;">Tocá “Ver más” para abrir la carta completa.</div>' +
             '</div>' +
-            '<button class="personaje-ver-mas-btn" style="width:100%;padding:12px 14px;background:transparent;border:1px solid #c8920a;color:#fafaf8;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;">Ver más</button>' +
+            '<button class="personaje-ver-mas-btn" style="width:100%;padding:12px 14px;background:transparent;border:1px solid #c8920a;color:#1d1714;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;">Ver más</button>' +
           '</div>' +
 
         '</div>';
