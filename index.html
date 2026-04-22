@@ -2563,19 +2563,18 @@ window.searchPlaces = function(query) {
     btn.onmouseenter = function(){ this.style.color = 'white'; };
     btn.onmouseleave = function(){ this.style.color = '#aaa'; };
     btn.onclick = function() {
-      map.setView([obj.place.lat, obj.place.lng], 16);
-      obj.marker.openPopup();
-      document.getElementById('search-input').value = '';
-      results.style.display = 'none';
-      results.innerHTML = '';
-      allMarkers.forEach(function(o) {
-        var show = o.place.category === 'Baños Públicos' || activeFilters.has(o.place.category);
-        if (show) map.addLayer(o.marker); else map.removeLayer(o.marker);
-      });
-    }
-    results.appendChild(btn);
+  map.setView([obj.place.lat, obj.place.lng], 16);
+  obj.marker.openPopup();
+  document.getElementById('search-input').value = '';
+  results.style.display = 'none';
+  results.innerHTML = '';
+  allMarkers.forEach(function(o) {
+    var show = o.place.category === 'Baños Públicos' || activeFilters.has(o.place.category);
+    if (show) map.addLayer(o.marker); else map.removeLayer(o.marker);
   });
 };
+
+results.appendChild(btn);
 
 // ---- BOTTOM SHEET (mobile) ----
 var isMobile = window.innerWidth <= 768;
