@@ -2676,6 +2676,7 @@ function seleccionarHoras(horas) {
 function handlePlanMapClick(e) {
   if (!modoPlan || !horasPlan) return;
   if (planDragging) return;
+  if (!e || !e.latlng) return;
   confirmarPuntoPlan(e.latlng);
 }
 
