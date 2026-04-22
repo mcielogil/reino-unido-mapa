@@ -32,8 +32,26 @@
   left: var(--sidebar-w);
 }
 
+#plan-pick-layer {
+  position: absolute;
+  top: 0; right: 0; bottom: 56px;
+  left: var(--sidebar-w);
+  z-index: 1004;
+  display: none;
+  pointer-events: none;
+  background: transparent;
+}
+#plan-pick-layer.active {
+  display: block;
+  pointer-events: auto;
+  cursor: crosshair;
+}
+
 @media (max-width: 768px) {
   #map {
+    left: 0;
+  }
+  #plan-pick-layer {
     left: 0;
   }
   #bottom-nav {
@@ -820,6 +838,7 @@
 </div>
 
  <div id="map"></div>
+ <div id="plan-pick-layer"></div>
   <div id="bottom-nav" style="position:fixed;bottom:0;left:var(--sidebar-w);right:0;z-index:1001;background:#0f0e0c;border-top:1px solid #1e1d1a;padding:12px 0 16px;display:flex;justify-content:space-around;align-items:center;">
  <button onclick="document.getElementById('city-card').style.display='flex';cargarDesafios();" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;" onmouseenter="this.querySelectorAll('svg')[0].style.stroke='#d4321c';this.querySelectorAll('span')[0].style.color='#d4321c'" onmouseleave="this.querySelectorAll('svg')[0].style.stroke='#fafaf8';this.querySelectorAll('span')[0].style.color='#fafaf8'">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fafaf8" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
@@ -864,7 +883,7 @@
 <div id="plan-panel" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:3000;background:var(--black);overflow-y:auto;padding:32px 24px;">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
     <div style="font-family:\'Playfair Display\',serif;font-size:24px;font-weight:700;color:var(--white);">Tu plan del día</div>
-    <button onclick="document.getElementById('plan-panel').style.display='none';setPlanInteraction(false);clearPlanPointMarker();" style="background:transparent;border:1px solid #2a2926;color:#6a6860;cursor:pointer;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Cerrar</button>
+    <button onclick="document.getElementById('plan-panel').style.display='none';setPlanInteraction(false);clearPlanPointMarker();" style="background:transparent;border:1px solid #2a2926;color:#6a6860;cursor:pointer;padding:8px 14px;font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Cerrar</button>
   </div>
   <div id="plan-step1">
     <div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:15px;color:#6a6860;margin-bottom:10px;">Elegí cuántas horas tienen y después tocá un punto del mapa.</div>
@@ -1063,9 +1082,6 @@ startWatchingUserLocation();
 startWatchingUserLocation();
 
 map.on('popupclose', function() { stopSpeech(); });
-map.on('click', handlePlanMapClick);
-map.on('touchend', handlePlanMapClick);
-});
 
     var categoryColors = {
   'Histórico':          '#d4321c',
@@ -2529,6 +2545,7 @@ allMarkers.forEach(function(obj) {
 var modoPlan = false;
 var puntoPlan = null;
 var planPointMarker = null;
+var planPickLayer = null;
 
 function normalizarNombreLugar(nombre) {
   return (nombre || '').replace(/[^a-zA-Z0-9]/g, '');
@@ -2548,39 +2565,24 @@ function isPersonajeUnlocked(id) {
 function setMarkersInteractive(active) {
   allMarkers.forEach(function(obj) {
     if (!obj || !obj.marker) return;
-
-    if (active) {
-      obj.marker.off('click');
-      if (obj._clickHandler) {
-        obj.marker.on('click', obj._clickHandler);
-      }
-      if (obj.marker.dragging) obj.marker.dragging.enable();
-      var el = obj.marker.getElement();
-      if (el) el.style.pointerEvents = 'auto';
-    } else {
-      if (!obj._clickHandler) {
-        obj._clickHandler = function() {
-          obj.marker.openPopup();
-        };
-      }
-      obj.marker.off('click');
-      if (obj.marker.dragging) obj.marker.dragging.disable();
-      var el = obj.marker.getElement();
-      if (el) el.style.pointerEvents = 'none';
-    }
+    var el = obj.marker.getElement();
+    if (el) el.style.pointerEvents = active ? 'auto' : 'none';
   });
 }
 
 function setPlanInteraction(active) {
   modoPlan = active;
   var mapEl = map.getContainer();
+  if (!planPickLayer) planPickLayer = document.getElementById('plan-pick-layer');
 
   if (active) {
     mapEl.classList.add('crosshair-mode');
     setMarkersInteractive(false);
+    if (planPickLayer) planPickLayer.classList.add('active');
   } else {
     mapEl.classList.remove('crosshair-mode');
     setMarkersInteractive(true);
+    if (planPickLayer) planPickLayer.classList.remove('active');
   }
 }
 
@@ -2709,76 +2711,31 @@ function seleccionarHoras(horas) {
   document.getElementById('plan-result').style.display = 'none';
   document.getElementById('plan-panel').style.display = 'none';
 }
+
+function handlePlanMapPick(clientX, clientY) {
   if (!modoPlan || !horasPlan) return;
 
   var mapEl = map.getContainer();
   var rect = mapEl.getBoundingClientRect();
-
-  var containerPoint = L.point(
-    clientX - rect.left,
-    clientY - rect.top
-  );
-
+  var containerPoint = L.point(clientX - rect.left, clientY - rect.top);
   var latlng = map.containerPointToLatLng(containerPoint);
   confirmarPuntoPlan(latlng);
 }
-  function handlePlanMapClick(e) {
-  if (!modoPlan || !horasPlan) return;
-  if (!e || !e.latlng) return;
-  confirmarPuntoPlan(e.latlng);
-}
 
-map.on('mousedown', function(e) {
-  planDragging = false;
-  planMouseDownPoint = e.containerPoint;
-});
+setTimeout(function() {
+  planPickLayer = document.getElementById('plan-pick-layer');
+  if (!planPickLayer) return;
 
-map.on('mousemove', function(e) {
-  if (!planMouseDownPoint) return;
-  var dx = e.containerPoint.x - planMouseDownPoint.x;
-  var dy = e.containerPoint.y - planMouseDownPoint.y;
-  if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
-    planDragging = true;
-  }
-});
-
-map.on('mouseup', function() {
-  setTimeout(function() {
-    planMouseDownPoint = null;
-    planDragging = false;
-  }, 0);
-});
-
-function handlePlanMapPointer(clientX, clientY) {
-  if (!modoPlan || !horasPlan) return;
-
-  var mapEl = map.getContainer();
-  var rect = mapEl.getBoundingClientRect();
-
-  var point = L.point(
-    clientX - rect.left,
-    clientY - rect.top
-  );
-
-  var latlng = map.containerPointToLatLng(point);
-  confirmarPuntoPlan(latlng);
-}
-
-(function setupPlanPointPicking() {
-  var mapEl = map.getContainer();
-
-  mapEl.addEventListener('click', function(e) {
-    if (!modoPlan || !horasPlan) return;
-    handlePlanMapPointer(e.clientX, e.clientY);
+  planPickLayer.addEventListener('click', function(e) {
+    handlePlanMapPick(e.clientX, e.clientY);
   });
 
-  mapEl.addEventListener('touchend', function(e) {
-    if (!modoPlan || !horasPlan) return;
+  planPickLayer.addEventListener('touchend', function(e) {
     if (!e.changedTouches || !e.changedTouches.length) return;
     var touch = e.changedTouches[0];
-    handlePlanMapPointer(touch.clientX, touch.clientY);
+    handlePlanMapPick(touch.clientX, touch.clientY);
   }, { passive: true });
-})();
+}, 0);
 
 function contarTipoEnSeleccion(selected, tipos) {
   return selected.filter(function(item) {
