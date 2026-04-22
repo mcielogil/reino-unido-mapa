@@ -1095,11 +1095,6 @@ map.on('moveend', function () {
   setTimeout(() => isDraggingMap = false, 100);
 });
 
-// CLICK limpio
-map.on('click', function (e) {
-  if (!planMode) return;
-  if (isDraggingMap) return;
-
   selectedLatLng = e.latlng;
 
   if (planMarker) {
