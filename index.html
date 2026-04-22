@@ -673,24 +673,21 @@
       font-style: normal;
     }
 
-    .popup-card.has-image img {
-      width: 100%;
-      height: 230px;
-      object-fit: cover;
-      flex-shrink: 0;
-      display: block;
-    }
-
-    .popup-img-wrap {
+    
+    .popup-hero {
       position: relative;
       flex-shrink: 0;
       width: 100%;
+      height: 230px;
       overflow: hidden;
       border-top: 1px solid #d9d0c3;
       border-bottom: 1px solid #d9d0c3;
-      background: #ece4d7;
-      min-height: 230px;
+      background: #ece4d7 center center / cover no-repeat;
+      opacity: 0;
+      transition: opacity 0.25s ease;
     }
+
+    .popup-hero.ready { opacity: 1; }
 
     .popup-img-caption {
       position: absolute;
@@ -813,7 +810,7 @@
     }
 
 
-    .popup-img-wrap::before {
+    .popup-hero::before {
       content: '';
       position: absolute;
       inset: 0;
@@ -823,8 +820,8 @@
       z-index: 0;
     }
 
-    .popup-img-wrap img,
-    .popup-fallback {
+    .popup-fallback,
+    .popup-img-caption {
       position: relative;
       z-index: 1;
     }
@@ -1259,6 +1256,7 @@ map.doubleClickZoom.enable();
 map.boxZoom.enable();
 map.keyboard.enable();
 
+startWatchingUserLocation();
 startWatchingUserLocation();
 
 map.on('popupclose', function() { stopSpeech(); });
@@ -2488,9 +2486,15 @@ var CATEGORY_IMAGE_FALLBACKS = {
   ]
 };
 
+var POPUP_IMAGE_CACHE = {};
+
+function escapeHtml(value) {
+  return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function createSvgPlaceholder(place) {
-  var title = (place && (place.imageTitle || place.name) ? (place.imageTitle || place.name) : 'Londres').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  var cat = (place && place.category ? place.category : 'Londres').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  var title = escapeHtml(place && (place.imageTitle || place.name) ? (place.imageTitle || place.name) : 'Londres');
+  var cat = escapeHtml(place && place.category ? place.category : 'Londres');
   var svg = '' +
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720">' +
       '<defs>' +
@@ -2513,114 +2517,132 @@ function getPlaceImageCandidates(place) {
   var slug = slugifyText(place.name);
   var list = [];
   if (PLACE_IMAGE_OVERRIDES[slug]) list.push(PLACE_IMAGE_OVERRIDES[slug]);
-  if (CATEGORY_IMAGE_FALLBACKS[place.category]) {
-    list = list.concat(CATEGORY_IMAGE_FALLBACKS[place.category]);
-  }
+  if (CATEGORY_IMAGE_FALLBACKS[place.category]) list = list.concat(CATEGORY_IMAGE_FALLBACKS[place.category]);
   list.push(createSvgPlaceholder(place));
   return list.filter(Boolean);
 }
 
-function getPlaceImageUrl(place) {
-  return getPlaceImageCandidates(place)[0];
+function getPlaceImageKey(place) {
+  return slugifyText(place.name || place.imageTitle || 'londres');
 }
 
-window.__popupImageRegistry = window.__popupImageRegistry || {};
-window.registerPopupImageCandidates = function(key, candidates) {
-  window.__popupImageRegistry[key] = Array.isArray(candidates) ? candidates.slice() : [];
-};
+function getPlaceImageResolved(place) {
+  var key = getPlaceImageKey(place);
+  if (POPUP_IMAGE_CACHE[key]) return POPUP_IMAGE_CACHE[key];
+  return null;
+}
 
-function updatePopupLayout() {
+function updateOpenPopupLayout() {
   setTimeout(function() {
-    try {
-      if (map && map._popup) map._popup.update();
-      if (window.isMobile && typeof closeBottomSheet === 'function') {
-        var sheet = document.getElementById('bottom-sheet');
-        if (sheet) sheet.style.willChange = 'transform';
-      }
-    } catch (e) {}
+    if (map && map._popup && typeof map._popup.update === 'function') map._popup.update();
   }, 0);
 }
 
-function ensurePopupFallbackVisible(wrap) {
-  if (!wrap) return;
-  var fallback = wrap.querySelector('.popup-fallback');
-  if (fallback) fallback.style.display = 'flex';
-  var sk = wrap.querySelector('.popup-img-skeleton');
-  if (sk) sk.remove();
-  var img = wrap.querySelector('img[data-place-image-key]');
-  if (img) {
-    img.style.opacity = '0';
-    img.style.display = 'none';
-  }
-  updatePopupLayout();
-}
-
-window.handlePlaceImageLoad = function(img) {
-  if (!img) return;
-  img.dataset.loaded = '1';
-  img.style.display = 'block';
-  img.style.opacity = '1';
-  var wrap = img.closest('.popup-img-wrap');
-  if (wrap) {
-    var sk = wrap.querySelector('.popup-img-skeleton');
-    if (sk) sk.remove();
-    var fallback = wrap.querySelector('.popup-fallback');
-    if (fallback) fallback.style.display = 'none';
-  }
-  updatePopupLayout();
-};
-
-window.handlePlaceImageError = function(img) {
-  if (!img) return;
-  var key = img.getAttribute('data-place-image-key') || '';
-  var list = window.__popupImageRegistry[key] || [];
-  var currentIndex = parseInt(img.getAttribute('data-place-image-index') || '0', 10);
-  var nextIndex = currentIndex + 1;
-  if (nextIndex < list.length) {
-    img.setAttribute('data-place-image-index', String(nextIndex));
-    img.src = list[nextIndex];
+function preloadPlaceImage(place, done) {
+  var key = getPlaceImageKey(place);
+  if (POPUP_IMAGE_CACHE[key]) {
+    done(POPUP_IMAGE_CACHE[key]);
     return;
   }
-  ensurePopupFallbackVisible(img.closest('.popup-img-wrap'));
-};
+  var candidates = getPlaceImageCandidates(place).slice();
+  var index = 0;
+
+  function tryNext() {
+    var url = candidates[index];
+    if (!url) {
+      POPUP_IMAGE_CACHE[key] = createSvgPlaceholder(place);
+      done(POPUP_IMAGE_CACHE[key]);
+      return;
+    }
+    var probe = new Image();
+    probe.decoding = 'async';
+    probe.referrerPolicy = 'no-referrer';
+    probe.onload = function() {
+      POPUP_IMAGE_CACHE[key] = url;
+      done(url);
+    };
+    probe.onerror = function() {
+      index += 1;
+      tryNext();
+    };
+    probe.src = url;
+  }
+
+  tryNext();
+}
+
+function paintPopupHero(hero, url) {
+  if (!hero) return;
+  hero.style.backgroundImage = 'url("' + String(url).replace(/"/g, '%22') + '")';
+  hero.classList.add('ready');
+  hero.classList.add('has-bg');
+  var fallback = hero.querySelector('.popup-fallback');
+  if (fallback) fallback.style.display = 'none';
+  var sk = hero.querySelector('.popup-img-skeleton');
+  if (sk) sk.remove();
+  updateOpenPopupLayout();
+}
+
+function showPopupHeroFallback(hero) {
+  if (!hero) return;
+  hero.classList.add('ready');
+  hero.classList.remove('has-bg');
+  hero.style.backgroundImage = 'none';
+  var fallback = hero.querySelector('.popup-fallback');
+  if (fallback) fallback.style.display = 'flex';
+  var sk = hero.querySelector('.popup-img-skeleton');
+  if (sk) sk.remove();
+  updateOpenPopupLayout();
+}
 
 function hydratePopupImages(root) {
   var scope = root && root.querySelectorAll ? root : document;
-  scope.querySelectorAll('img[data-place-image-key]').forEach(function(img) {
-    if (img.dataset.hydrated === '1') return;
-    img.dataset.hydrated = '1';
-    if (img.complete && img.naturalWidth > 0) {
-      window.handlePlaceImageLoad(img);
-    } else if (img.complete && !img.naturalWidth) {
-      window.handlePlaceImageError(img);
+  scope.querySelectorAll('.popup-hero[data-place-key]').forEach(function(hero) {
+    if (hero.dataset.started === '1') return;
+    hero.dataset.started = '1';
+    var placeData = null;
+    try {
+      placeData = JSON.parse(hero.getAttribute('data-place-meta') || '{}');
+    } catch (e) {
+      placeData = {};
     }
+    var cached = getPlaceImageResolved(placeData);
+    if (cached) {
+      paintPopupHero(hero, cached);
+      return;
+    }
+    preloadPlaceImage(placeData, function(url) {
+      if (!hero.isConnected) return;
+      if (String(url || '').indexOf('data:image/svg+xml') === 0) showPopupHeroFallback(hero);
+      else paintPopupHero(hero, url);
+    });
   });
 }
-
-/* 3) REEMPLAZAR completa la función buildPopup(place) por esta */
 
 function buildPopup(place) {
   var id = 'popup-' + Math.random().toString(36).substr(2,9);
   var isToilet = place.category === 'Baños Públicos';
   if (isToilet) {
-  return '<div class="popup-card" style="min-width:280px;max-width:320px;">' +
-    '<div class="popup-header">' +
-      '<div class="popup-header-text">' +
-        '<h3>' + place.name + '</h3>' +
-        '<div class="popup-header-sub">' +
-          '<div class="popup-category">Baños Públicos</div>' +
+    return '<div class="popup-card" style="min-width:280px;max-width:320px;">' +
+      '<div class="popup-header">' +
+        '<div class="popup-header-text">' +
+          '<h3>' + place.name + '</h3>' +
+          '<div class="popup-header-sub">' +
+            '<div class="popup-category">Baños Públicos</div>' +
+          '</div>' +
         '</div>' +
       '</div>' +
-    '</div>' +
-    '<div style="padding:16px 20px;background:var(--black);display:flex;flex-direction:column;gap:10px;">' +
-      '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;color:#6a6860;line-height:1.6;">' + place.lugar + '</div>' +
-      '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')" style="width:100%;padding:12px;text-align:center;">Ver ruta</button>' +
-    '</div>' +
-  '</div>';
-}
-  var hasImage = !!place.imageTitle && !isToilet;
+      '<div style="padding:16px 20px;background:var(--black);display:flex;flex-direction:column;gap:10px;">' +
+        '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;color:#6a6860;line-height:1.6;">' + place.lugar + '</div>' +
+        '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')" style="width:100%;padding:12px;text-align:center;">Ver ruta</button>' +
+      '</div>' +
+    '</div>';
+  }
 
-  var escapedLugar = place.lugar.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  var hasImage = !!place.imageTitle;
+  var escapedLugar = place.lugar.replace(/'/g, "\\'").replace(/\"/g, '&quot;');
+  var placeMetaAttr = escapeHtml(JSON.stringify({ name: place.name, imageTitle: place.imageTitle, category: place.category }));
+  var placeKey = getPlaceImageKey(place);
 
   var header =
     '<div class="popup-header">' +
@@ -2635,38 +2657,22 @@ function buildPopup(place) {
       '</button>' +
     '</div>';
 
-  var tabs;
-  if (isToilet) {
-    tabs =
-      '<div class="popup-tabs">' +
-        '<div class="popup-tab active" onclick="switchTab(\'' + id + '\',\'lugar\')">El Lugar</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'historia\')">Info útil</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'curiosidades\')">Acceso</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'para3\')">Cerca de acá</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'como\')">Cómo llegar</div>' +
-      '</div>';
-  } else {
-    tabs =
-      '<div class="popup-tabs">' +
-        '<div class="popup-tab active" onclick="switchTab(\'' + id + '\',\'lugar\')">El Lugar</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'historia\')">Lo que Pasó Aquí</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'curiosidades\')">Curiosidades</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'para3\')">Vivirlo Bien</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'como\')">Cómo Vivirlo</div>' +
-      '</div>';
-  }
+  var tabs =
+    '<div class="popup-tabs">' +
+      '<div class="popup-tab active" onclick="switchTab(\'' + id + '\',\'lugar\')">El Lugar</div>' +
+      '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'historia\')">Lo que Pasó Aquí</div>' +
+      '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'curiosidades\')">Curiosidades</div>' +
+      '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'para3\')">Vivirlo Bien</div>' +
+      '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'como\')">Cómo Vivirlo</div>' +
+    '</div>';
 
   var lugarContent;
   if (hasImage) {
-    var imageCandidates = getPlaceImageCandidates(place);
-    var imageKey = 'img-' + slugifyText(place.name) + '-' + Math.random().toString(36).slice(2, 8);
-    window.registerPopupImageCandidates(imageKey, imageCandidates);
     lugarContent =
       '<div id="' + id + '-lugar" class="popup-tab-content active">' +
-        '<div class="popup-img-wrap">' +
+        '<div class="popup-hero" data-place-key="' + placeKey + '" data-place-meta="' + placeMetaAttr + '">' +
           '<div class="popup-img-skeleton"></div>' +
           '<div class="popup-fallback"><div class="popup-fallback-inner"><div class="popup-fallback-kicker">Imagen de referencia</div><div class="popup-fallback-title">' + place.imageTitle + '</div></div></div>' +
-          '<img src="' + imageCandidates[0] + '" data-place-image-key="' + imageKey + '" data-place-image-index="0" alt="' + place.imageTitle + '" loading="eager" decoding="async" referrerpolicy="no-referrer" onload="handlePlaceImageLoad(this)" onerror="handlePlaceImageError(this)" style="display:block;opacity:0;transition:opacity 0.25s ease;">' +
           '<div class="popup-img-caption">' + place.imageTitle + '</div>' +
         '</div>' +
         '<div class="popup-inner"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
@@ -2678,57 +2684,55 @@ function buildPopup(place) {
       '</div>';
   }
 
-  var historiaLabel = isToilet ? 'Info útil' : 'Lo que Pasó Aquí';
-  var curiosidadesLabel = isToilet ? 'Acceso' : 'Curiosidades';
-  var para3Label = isToilet ? 'Cerca de acá' : 'Cómo Vivirlo';
-  var comoLabel = isToilet ? 'Cómo llegar' : 'Cómo Vivirlo';
-  var comoTexto = isToilet ? place.comoLlegar : place.comoVivirlo;
-
   var historiaContent =
     '<div id="' + id + '-historia" class="popup-tab-content simple-content">' +
-      '<div class="tab-label">' + historiaLabel + '</div>' +
+      '<div class="tab-label">Lo que Pasó Aquí</div>' +
       '<div class="tab-body"><p>' + place.historia + '</p></div>' +
     '</div>';
 
   var curiosidadesContent =
     '<div id="' + id + '-curiosidades" class="popup-tab-content simple-content">' +
-      '<div class="tab-label">' + curiosidadesLabel + '</div>' +
+      '<div class="tab-label">Curiosidades</div>' +
       '<div class="tab-body">' + place.curiosidades + '</div>' +
     '</div>';
 
   var para3Content =
     '<div id="' + id + '-para3" class="popup-tab-content simple-content">' +
-      '<div class="tab-label">' + para3Label + '</div>' +
+      '<div class="tab-label">Cómo Vivirlo</div>' +
       '<div class="tab-body"><p>' + place.paraLasTres + '</p></div>' +
     '</div>';
 
   var comoContent =
     '<div id="' + id + '-como" class="popup-tab-content simple-content">' +
-      '<div class="tab-label">' + comoLabel + '</div>' +
-      '<div class="tab-body"><p>' + comoTexto + '</p></div>' +
+      '<div class="tab-label">Cómo Vivirlo</div>' +
+      '<div class="tab-body"><p>' + place.comoVivirlo + '</p></div>' +
     '</div>';
 
   var actions =
-  '<div class="popup-actions">' +
-  '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
-  '<button class="popup-link-btn" onclick="marcarVisitado(this, \'' + place.name.replace(/[^a-zA-Z0-9]/g, '') + '\')" style="' + (localStorage.getItem('v-' + place.name.replace(/[^a-zA-Z0-9]/g, '')) ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (localStorage.getItem('v-' + place.name.replace(/[^a-zA-Z0-9]/g, '')) ? '✓ Visitado' : 'Marcar visitado') + '</button>' +
-  '</div>';
+    '<div class="popup-actions">' +
+      '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
+      '<button class="popup-link-btn" onclick="marcarVisitado(this, \'' + place.name.replace(/[^a-zA-Z0-9]/g, '') + '\')" style="' + (localStorage.getItem('v-' + place.name.replace(/[^a-zA-Z0-9]/g, '')) ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (localStorage.getItem('v-' + place.name.replace(/[^a-zA-Z0-9]/g, '')) ? '✓ Visitado' : 'Marcar visitado') + '</button>' +
+    '</div>';
+
   return '<div class="popup-card' + (hasImage ? ' has-image' : '') + '" id="' + id + '">' +
     header + tabs + lugarContent + historiaContent + curiosidadesContent + para3Content + comoContent + actions +
     '</div>';
 }
 
-    window.switchTab = function(id, tab) {
-      var card = document.getElementById(id);
-      if (!card) return;
-      card.querySelectorAll('.popup-tab').forEach(function(t) { t.classList.remove('active'); });
-      card.querySelectorAll('.popup-tab-content').forEach(function(c) { c.classList.remove('active'); });
-      var at = card.querySelector('[onclick*="\'' + tab + '\'"]');
-      var ac = document.getElementById(id + '-' + tab);
-      if (at) at.classList.add('active');
-      if (ac) ac.classList.add('active');
-    };
-
+window.switchTab = function(id, tab) {
+  var card = document.getElementById(id);
+  if (!card) return;
+  card.querySelectorAll('.popup-tab').forEach(function(t) { t.classList.remove('active'); });
+  card.querySelectorAll('.popup-tab-content').forEach(function(c) { c.classList.remove('active'); });
+  var at = card.querySelector('[onclick*="\'' + tab + '\'"]');
+  var ac = document.getElementById(id + '-' + tab);
+  if (at) at.classList.add('active');
+  if (ac) {
+    ac.classList.add('active');
+    hydratePopupImages(ac);
+    updateOpenPopupLayout();
+  }
+};
     function syncFilterButtons() {
       document.querySelectorAll('[data-filter]').forEach(function(el) {
         if (activeFilters.has(el.getAttribute('data-filter'))) el.classList.add('active');
@@ -2755,8 +2759,8 @@ function buildPopup(place) {
   var marker = L.marker([place.lat, place.lng], { icon: createPin(place.category) }).addTo(map);
 
   marker.bindPopup(buildPopup(place), {
-    maxWidth: place.category === 'Baños Públicos' ? 300 : 560,
-    minWidth: place.category === 'Baños Públicos' ? 280 : 460
+    maxWidth: place.category === 'Baños Públicos' ? 300 : 620,
+    minWidth: place.category === 'Baños Públicos' ? 280 : 320
   });
      var markerClickHandler = function() {
   marker.openPopup();
@@ -2865,32 +2869,27 @@ function renderMobileFilters() {
 
 renderMobileFilters();
 
-map.on('popupopen', function(e) {
-  if (e && e.popup && e.popup.getElement) hydratePopupImages(e.popup.getElement());
-});
-
 // ---- BOTTOM SHEET (mobile) ----
 var isMobile = window.innerWidth <= 768;
 
-if (isMobile) {
-  map.on('popupopen', function(e) {
-    var content = e.popup.getContent();
-    var sheet = document.getElementById('bottom-sheet');
-    var overlay = document.getElementById('bottom-sheet-overlay');
-    var sheetContent = document.getElementById('bottom-sheet-content');
-    sheetContent.innerHTML = content;
-    hydratePopupImages(sheetContent);
-    sheet.style.display = 'block';
-    overlay.style.display = 'block';
-    setTimeout(function(){ sheet.style.transform = 'translateY(0)'; }, 10);
-    map.closePopup();
-  });
-} else {
-  map.on('popupopen', function(e) {
-    var el = e.popup && e.popup.getElement ? e.popup.getElement() : null;
+map.on('popupopen', function(e) {
+  var el = e && e.popup && e.popup.getElement ? e.popup.getElement() : null;
+  if (!isMobile) {
     hydratePopupImages(el || document);
-  });
-}
+    return;
+  }
+
+  var content = e.popup.getContent();
+  var sheet = document.getElementById('bottom-sheet');
+  var overlay = document.getElementById('bottom-sheet-overlay');
+  var sheetContent = document.getElementById('bottom-sheet-content');
+  sheetContent.innerHTML = content;
+  hydratePopupImages(sheetContent);
+  sheet.style.display = 'block';
+  overlay.style.display = 'block';
+  setTimeout(function(){ sheet.style.transform = 'translateY(0)'; }, 10);
+  map.closePopup();
+});
 
 window.closeBottomSheet = function() {
   var sheet = document.getElementById('bottom-sheet');
