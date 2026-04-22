@@ -1260,6 +1260,7 @@ map.boxZoom.enable();
 map.keyboard.enable();
 
 startWatchingUserLocation();
+startWatchingUserLocation();
 
 map.on('popupclose', function() { stopSpeech(); });
 
@@ -2529,44 +2530,6 @@ var PLACE_LOCAL_IMAGE_MAP = {
 };
 
 var LOCAL_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp'];
-var GITHUB_PAGES_BASE = 'https://mcielogil.github.io/reino-unido-mapa/';
-var GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/mcielogil/reino-unido-mapa/main/';
-var PLACE_GITHUB_IMAGE_MAP = {
-  'Torre de Londres': 'torre-londres.jpg',
-  'Abadía de Westminster': 'westminster.jpg',
-  'Museo Británico': 'museo-britanico.jpg',
-  'Palacio de Buckingham': 'buckingham.jpg',
-  'Southwark: El Londres de Shakespeare': 'southwark.jpg',
-  'St. Paul’s Cathedral': 'st-pauls.jpg',
-  "St. Paul's Cathedral": 'st-pauls.jpg',
-  'King’s Cross — Andén 9¾': 'kings-cross.jpg',
-  "King's Cross — Andén 9¾": 'kings-cross.jpg',
-  "King's Cross - Andén 9¾": 'kings-cross.jpg',
-  'Notting Hill y Portobello Road': 'notting-hill.jpg',
-  'Borough Market': 'borough-market.jpg',
-  'Brick Lane y el East End': 'brick-lane.jpg',
-  'Hyde Park': 'hyde-park.jpg',
-  'Highgate Cemetery': 'highgate.jpg',
-  "Dennis Severs' House": 'dennis-severs.jpg',
-  'Dennis Severs’ House': 'dennis-severs.jpg',
-  'Sir John Soane’s Museum': 'soane-museum.jpg',
-  "Sir John Soane's Museum": 'soane-museum.jpg',
-  'Tate Modern': 'tate-modern.jpg',
-  'Camden Town': 'camden.jpg',
-  '221B Baker Street — Sherlock Holmes': 'sherlock.jpg',
-  'Pub The Anchor — Donde bebía Shakespeare': 'the-anchor.jpg',
-  'Callejón de Jack the Ripper — Goulston Street': 'ripper.jpg',
-  'La Casa de Charles Dickens': 'dickens-house.jpg',
-  'Leadenhall Market — Diagon Alley': 'leadenhall.jpg',
-  'Crossbones Graveyard — El cementerio de las proscritas': 'crossbones.jpg',
-  'La Escalera del Ángel — Angel, Islington': 'angel.jpg',
-  "La Escalera del Angel — Angel, Islington": 'angel.jpg',
-  'Cleopatra’s Needle — El obelisco que vio a Napoleón': 'cleopatra-needle.jpg',
-  "Cleopatra's Needle — El obelisco que vio a Napoleón": 'cleopatra-needle.jpg',
-  'El Café donde nació el seguro moderno — Lloyd’s Coffee House': 'lloyds.jpg',
-  "El Café donde nació el seguro moderno — Lloyd's Coffee House": 'lloyds.jpg',
-  'Bunhill Fields — El cementerio de los disidentes': 'bunhill.jpg'
-};
 
 function uniqueList(list) {
   var seen = {};
@@ -2577,28 +2540,34 @@ function uniqueList(list) {
   });
 }
 
-function buildGithubImageCandidates(filename) {
-  if (!filename) return [];
-  var clean = String(filename).replace(/^\.?\//, '');
-  return [
-    GITHUB_PAGES_BASE + clean,
-    GITHUB_RAW_BASE + clean
-  ];
-}
-
 function buildLocalImageCandidates(place) {
   var candidates = [];
   var fullName = String(place && place.name || '').trim();
-  var baseManual = PLACE_LOCAL_IMAGE_MAP[fullName] || '';
-  var githubFilename = PLACE_GITHUB_IMAGE_MAP[fullName] || baseManual || '';
-  var baseNoExt = githubFilename ? githubFilename.replace(/\.(jpg|jpeg|png|webp)$/i, '') : '';
+  var mappedFilename = PLACE_LOCAL_IMAGE_MAP[fullName] || '';
+  var baseNoExt = mappedFilename ? mappedFilename.replace(/\.(jpg|jpeg|png|webp)$/i, '') : '';
   var slugFull = slugifyText(fullName);
   var firstDash = fullName.split('—')[0].trim();
   var firstColon = fullName.split(':')[0].trim();
   var firstPlus = fullName.split('+')[0].trim();
   var extraBases = [];
+  var repoBases = [
+    'https://mcielogil.github.io/reino-unido-mapa/',
+    'https://mcielogil.github.io/reino-unido-mapa/images/',
+    'https://mcielogil.github.io/reino-unido-mapa/img/',
+    'https://mcielogil.github.io/reino-unido-mapa/assets/',
+    'https://mcielogil.github.io/reino-unido-mapa/assets/images/',
+    'https://cdn.jsdelivr.net/gh/mcielogil/reino-unido-mapa@main/',
+    'https://cdn.jsdelivr.net/gh/mcielogil/reino-unido-mapa@main/images/',
+    'https://cdn.jsdelivr.net/gh/mcielogil/reino-unido-mapa@main/img/',
+    'https://cdn.jsdelivr.net/gh/mcielogil/reino-unido-mapa@main/assets/',
+    'https://cdn.jsdelivr.net/gh/mcielogil/reino-unido-mapa@main/assets/images/',
+    'https://raw.githubusercontent.com/mcielogil/reino-unido-mapa/main/',
+    'https://raw.githubusercontent.com/mcielogil/reino-unido-mapa/main/images/',
+    'https://raw.githubusercontent.com/mcielogil/reino-unido-mapa/main/img/',
+    'https://raw.githubusercontent.com/mcielogil/reino-unido-mapa/main/assets/',
+    'https://raw.githubusercontent.com/mcielogil/reino-unido-mapa/main/assets/images/'
+  ];
 
-  if (githubFilename) candidates = candidates.concat(buildGithubImageCandidates(githubFilename));
   if (baseNoExt) extraBases.push(baseNoExt);
   if (slugFull) extraBases.push(slugFull);
   if (firstDash && firstDash !== fullName) extraBases.push(slugifyText(firstDash));
@@ -2615,11 +2584,11 @@ function buildLocalImageCandidates(place) {
   if (fullName.indexOf('Pelicans en St. James') === 0) extraBases.push('pelicans-st-james', 'pelicans');
   if (fullName.indexOf('El Fantasma de la Ópera') === 0) extraBases.push('fantasma-opera', 'her-majestys-theatre');
   if (fullName.indexOf('Xi’an Impression') === 0 || fullName.indexOf("Xi'an Impression") === 0) extraBases.push('xian-impression', 'xian');
-  if (fullName.indexOf('Max’s Sandwich Shop') === 0 || fullName.indexOf("Max's Sandwich Shop") === 0) extraBases.push('maxs-sandwich-shop', 'maxs');
-  if (fullName.indexOf('Wilton’s Music Hall') === 0 || fullName.indexOf("Wilton's Music Hall") === 0) extraBases.push('wiltons-music-hall', 'wiltons');
-  if (fullName.indexOf('Neal’s Yard') === 0 || fullName.indexOf("Neal's Yard") === 0) extraBases.push('neals-yard', 'neals');
+  if (fullName.indexOf('Max’s Sandwich Shop') === 0 || fullName.indexOf("Max\'s Sandwich Shop") === 0) extraBases.push('maxs-sandwich-shop', 'maxs');
+  if (fullName.indexOf('Wilton’s Music Hall') === 0 || fullName.indexOf("Wilton\'s Music Hall") === 0) extraBases.push('wiltons-music-hall', 'wiltons');
+  if (fullName.indexOf('Neal’s Yard') === 0 || fullName.indexOf("Neal\'s Yard") === 0) extraBases.push('neals-yard', 'neals');
   if (fullName.indexOf('Postman') === 0) extraBases.push('postmans-park', 'postmans');
-  if (fullName.indexOf('La Escalera del Ángel') === 0 || fullName.indexOf('La Escalera del Angel') === 0) extraBases.push('angel', 'angel-islington');
+  if (fullName.indexOf('La Escalera del Ángel') === 0) extraBases.push('angel', 'angel-islington');
 
   extraBases = uniqueList(extraBases);
 
@@ -2630,12 +2599,16 @@ function buildLocalImageCandidates(place) {
       return;
     }
     if (/\.(jpg|jpeg|png|webp)$/i.test(base)) {
-      candidates = candidates.concat(buildGithubImageCandidates(base));
+      repoBases.forEach(function(prefix) {
+        candidates.push(prefix + base.replace(/^\.?\//, ''));
+      });
       candidates.push('./' + base.replace(/^\.?\//, ''));
       return;
     }
     LOCAL_IMAGE_EXTENSIONS.forEach(function(ext) {
-      candidates = candidates.concat(buildGithubImageCandidates(base + ext));
+      repoBases.forEach(function(prefix) {
+        candidates.push(prefix + base.replace(/^\.?\//, '') + ext);
+      });
       candidates.push('./' + base.replace(/^\.?\//, '') + ext);
     });
   });
