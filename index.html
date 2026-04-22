@@ -1059,13 +1059,10 @@ map.doubleClickZoom.enable();
 map.boxZoom.enable();
 map.keyboard.enable();
 
-    startWatchingUserLocation();
-    startWatchingUserLocation();
+startWatchingUserLocation();
+startWatchingUserLocation();
 
-    map.on('popupclose', function() { stopSpeech(); });
-    map.on('click', handlePlanMapClick);
-    map.on('touchend', handlePlanMapClick);
-
+map.on('popupclose', function() { stopSpeech(); });
     
     var categoryColors = {
   'Histórico':          '#d4321c',
@@ -2511,12 +2508,10 @@ allMarkers.forEach(function(obj) {
     obj.marker.setIcon(greyPin);
     }
 });
-    var horasPlan = 0;
+ var horasPlan = 0;
 var modoPlan = false;
 var puntoPlan = null;
 var planPointMarker = null;
-var planMouseDownPoint = null;
-var planDragging = false;
 
 function normalizarNombreLugar(nombre) {
   return (nombre || '').replace(/[^a-zA-Z0-9]/g, '');
@@ -2645,8 +2640,6 @@ function confirmarPuntoPlan(latlng) {
 function activarModoPlan() {
   horasPlan = 0;
   puntoPlan = null;
-  planDragging = false;
-  planMouseDownPoint = null;
   clearPlanPointMarker();
   setPlanInteraction(false);
 
@@ -2662,44 +2655,45 @@ function activarModoPlan() {
 function seleccionarHoras(horas) {
   horasPlan = horas;
   puntoPlan = null;
-  planDragging = false;
-  planMouseDownPoint = null;
   clearPlanPointMarker();
   setPlanInteraction(true);
 
-  alert('Ahora tocá un punto del mapa para armar el recorrido desde esa zona.');
+  alert('Ahora tocá cualquier punto del mapa para plantar el pin y armar el recorrido desde esa zona.');
 
   document.getElementById('plan-result').style.display = 'none';
   document.getElementById('plan-panel').style.display = 'none';
 }
 
-function handlePlanMapClick(e) {
+function handlePlanMapPointer(clientX, clientY) {
   if (!modoPlan || !horasPlan) return;
-  if (planDragging) return;
-  if (!e || !e.latlng) return;
-  confirmarPuntoPlan(e.latlng);
+
+  var mapEl = map.getContainer();
+  var rect = mapEl.getBoundingClientRect();
+
+  var point = L.point(
+    clientX - rect.left,
+    clientY - rect.top
+  );
+
+  var latlng = map.containerPointToLatLng(point);
+  confirmarPuntoPlan(latlng);
 }
 
-map.on('mousedown', function(e) {
-  planDragging = false;
-  planMouseDownPoint = e.containerPoint;
-});
+(function setupPlanPointPicking() {
+  var mapEl = map.getContainer();
 
-map.on('mousemove', function(e) {
-  if (!planMouseDownPoint) return;
-  var dx = e.containerPoint.x - planMouseDownPoint.x;
-  var dy = e.containerPoint.y - planMouseDownPoint.y;
-  if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
-    planDragging = true;
-  }
-});
+  mapEl.addEventListener('click', function(e) {
+    if (!modoPlan || !horasPlan) return;
+    handlePlanMapPointer(e.clientX, e.clientY);
+  });
 
-map.on('mouseup', function() {
-  setTimeout(function() {
-    planMouseDownPoint = null;
-    planDragging = false;
-  }, 0);
-});
+  mapEl.addEventListener('touchend', function(e) {
+    if (!modoPlan || !horasPlan) return;
+    if (!e.changedTouches || !e.changedTouches.length) return;
+    var touch = e.changedTouches[0];
+    handlePlanMapPointer(touch.clientX, touch.clientY);
+  }, { passive: true });
+})();
 
 function contarTipoEnSeleccion(selected, tipos) {
   return selected.filter(function(item) {
