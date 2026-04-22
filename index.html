@@ -384,7 +384,7 @@
   border-radius: 18px !important;
   background: var(--black) !important;
 }
-    .leaflet-popup-content { margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: min(560px, calc(100vw - 420px)) !important; }
+    .leaflet-popup-content { margin: 0 !important; padding: 0 !important; width: 100% !important; }
     .leaflet-popup-content-wrapper {
   padding: 0 !important;
 }
@@ -426,59 +426,8 @@
     }
 
     /* POPUP CARD */
-    .popup-card {
-      width: min(320px, calc(100vw - 420px));
-      max-width: calc(100vw - 420px);
-      min-width: 0;
-      overflow: hidden;
-    }
-    .popup-card.has-image {
-      width: min(560px, calc(100vw - 420px));
-      max-width: calc(100vw - 420px);
-      min-width: 0;
-      overflow: hidden;
-    }
-
-    .leaflet-popup-content-wrapper {
-      overflow: hidden !important;
-      max-width: calc(100vw - 32px) !important;
-    }
-
-    @media (max-width: 1024px) {
-      .popup-card.has-image {
-        width: min(540px, calc(100vw - 32px));
-        max-width: calc(100vw - 32px);
-        min-width: 0;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .leaflet-popup-content-wrapper,
-      .leaflet-popup-content {
-        max-width: calc(100vw - 20px) !important;
-      }
-
-      .popup-card,
-      .popup-card.has-image {
-        width: calc(100vw - 20px);
-        max-width: calc(100vw - 20px);
-        min-width: 0;
-      }
-
-      .popup-img-wrap,
-      .popup-card.has-image img {
-        min-height: 180px;
-        height: 180px;
-      }
-
-      .popup-actions {
-        flex-wrap: wrap;
-      }
-
-      .popup-link-btn {
-        flex: 1 1 calc(50% - 6px);
-      }
-    }
+    .popup-card { max-width: 300px; min-width: 240px; }
+    .popup-card.has-image { max-width: 620px; min-width: 520px; }
 
     .popup-header {
       background: transparent;
@@ -974,31 +923,85 @@
     }
 
   
-    @media (max-width: 768px) {
-      .leaflet-popup,
-      .leaflet-popup-content-wrapper,
-      .leaflet-popup-content,
-      .popup-card,
-      .popup-card.has-image {
-        width: calc(100vw - 24px) !important;
-        max-width: calc(100vw - 24px) !important;
-        min-width: 0 !important;
-      }
-
-      .popup-card.has-image img,
-      .popup-img-wrap {
-        height: 190px;
-        min-height: 190px;
-      }
-
-      .popup-actions {
-        flex-wrap: wrap;
-      }
-
-      .popup-link-btn {
-        flex: 1 1 calc(50% - 10px);
-      }
-    }
+/* UNIVERSAL PLACE PANEL */
+#place-panel-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.42);
+  z-index: 2998;
+}
+#place-panel {
+  display: none;
+  position: fixed;
+  z-index: 2999;
+  top: 18px;
+  left: 20px;
+  right: 320px;
+  max-width: 760px;
+  max-height: calc(100vh - 96px);
+  margin: 0 auto;
+  background: var(--paper-solid);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 18px;
+  box-shadow: 0 28px 80px rgba(0,0,0,0.28);
+  overflow: hidden;
+}
+#place-panel-inner {
+  max-height: calc(100vh - 96px);
+  overflow: auto;
+  background: var(--paper-solid);
+}
+#place-panel-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 10;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 999px;
+  background: rgba(246,241,232,0.92);
+  color: #3a3632;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+#place-panel .popup-card,
+#place-panel .popup-card.has-image {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  border-radius: 0;
+}
+#place-panel .popup-tab-content.simple-content {
+  max-height: none;
+}
+#place-panel .popup-inner {
+  max-height: none;
+}
+@media (max-width: 768px) {
+  #place-panel {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: none;
+    max-height: 78vh;
+    border-radius: 18px 18px 0 0;
+  }
+  #place-panel-inner {
+    max-height: 78vh;
+  }
+  #place-panel .popup-img-wrap,
+  #place-panel .popup-card.has-image img {
+    min-height: 190px;
+    height: 190px;
+  }
+  #place-panel .popup-actions {
+    flex-wrap: wrap;
+  }
+}
 
 </style>
 </head>
@@ -1341,6 +1344,7 @@ startWatchingUserLocation();
 startWatchingUserLocation();
 
 map.on('popupclose', function() { stopSpeech(); });
+map.on('click', function() { /* keep panel open intentionally */ });
 
     var categoryColors = {
   'Histórico':          '#d4321c',
@@ -2922,22 +2926,65 @@ function buildPopup(place) {
       window.speechSynthesis.getVoices();
     };
 
+
+window.closePlacePanel = function() {
+  var panel = document.getElementById('place-panel');
+  var overlay = document.getElementById('place-panel-overlay');
+  var inner = document.getElementById('place-panel-inner');
+  if (!panel || !overlay || !inner) return;
+  panel.style.display = 'none';
+  overlay.style.display = 'none';
+  panel.setAttribute('aria-hidden', 'true');
+  inner.innerHTML = '';
+};
+
+window.openPlacePanel = function(place) {
+  if (!place) return;
+  if (typeof closeBottomSheet === 'function') closeBottomSheet();
+  map.closePopup();
+  var panel = document.getElementById('place-panel');
+  var overlay = document.getElementById('place-panel-overlay');
+  var inner = document.getElementById('place-panel-inner');
+  if (!panel || !overlay || !inner) return;
+  inner.innerHTML = buildPopup(place);
+  panel.style.display = 'block';
+  overlay.style.display = 'block';
+  panel.setAttribute('aria-hidden', 'false');
+  hydratePopupImages(inner);
+};
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closePlacePanel();
+    if (typeof closeBottomSheet === 'function') closeBottomSheet();
+  }
+});
+
+
    places.forEach(function(place) {
   var marker = L.marker([place.lat, place.lng], { icon: createPin(place.category) }).addTo(map);
 
-  marker.bindPopup(buildPopup(place), {
-    maxWidth: place.category === 'Baños Públicos' ? 300 : 560,
-    minWidth: place.category === 'Baños Públicos' ? 240 : 0,
-    autoPan: true,
-    keepInView: true,
-    autoPanPaddingTopLeft: [28, 28],
-    autoPanPaddingBottomRight: [360, 120]
-  });
-     var markerClickHandler = function() {
-  marker.openPopup();
-};
+  if (place.category === 'Baños Públicos') {
+    marker.bindPopup(buildPopup(place), {
+      maxWidth: 300,
+      minWidth: 280
+    });
+  } else {
+    marker.openPopup = function() {
+      openPlacePanel(place);
+      return marker;
+    };
+    marker.closePopup = function() {
+      closePlacePanel();
+      return marker;
+    };
+  }
 
-marker.on('click', markerClickHandler);
+  var markerClickHandler = function() {
+    marker.openPopup();
+  };
+
+  marker.on('click', markerClickHandler);
 
  allMarkers.push({ place: place, marker: marker, _clickHandler: markerClickHandler });
      
@@ -3042,18 +3089,6 @@ renderMobileFilters();
 
 map.on('popupopen', function(e) {
   if (e && e.popup && e.popup.getElement) hydratePopupImages(e.popup.getElement());
-
-  if (window.innerWidth > 768 && e && e.popup) {
-    setTimeout(function() {
-      try {
-        map.panInside(e.popup.getLatLng(), {
-          paddingTopLeft: [36, 36],
-          paddingBottomRight: [380, 140]
-        });
-        e.popup.update();
-      } catch (err) {}
-    }, 120);
-  }
 });
 
 // ---- BOTTOM SHEET (mobile) ----
@@ -4451,6 +4486,13 @@ function marcarVisitado(btn, nombre) {
   </div>
   <div id="personaje-content"></div>
 </div>
+    
+<div id="place-panel-overlay" onclick="closePlacePanel()"></div>
+<div id="place-panel" aria-hidden="true">
+  <button id="place-panel-close" type="button" onclick="closePlacePanel()" aria-label="Cerrar">×</button>
+  <div id="place-panel-inner"></div>
+</div>
+
     <div id="bottom-sheet" style="
   display: none;
   position: fixed;
