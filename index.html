@@ -970,8 +970,8 @@
   <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#f3ecdf;font-family:\'DM Sans\',sans-serif;">Plan del día</span>
 </button>
   <button class="bottom-nav-btn" onclick="abrirPersonajes()">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1d1714" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.1-7 7-7s7 3 7 7"/></svg>
-    <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#1d1714;font-family:\'DM Sans\',sans-serif;">Personajes</span>
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#f3ecdf" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.1-7 7-7s7 3 7 7"/></svg>
+    <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#f3ecdf;font-family:\'DM Sans\',sans-serif;">Personajes</span>
   </button>
 </div>
 
@@ -2396,7 +2396,7 @@ var PLACE_IMAGE_OVERRIDES = {
   'hyde-park': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Hyde_Park_London_-_September_2005.jpg/1280px-Hyde_Park_London_-_September_2005.jpg',
   'highgate-cemetery': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Highgate_Cemetery_East.JPG/1280px-Highgate_Cemetery_East.JPG',
   'sir-john-soanes-museum': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Soane_Museum%2C_Lincoln%27s_Inn_Fields%2C_London.jpg/1280px-Soane_Museum%2C_Lincoln%27s_Inn_Fields%2C_London.jpg',
-  'tate-modern': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tate_Modern_and_Millennium_Bridge_%28Unsplash-like-free_image_not_used%29.jpg/1200px-Tate_Modern_London_2013_March.jpg',
+  'tate-modern': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Tate_Modern_%285202001512%29.jpg/1280px-Tate_Modern_%285202001512%29.jpg',
   'camden-town': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Camden_Lock_market.jpg/1280px-Camden_Lock_market.jpg',
   '221b-baker-street-sherlock-holmes': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Sherlock_Holmes_Museum_221b_Baker_Street.jpg/1280px-Sherlock_Holmes_Museum_221b_Baker_Street.jpg',
   'leadenhall-market-diagon-alley': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Leadenhall_Market_In_London_-_Feb_2006_edit1.jpg/1280px-Leadenhall_Market_In_London_-_Feb_2006_edit1.jpg',
@@ -2498,10 +2498,12 @@ function buildPopup(place) {
 
   var lugarContent;
   if (hasImage) {
+    var imageUrl = getPlaceImageUrl(place);
     lugarContent =
       '<div id="' + id + '-lugar" class="popup-tab-content active">' +
         '<div class="popup-img-wrap">' +
-          '<img src="' + place.imageTitle.toLowerCase().replace(/[^a-z0-9]+/g,'-') + '.jpg" alt="' + place.imageTitle + '" onerror="this.parentElement.style.display=\'none\'">' +
+          '<div class="popup-img-skeleton"></div>' +
+          '<img data-place-image="' + imageUrl + '" alt="' + place.imageTitle + '" loading="lazy" style="opacity:0;transition:opacity 0.25s ease;">' +
           '<div class="popup-img-caption">' + place.imageTitle + '</div>' +
         '</div>' +
         '<div class="popup-inner"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
