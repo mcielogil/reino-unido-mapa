@@ -2391,9 +2391,14 @@ function buildPopup(place) {
     maxWidth: place.category === 'Baños Públicos' ? 300 : 560,
     minWidth: place.category === 'Baños Públicos' ? 280 : 460
   });
+     var markerClickHandler = function() {
+  marker.openPopup();
+};
 
-  allMarkers.push({ marker: marker, place: place });
+marker.on('click', markerClickHandler);
 
+ allMarkers.push({ place: place, marker: marker, _clickHandler: markerClickHandler });
+     
   if (place.personaje) {
     var personajeIcon = L.divIcon({
       className: '',
@@ -2508,6 +2513,15 @@ allMarkers.forEach(function(obj) {
     obj.marker.setIcon(greyPin);
     }
 });
+  allMarkers.forEach(function(obj) {
+  if (!obj._clickHandler) {
+    obj._clickHandler = function() {
+      obj.marker.openPopup();
+    };
+    obj.marker.off('click');
+    obj.marker.on('click', obj._clickHandler);
+  }
+});
  var horasPlan = 0;
 var modoPlan = false;
 var puntoPlan = null;
@@ -2528,13 +2542,42 @@ function isPersonajeUnlocked(id) {
   });
 }
 
+function setMarkersInteractive(active) {
+  allMarkers.forEach(function(obj) {
+    if (!obj || !obj.marker) return;
+
+    if (active) {
+      obj.marker.off('click');
+      if (obj._clickHandler) {
+        obj.marker.on('click', obj._clickHandler);
+      }
+      if (obj.marker.dragging) obj.marker.dragging.enable();
+      var el = obj.marker.getElement();
+      if (el) el.style.pointerEvents = 'auto';
+    } else {
+      if (!obj._clickHandler) {
+        obj._clickHandler = function() {
+          obj.marker.openPopup();
+        };
+      }
+      obj.marker.off('click');
+      if (obj.marker.dragging) obj.marker.dragging.disable();
+      var el = obj.marker.getElement();
+      if (el) el.style.pointerEvents = 'none';
+    }
+  });
+}
+
 function setPlanInteraction(active) {
   modoPlan = active;
   var mapEl = map.getContainer();
+
   if (active) {
     mapEl.classList.add('crosshair-mode');
+    setMarkersInteractive(false);
   } else {
     mapEl.classList.remove('crosshair-mode');
+    setMarkersInteractive(true);
   }
 }
 
