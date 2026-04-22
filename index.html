@@ -113,7 +113,7 @@
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: var(--black);
+      background: var(--panel-bg);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -770,6 +770,245 @@
       }
     }
 
+
+    :root {
+      --panel-bg: #18312f;
+      --panel-surface: #21403d;
+      --panel-surface-2: #29504c;
+      --panel-border: rgba(226, 211, 185, 0.18);
+      --panel-text: #f6efe4;
+      --panel-muted: #ccbfae;
+      --panel-accent: #d5a24c;
+      --panel-accent-2: #c65a3a;
+      --bottom-nav-bg: rgba(24, 49, 47, 0.96);
+      --bottom-nav-border: rgba(226, 211, 185, 0.12);
+      --bottom-nav-icon: #d9cfbf;
+      --bottom-nav-hover: #d5a24c;
+      --mobile-bar-bg: rgba(246,241,232,0.96);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+      background: var(--bottom-nav-bg);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--bottom-nav-border);
+      padding: 12px 0 14px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 -10px 24px rgba(0,0,0,0.14);
+    }
+
+    .bottom-nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--bottom-nav-icon);
+      transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+      opacity: 0.96;
+    }
+
+    .bottom-nav-btn svg,
+    .bottom-nav-btn span {
+      transition: stroke 0.2s ease, color 0.2s ease, fill 0.2s ease;
+    }
+
+    .bottom-nav-btn svg { stroke: currentColor; }
+    .bottom-nav-btn span {
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: currentColor;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .bottom-nav-btn:hover,
+    .bottom-nav-btn.active {
+      color: var(--bottom-nav-hover);
+      transform: translateY(-1px);
+      opacity: 1;
+    }
+
+    #mobile-search,
+    #mobile-filters {
+      display: none;
+    }
+
+    #mobile-search {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1002;
+      padding: 10px 12px 8px;
+      background: var(--mobile-bar-bg);
+      border-bottom: 1px solid rgba(74,73,68,0.12);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.07);
+    }
+
+    #mobile-filters {
+      position: fixed;
+      top: 66px;
+      left: 0;
+      right: 0;
+      z-index: 1002;
+      padding: 8px 12px 10px;
+      background: var(--mobile-bar-bg);
+      border-bottom: 1px solid rgba(74,73,68,0.12);
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.05);
+    }
+    #mobile-filters::-webkit-scrollbar { display: none; }
+    .mobile-filter-row {
+      display: flex;
+      gap: 8px;
+      min-width: max-content;
+    }
+    .mobile-filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(74,73,68,0.12);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      color: #3d372f;
+      cursor: pointer;
+      flex: 0 0 auto;
+      transition: all 0.2s ease;
+    }
+    .mobile-filter-btn.active {
+      background: rgba(212,50,28,0.10);
+      border-color: rgba(212,50,28,0.22);
+      color: #241d18;
+    }
+
+    #city-card,
+    #plan-panel,
+    #personajes-panel,
+    #personaje-panel,
+    #bottom-sheet {
+      background: var(--panel-bg) !important;
+      color: var(--panel-text);
+    }
+
+    #city-card [data-panel-title],
+    #plan-panel [data-panel-title],
+    #personajes-panel [data-panel-title],
+    #personaje-panel [data-panel-title] {
+      color: var(--panel-text) !important;
+    }
+
+    #city-card [data-panel-muted],
+    #plan-panel [data-panel-muted],
+    #personajes-panel [data-panel-muted],
+    #personaje-panel [data-panel-muted],
+    #bottom-sheet [data-panel-muted] {
+      color: var(--panel-muted) !important;
+    }
+
+    #city-card [data-panel-accent],
+    #plan-panel [data-panel-accent],
+    #personajes-panel [data-panel-accent],
+    #personaje-panel [data-panel-accent] {
+      color: var(--panel-accent) !important;
+    }
+
+    #city-card button,
+    #plan-panel button,
+    #personajes-panel button,
+    #personaje-panel button {
+      border-radius: 12px;
+    }
+
+    #city-card > div:first-child::after {
+      background: linear-gradient(transparent 34%, rgba(24,49,47,0.96)) !important;
+    }
+
+    #city-card > div:nth-child(2),
+    #personajes-panel > div:first-child {
+      border-bottom-color: var(--panel-border) !important;
+      background: linear-gradient(180deg, rgba(24,49,47,0.98), rgba(24,49,47,0.92)) !important;
+    }
+
+    #city-card button,
+    #plan-panel button,
+    #personajes-panel button,
+    #personaje-panel button,
+    #bottom-sheet button {
+      transition: all 0.2s ease;
+    }
+
+    #city-card button:hover,
+    #plan-panel button:hover,
+    #personajes-panel button:hover,
+    #personaje-panel button:hover,
+    #bottom-sheet button:hover {
+      border-color: var(--panel-accent) !important;
+      color: var(--panel-accent) !important;
+    }
+
+    .personaje-flip-front {
+      border-color: rgba(213,162,76,0.25) !important;
+      background: linear-gradient(180deg, #1d3431, #102321) !important;
+    }
+    .personaje-flip-back {
+      border-color: rgba(213,162,76,0.3) !important;
+      background: linear-gradient(180deg, #23433f, #142927) !important;
+    }
+    .personaje-ver-mas-btn {
+      color: var(--panel-text) !important;
+      border-color: rgba(213,162,76,0.45) !important;
+      background: rgba(213,162,76,0.08) !important;
+    }
+    .personaje-ver-mas-btn:hover {
+      background: rgba(213,162,76,0.16) !important;
+    }
+
+    .popup-img-skeleton {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.02) 100%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite linear;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    @media (max-width: 768px) {
+      body { overflow: hidden; }
+      #sidebar,
+      .mobile-menu-btn { display: none !important; }
+      #mobile-search,
+      #mobile-filters { display: block !important; }
+      #map,
+      #plan-pick-layer {
+        top: 122px;
+        left: 0;
+        bottom: 70px;
+      }
+      .locate-btn { bottom: 86px; }
+      .route-clear-btn { bottom: 138px; }
+      .popup-card.has-image,
+      .popup-card { min-width: auto !important; max-width: 100% !important; }
+      .popup-card.has-image img { height: 210px; }
+    }
+
   </style>
 </head>
 <body>
@@ -855,35 +1094,44 @@
   <button class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')" style="display:none;position:fixed;top:16px;left:16px;z-index:1002;width:44px;height:44px;background:rgba(246,241,232,0.96);border:1px solid rgba(74,73,68,0.12);box-shadow:var(--shadow-soft);border-radius:14px;cursor:pointer;align-items:center;justify-content:center;">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1d1714" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
-    <div id="mobile-search" style="display:none;position:fixed;top:0;left:0;right:0;z-index:1002;padding:10px 12px;background:rgba(246,241,232,0.96);border-bottom:1px solid rgba(74,73,68,0.12);backdrop-filter:blur(8px);">
+    <div id="mobile-search">
   <input 
     id="search-input-mobile"
     type="text"
     placeholder="Buscar lugar..."
     oninput="searchPlaces(this.value)"
-    style="width:100%;background:#fffdf9;border:1px solid rgba(74,73,68,0.14);color:#2b241f;padding:10px 14px;font-family:\'DM Sans\',sans-serif;font-size:14px;outline:none;box-sizing:border-box;border-radius:12px;"
+    style="width:100%;background:#fffdf9;border:1px solid rgba(74,73,68,0.14);color:#2b241f;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;box-sizing:border-box;border-radius:12px;"
   />
-  <div id="search-results-mobile" style="margin-top:4px;display:flex;flex-direction:column;gap:2px;"></div>
+  <div id="search-results-mobile" style="margin-top:6px;display:flex;flex-direction:column;gap:4px;"></div>
+</div>
+<div id="mobile-filters">
+  <div class="mobile-filter-row">
+    <button class="mobile-filter-btn active" onclick="toggleFilter(this,'Histórico')" data-filter="Histórico"><span class="filter-pip" style="background:#d4321c"></span>Histórico</button>
+    <button class="mobile-filter-btn active" onclick="toggleFilter(this,'Cine y Cultura Pop')" data-filter="Cine y Cultura Pop"><span class="filter-pip" style="background:#c8920a"></span>Cine y Cultura Pop</button>
+    <button class="mobile-filter-btn active" onclick="toggleFilter(this,'Barrios y Vida Local')" data-filter="Barrios y Vida Local"><span class="filter-pip" style="background:#4a6741"></span>Barrios y Vida Local</button>
+    <button class="mobile-filter-btn active" onclick="toggleFilter(this,'Parques y Naturaleza')" data-filter="Parques y Naturaleza"><span class="filter-pip" style="background:#2d6a8a"></span>Parques y Naturaleza</button>
+    <button class="mobile-filter-btn active" onclick="toggleFilter(this,'Oculto y Curioso')" data-filter="Oculto y Curioso"><span class="filter-pip" style="background:#7a4a9b"></span>Oculto y Curioso</button>
+  </div>
 </div>
 
  <div id="map"></div>
  <div id="plan-pick-layer"></div>
-  <div id="bottom-nav" style="position:fixed;bottom:0;left:0;right:0;z-index:1001;background:rgba(246,241,232,0.96);backdrop-filter:blur(10px);border-top:1px solid rgba(74,73,68,0.12);padding:12px 0 14px;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -6px 18px rgba(0,0,0,0.06);">
- <button onclick="document.getElementById('city-card').style.display='flex';cargarDesafios();" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;" onmouseenter="this.querySelectorAll('svg')[0].style.stroke='#d4321c';this.querySelectorAll('span')[0].style.color='#d4321c'" onmouseleave="this.querySelectorAll('svg')[0].style.stroke='#1d1714';this.querySelectorAll('span')[0].style.color='#1d1714'">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1d1714" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-    <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#1d1714;font-family:\'DM Sans\',sans-serif;">Londres</span>
+  <div id="bottom-nav" class="bottom-nav">
+ <button class="bottom-nav-btn active" onclick="setBottomNavActive(this);document.getElementById('city-card').style.display='flex';cargarDesafios();">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    <span>Londres</span>
   </button>
- <button onclick="activarModoPlan()" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;" onmouseenter="this.querySelectorAll('svg')[0].style.stroke='#d4321c';this.querySelectorAll('span')[0].style.color='#d4321c'" onmouseleave="this.querySelectorAll('svg')[0].style.stroke='#1d1714';this.querySelectorAll('span')[0].style.color='#1d1714'">
-  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1d1714" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-  <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#1d1714;font-family:\'DM Sans\',sans-serif;">Plan del día</span>
+ <button class="bottom-nav-btn" onclick="setBottomNavActive(this);activarModoPlan()">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+  <span>Plan del día</span>
 </button>
-  <button onclick="abrirPersonajes()" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;" onmouseenter="this.querySelectorAll('svg')[0].style.stroke='#d4321c';this.querySelectorAll('span')[0].style.color='#d4321c'" onmouseleave="this.querySelectorAll('svg')[0].style.stroke='#1d1714';this.querySelectorAll('span')[0].style.color='#1d1714'">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1d1714" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.1-7 7-7s7 3 7 7"/></svg>
-    <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#1d1714;font-family:\'DM Sans\',sans-serif;">Personajes</span>
+  <button class="bottom-nav-btn" onclick="setBottomNavActive(this);abrirPersonajes()">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.1-7 7-7s7 3 7 7"/></svg>
+    <span>Personajes</span>
   </button>
 </div>
 
-<div id="city-card" style="display:none;position:fixed;inset:0;z-index:3001;background:var(--black);flex-direction:column;overflow:hidden;">
+<div id="city-card" style="display:none;position:fixed;inset:0;z-index:3001;background:var(--panel-bg);flex-direction:column;overflow:hidden;">
   <div style="position:relative;height:220px;flex-shrink:0;overflow:hidden;">
     <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80" style="width:100%;height:100%;object-fit:cover;opacity:0.7;">
     <div style="position:absolute;inset:0;background:linear-gradient(transparent 40%, var(--black));"></div>
@@ -894,7 +1142,7 @@
     <button onclick="switchCityTab('historia')" id="city-tab-historia" style="flex:1;padding:14px;background:transparent;border:none;border-bottom:2px solid var(--red);color:var(--white);cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;">La Ciudad</button>
     <button onclick="switchCityTab('desafios')" id="city-tab-desafios" style="flex:1;padding:14px;background:transparent;border:none;border-bottom:2px solid transparent;color:#4a4944;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;">Desafíos</button>
   </div>
-  <div id="city-content-historia" style="flex:1;overflow-y:auto;padding:28px 24px;">
+  <div id="city-content-historia" style="flex:1;overflow-y:auto;padding:28px 24px;color:var(--panel-text);">
     <div style="font-family:\'Playfair Display\',serif;font-size:15px;line-height:2;color:#ccc;">
       <p style="margin-bottom:20px;">Bienvenidas a Londres.</p>
       <p style="margin-bottom:20px;">Me alegra que hayan llegado. Las estaba esperando — no a ustedes en particular, claro, nunca espero a nadie en especial — pero sí a alguien que llegue con los ojos abiertos y las manos libres. Alguien dispuesto a escuchar.</p>
@@ -903,13 +1151,13 @@
       <p>Empecemos.</p>
     </div>
   </div>
-  <div id="city-content-desafios" style="display:none;flex:1;overflow-y:auto;padding:28px 24px;">
+  <div id="city-content-desafios" style="display:none;flex:1;overflow-y:auto;padding:28px 24px;color:var(--panel-text);">
     <div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;color:#4a4944;margin-bottom:24px;">Marcá lo que van haciendo. Se guarda automáticamente.</div>
     <div id="desafios-list"></div>
   </div>
 </div>
 
-<div id="plan-panel" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:3000;background:var(--black);overflow-y:auto;padding:32px 24px;">
+<div id="plan-panel" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:3000;background:var(--panel-bg);overflow-y:auto;padding:32px 24px;">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
     <div style="font-family:\'Playfair Display\',serif;font-size:24px;font-weight:700;color:var(--white);">Tu plan del día</div>
     <button onclick="document.getElementById('plan-panel').style.display='none';setPlanInteraction(false);clearPlanPointMarker();" style="background:transparent;border:1px solid #2a2926;color:#6a6860;cursor:pointer;padding:8px 14px;font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Cerrar</button>
@@ -2288,28 +2536,147 @@ function createPin(category) {
 
 /* 3) REEMPLAZAR completa la función buildPopup(place) por esta */
 
+function setBottomNavActive(btn) {
+  document.querySelectorAll('.bottom-nav-btn').forEach(function(item) {
+    item.classList.remove('active');
+  });
+  if (btn) btn.classList.add('active');
+}
+
+function slugifyText(value) {
+  return (value || '')
+    .toString()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function escapeHtmlAttr(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+var PLACE_IMAGE_OVERRIDES = {
+  'torre-de-londres': 'https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=1400&q=80',
+  'abadia-de-westminster': 'https://images.unsplash.com/photo-1520986606214-8b456906c813?auto=format&fit=crop&w=1400&q=80',
+  'museo-britanico': 'https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&w=1400&q=80',
+  'palacio-de-buckingham': 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1400&q=80',
+  'st-pauls-cathedral': 'https://images.unsplash.com/photo-1513026705753-bc3fffca8bf4?auto=format&fit=crop&w=1400&q=80',
+  'hyde-park': 'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1400&q=80',
+  'camden-town': 'https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?auto=format&fit=crop&w=1400&q=80',
+  'notting-hill-y-portobello-road': 'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=1400&q=80',
+  'borough-market': 'https://images.unsplash.com/photo-1514511547113-31c5c8b5c9f8?auto=format&fit=crop&w=1400&q=80',
+  'tate-modern': 'https://images.unsplash.com/photo-1578922746465-3a80a228f223?auto=format&fit=crop&w=1400&q=80',
+  'kings-cross-anden-9': 'https://images.unsplash.com/photo-1524041255072-7da0525d6b3f?auto=format&fit=crop&w=1400&q=80',
+  'leadenhall-market-diagon-alley': 'https://images.unsplash.com/photo-1529651737248-dad5e287768e?auto=format&fit=crop&w=1400&q=80'
+};
+
+var placeImageCache = {};
+
+function buildImageMarkup(place) {
+  var placeName = escapeHtmlAttr(place.name || '');
+  var imageTitle = escapeHtmlAttr(place.imageTitle || place.name || '');
+  return '' +
+    '<div class="popup-img-wrap">' +
+      '<div class="popup-img-skeleton"></div>' +
+      '<img data-place-image="' + placeName + '" data-image-title="' + imageTitle + '" alt="' + imageTitle + '" style="opacity:0;transition:opacity 0.25s ease;" />' +
+      '<div class="popup-img-caption">' + imageTitle + '</div>' +
+    '</div>';
+}
+
+function resolvePlaceImage(placeName) {
+  var slug = slugifyText(placeName);
+  if (PLACE_IMAGE_OVERRIDES[slug]) return Promise.resolve(PLACE_IMAGE_OVERRIDES[slug]);
+  if (placeImageCache[slug]) return Promise.resolve(placeImageCache[slug]);
+
+  var queries = [
+    placeName + ' London',
+    placeName,
+    placeName.replace(/—.*/, '').trim() + ' London'
+  ];
+
+  function tryOpenverse(idx) {
+    if (idx >= queries.length) {
+      var fallback = 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1400&q=80';
+      placeImageCache[slug] = fallback;
+      return Promise.resolve(fallback);
+    }
+    var q = queries[idx];
+    return fetch('https://api.openverse.org/v1/images/?q=' + encodeURIComponent(q) + '&page_size=12')
+      .then(function(res) {
+        if (!res.ok) throw new Error('Openverse error');
+        return res.json();
+      })
+      .then(function(data) {
+        var results = (data && data.results) || [];
+        var chosen = results.find(function(item) {
+          var title = ((item.title || '') + ' ' + (item.creator || '')).toLowerCase();
+          return item && (item.thumbnail || item.url) && title.indexOf('london') !== -1;
+        }) || results.find(function(item) { return item && (item.thumbnail || item.url); });
+        if (!chosen) throw new Error('No image');
+        var url = chosen.thumbnail || chosen.url;
+        placeImageCache[slug] = url;
+        return url;
+      })
+      .catch(function() {
+        return tryOpenverse(idx + 1);
+      });
+  }
+
+  return tryOpenverse(0);
+}
+
+function hydratePopupImages(root) {
+  var scope = root && root.querySelectorAll ? root : document;
+  scope.querySelectorAll('img[data-place-image]').forEach(function(img) {
+    if (img.dataset.hydrated === '1') return;
+    img.dataset.hydrated = '1';
+    var wrap = img.closest('.popup-img-wrap');
+    resolvePlaceImage(img.dataset.placeImage).then(function(url) {
+      img.src = url;
+      img.onload = function() {
+        img.style.opacity = '1';
+        if (wrap) {
+          var skeleton = wrap.querySelector('.popup-img-skeleton');
+          if (skeleton) skeleton.remove();
+        }
+      };
+      img.onerror = function() {
+        if (wrap) wrap.style.display = 'none';
+      };
+    }).catch(function() {
+      if (wrap) wrap.style.display = 'none';
+    });
+  });
+}
+
 function buildPopup(place) {
   var id = 'popup-' + Math.random().toString(36).substr(2,9);
   var isToilet = place.category === 'Baños Públicos';
   if (isToilet) {
-  return '<div class="popup-card" style="min-width:280px;max-width:320px;">' +
-    '<div class="popup-header">' +
-      '<div class="popup-header-text">' +
-        '<h3>' + place.name + '</h3>' +
-        '<div class="popup-header-sub">' +
-          '<div class="popup-category">Baños Públicos</div>' +
+    return '<div class="popup-card" style="min-width:280px;max-width:320px;">' +
+      '<div class="popup-header">' +
+        '<div class="popup-header-text">' +
+          '<h3>' + place.name + '</h3>' +
+          '<div class="popup-header-sub">' +
+            '<div class="popup-category">Baños Públicos</div>' +
+          '</div>' +
         '</div>' +
       '</div>' +
-    '</div>' +
-    '<div style="padding:16px 20px;background:var(--black);display:flex;flex-direction:column;gap:10px;">' +
-      '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;color:#6a6860;line-height:1.6;">' + place.lugar + '</div>' +
-      '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')" style="width:100%;padding:12px;text-align:center;">Ver ruta</button>' +
-    '</div>' +
-  '</div>';
-}
-  var hasImage = !!place.imageTitle && !isToilet;
+      '<div style="padding:16px 20px;background:var(--black);display:flex;flex-direction:column;gap:10px;">' +
+        '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;color:#6a6860;line-height:1.6;">' + place.lugar + '</div>' +
+        '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')" style="width:100%;padding:12px;text-align:center;">Ver ruta</button>' +
+      '</div>' +
+    '</div>';
+  }
 
-  var escapedLugar = place.lugar.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  var hasImage = !!place.imageTitle;
+  var escapedLugar = place.lugar.replace(/'/g, "\\'").replace(/\"/g, '&quot;');
 
   var header =
     '<div class="popup-header">' +
@@ -2319,84 +2686,55 @@ function buildPopup(place) {
           '<div class="popup-category">' + place.category + '</div>' +
         '</div>' +
       '</div>' +
-      '<button class="audio-btn" onclick="toggleAudio(this, \'' + escapedLugar + '\')" title="Escuchar">' +
+      '<button class="audio-btn" onclick="toggleAudio(this, \'" + escapedLugar + "\')" title="Escuchar">' +
         speakerIcon() +
       '</button>' +
     '</div>';
 
-  var tabs;
-  if (isToilet) {
-    tabs =
-      '<div class="popup-tabs">' +
-        '<div class="popup-tab active" onclick="switchTab(\'' + id + '\',\'lugar\')">El Lugar</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'historia\')">Info útil</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'curiosidades\')">Acceso</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'para3\')">Cerca de acá</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'como\')">Cómo llegar</div>' +
-      '</div>';
-  } else {
-    tabs =
-      '<div class="popup-tabs">' +
-        '<div class="popup-tab active" onclick="switchTab(\'' + id + '\',\'lugar\')">El Lugar</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'historia\')">Lo que Pasó Aquí</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'curiosidades\')">Curiosidades</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'para3\')">Vivirlo Bien</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'como\')">Cómo Vivirlo</div>' +
-      '</div>';
-  }
+  var tabs =
+    '<div class="popup-tabs">' +
+      '<div class="popup-tab active" onclick="switchTab(\'' + id + '\',\'lugar\')">El Lugar</div>' +
+      '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'historia\')">Lo que Pasó Aquí</div>' +
+      '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'curiosidades\')">Curiosidades</div>' +
+      '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'para3\')">Vivirlo Bien</div>' +
+      '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'como\')">Cómo Vivirlo</div>' +
+    '</div>';
 
-  var lugarContent;
-  if (hasImage) {
-    lugarContent =
-      '<div id="' + id + '-lugar" class="popup-tab-content active">' +
-        '<div class="popup-img-wrap">' +
-          '<img src="' + place.imageTitle.toLowerCase().replace(/[^a-z0-9]+/g,'-') + '.jpg" alt="' + place.imageTitle + '" onerror="this.parentElement.style.display=\'none\'">' +
-          '<div class="popup-img-caption">' + place.imageTitle + '</div>' +
-        '</div>' +
-        '<div class="popup-inner"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
-      '</div>';
-  } else {
-    lugarContent =
-      '<div id="' + id + '-lugar" class="popup-tab-content active">' +
-        '<div class="popup-inner popup-no-tabs"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
-      '</div>';
-  }
-
-  var historiaLabel = isToilet ? 'Info útil' : 'Lo que Pasó Aquí';
-  var curiosidadesLabel = isToilet ? 'Acceso' : 'Curiosidades';
-  var para3Label = isToilet ? 'Cerca de acá' : 'Cómo Vivirlo';
-  var comoLabel = isToilet ? 'Cómo llegar' : 'Cómo Vivirlo';
-  var comoTexto = isToilet ? place.comoLlegar : place.comoVivirlo;
+  var lugarContent =
+    '<div id="' + id + '-lugar" class="popup-tab-content active">' +
+      (hasImage ? buildImageMarkup(place) : '') +
+      '<div class="popup-inner' + (hasImage ? '' : ' popup-no-tabs') + '"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
+    '</div>';
 
   var historiaContent =
     '<div id="' + id + '-historia" class="popup-tab-content simple-content">' +
-      '<div class="tab-label">' + historiaLabel + '</div>' +
-      '<div class="tab-body"><p>' + place.historia + '</p></div>' +
+      '<div class="tab-label">Lo que Pasó Aquí</div>' +
+      '<div class="tab-body"><p>' + (place.historia || '') + '</p></div>' +
     '</div>';
 
   var curiosidadesContent =
     '<div id="' + id + '-curiosidades" class="popup-tab-content simple-content">' +
-      '<div class="tab-label">' + curiosidadesLabel + '</div>' +
-      '<div class="tab-body">' + place.curiosidades + '</div>' +
+      '<div class="tab-label">Curiosidades</div>' +
+      '<div class="tab-body">' + (place.curiosidades || '') + '</div>' +
     '</div>';
 
   var para3Content =
     '<div id="' + id + '-para3" class="popup-tab-content simple-content">' +
-      '<div class="tab-label">' + para3Label + '</div>' +
-      '<div class="tab-body"><p>' + place.paraLasTres + '</p></div>' +
+      '<div class="tab-label">Vivirlo Bien</div>' +
+      '<div class="tab-body"><p>' + (place.paraLasTres || '') + '</p></div>' +
     '</div>';
 
   var comoContent =
     '<div id="' + id + '-como" class="popup-tab-content simple-content">' +
-      '<div class="tab-label">' + comoLabel + '</div>' +
-      '<div class="tab-body"><p>' + comoTexto + '</p></div>' +
+      '<div class="tab-label">Cómo Vivirlo</div>' +
+      '<div class="tab-body"><p>' + (place.comoVivirlo || '') + '</p></div>' +
     '</div>';
 
   var actions =
-  '<div class="popup-actions">' +
-  '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
-  '<button class="popup-link-btn" onclick="marcarVisitado(this, \'' + place.name.replace(/[^a-zA-Z0-9]/g, '') + '\')" style="' + (localStorage.getItem('v-' + place.name.replace(/[^a-zA-Z0-9]/g, '')) ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (localStorage.getItem('v-' + place.name.replace(/[^a-zA-Z0-9]/g, '')) ? '✓ Visitado' : 'Marcar visitado') + '</button>' +
-  '</div>';
+    '<div class="popup-actions">' +
+      '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +      '<button class="popup-link-btn" onclick="marcarVisitado(this, \'" + safeVisitKey + "\')" style="' + (localStorage.getItem('v-' + safeVisitKey) ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (localStorage.getItem('v-' + safeVisitKey) ? '✓ Visitado' : 'Marcar visitado') + '</button>' +
+    '</div>';
+
   return '<div class="popup-card' + (hasImage ? ' has-image' : '') + '" id="' + id + '">' +
     header + tabs + lugarContent + historiaContent + curiosidadesContent + para3Content + comoContent + actions +
     '</div>';
@@ -2414,13 +2752,19 @@ function buildPopup(place) {
     };
 
     window.toggleFilter = function(btn, filter) {
+      var shouldActivate;
       if (activeFilters.has(filter)) {
         activeFilters.delete(filter);
-        btn.classList.remove('active');
+        shouldActivate = false;
       } else {
         activeFilters.add(filter);
-        btn.classList.add('active');
+        shouldActivate = true;
       }
+
+      document.querySelectorAll('[data-filter="' + filter.replace(/"/g, '\"') + '"]').forEach(function(el) {
+        el.classList.toggle('active', shouldActivate);
+      });
+
       allMarkers.forEach(function(obj) {
         var show = obj.place.category === 'Baños Públicos' || activeFilters.has(obj.place.category);
         if (show && !map.hasLayer(obj.marker)) map.addLayer(obj.marker);
@@ -2460,26 +2804,39 @@ marker.on('click', markerClickHandler);
 });
     // ---- BUSCADOR ----
 window.searchPlaces = function(query) {
-  var results = document.getElementById('search-results');
+  var resultsDesktop = document.getElementById('search-results');
+  var resultsMobile = document.getElementById('search-results-mobile');
+  var inputDesktop = document.getElementById('search-input');
+  var inputMobile = document.getElementById('search-input-mobile');
+
+  function clearResults() {
+    [resultsDesktop, resultsMobile].forEach(function(results) {
+      if (!results) return;
+      results.style.display = 'none';
+      results.innerHTML = '';
+    });
+  }
+
+  if (inputDesktop && inputDesktop.value !== query) inputDesktop.value = query;
+  if (inputMobile && inputMobile.value !== query) inputMobile.value = query;
+
   if (!query || query.length < 2) {
-    results.style.display = 'none';
-    results.innerHTML = '';
+    clearResults();
     allMarkers.forEach(function(obj) {
       var show = obj.place.category === 'Baños Públicos' || activeFilters.has(obj.place.category);
       if (show) map.addLayer(obj.marker); else map.removeLayer(obj.marker);
     });
     return;
   }
+
   var q = query.toLowerCase();
-  results.style.display = 'flex';
-  results.innerHTML = '';
   var found = [];
   allMarkers.forEach(function(obj) {
     var p = obj.place;
-    var match = p.name.toLowerCase().includes(q) || 
-                p.lugar.toLowerCase().includes(q) || 
-                p.categoria && p.categoria.toLowerCase().includes(q) ||
-                p.historia && p.historia.toLowerCase().includes(q);
+    var match = p.name.toLowerCase().includes(q) ||
+                (p.lugar && p.lugar.toLowerCase().includes(q)) ||
+                (p.category && p.category.toLowerCase().includes(q)) ||
+                (p.historia && p.historia.toLowerCase().includes(q));
     if (match) {
       found.push(obj);
       map.addLayer(obj.marker);
@@ -2487,28 +2844,34 @@ window.searchPlaces = function(query) {
       map.removeLayer(obj.marker);
     }
   });
-  if (found.length === 0) {
-    results.innerHTML = '<div style="font-size:12px;color:#3a3934;padding:4px 10px;font-family:DM Sans,sans-serif;">Sin resultados</div>';
-    return;
-  }
-  found.slice(0, 6).forEach(function(obj) {
-    var btn = document.createElement('button');
-    btn.textContent = obj.place.name;
-    btn.style.cssText = 'background:transparent;border:none;border-left:2px solid var(--red);color:#aaa;padding:6px 10px;font-family:DM Sans,sans-serif;font-size:12px;text-align:left;cursor:pointer;';
-    btn.onmouseenter = function(){ this.style.color = 'white'; };
-    btn.onmouseleave = function(){ this.style.color = '#aaa'; };
-    btn.onclick = function() {
-      map.setView([obj.place.lat, obj.place.lng], 16);
-      obj.marker.openPopup();
-      document.getElementById('search-input').value = '';
-      results.style.display = 'none';
-      results.innerHTML = '';
-      allMarkers.forEach(function(o) {
-        var show = o.place.category === 'Baños Públicos' || activeFilters.has(o.place.category);
-        if (show) map.addLayer(o.marker); else map.removeLayer(o.marker);
-      });
+
+  [resultsDesktop, resultsMobile].forEach(function(results) {
+    if (!results) return;
+    results.style.display = 'flex';
+    results.innerHTML = '';
+    if (found.length === 0) {
+      results.innerHTML = '<div style="font-size:12px;color:#3a3934;padding:6px 10px;font-family:DM Sans,sans-serif;background:rgba(255,255,255,0.78);border-radius:10px;">Sin resultados</div>';
+      return;
     }
-    results.appendChild(btn);
+    found.slice(0, 6).forEach(function(obj) {
+      var btn = document.createElement('button');
+      btn.textContent = obj.place.name;
+      btn.style.cssText = 'background:rgba(255,255,255,0.88);border:1px solid rgba(74,73,68,0.1);border-left:2px solid var(--red);border-radius:10px;color:#2a2926;padding:9px 10px;font-family:DM Sans,sans-serif;font-size:12px;text-align:left;cursor:pointer;';
+      btn.onmouseenter = function(){ this.style.background = 'rgba(255,255,255,1)'; };
+      btn.onmouseleave = function(){ this.style.background = 'rgba(255,255,255,0.88)'; };
+      btn.onclick = function() {
+        map.setView([obj.place.lat, obj.place.lng], 16);
+        obj.marker.openPopup();
+        if (inputDesktop) inputDesktop.value = '';
+        if (inputMobile) inputMobile.value = '';
+        clearResults();
+        allMarkers.forEach(function(o) {
+          var show = o.place.category === 'Baños Públicos' || activeFilters.has(o.place.category);
+          if (show) map.addLayer(o.marker); else map.removeLayer(o.marker);
+        });
+      };
+      results.appendChild(btn);
+    });
   });
 };
 
@@ -2639,7 +3002,7 @@ function createPlanPointMarker(latlng) {
           '<path d="M14 0C6.268 0 0 6.268 0 14c0 10.5 14 26 14 26s14-15.5 14-26C28 6.268 21.732 0 14 0z" fill="#fafaf8"/>' +
           '<circle cx="14" cy="14" r="5.8" fill="#d4321c"/>' +
         '</svg>' +
-        '<div style="position:absolute;left:50%;top:46px;transform:translateX(-50%);white-space:nowrap;background:#0f0e0c;border:1px solid #2a2926;color:#1d1714;padding:4px 7px;font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;">Punto elegido</div>' +
+        '<div style="position:absolute;left:50%;top:46px;transform:translateX(-50%);white-space:nowrap;background:rgba(24,49,47,0.96);border:1px solid var(--panel-border);color:var(--panel-text);padding:4px 7px;font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;">Punto elegido</div>' +
       '</div>',
     iconSize: [28, 54],
     iconAnchor: [14, 40]
@@ -3890,9 +4253,8 @@ function marcarVisitado(btn, nombre) {
   }
 }
   </script>
-  <div id="map"></div>
-  <div id="personajes-panel" style="display:none;position:fixed;inset:0;z-index:3500;background:var(--black);flex-direction:column;overflow:hidden;">
-  <div style="position:sticky;top:0;z-index:10;padding:20px 24px 16px;background:var(--black);border-bottom:1px solid #1e1d1a;display:flex;align-items:center;justify-content:space-between;">
+  <div id="personajes-panel" style="display:none;position:fixed;inset:0;z-index:3500;background:var(--panel-bg);flex-direction:column;overflow:hidden;">
+  <div style="position:sticky;top:0;z-index:10;padding:20px 24px 16px;background:var(--panel-bg);border-bottom:1px solid var(--panel-border);display:flex;align-items:center;justify-content:space-between;">
     <div>
       <div style="font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:4px;">Colección</div>
       <div style="font-family:\'Playfair Display\',serif;font-size:22px;font-weight:700;color:var(--white);">Personajes</div>
@@ -3901,8 +4263,8 @@ function marcarVisitado(btn, nombre) {
   </div>
   <div id="personajes-grid" style="padding:24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px;overflow-y:auto;overflow-x:hidden;width:100%;box-sizing:border-box;align-content:start;scrollbar-width:thin;scrollbar-color:#2a2926 transparent;"></div>
 </div>
-    <div id="personaje-panel" style="display:none;position:fixed;inset:0;z-index:3500;background:var(--black);flex-direction:column;overflow-y:auto;">
-  <div style="position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;padding:16px;background:var(--black);">
+    <div id="personaje-panel" style="display:none;position:fixed;inset:0;z-index:3500;background:var(--panel-bg);flex-direction:column;overflow-y:auto;">
+  <div style="position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;padding:16px;background:var(--panel-bg);">
     <button onclick="document.getElementById('personaje-panel').style.display='none'" style="background:transparent;border:1px solid #2a2926;color:#6a6860;cursor:pointer;padding:8px 14px;font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Cerrar</button>
   </div>
   <div id="personaje-content"></div>
@@ -3912,8 +4274,8 @@ function marcarVisitado(btn, nombre) {
   position: fixed;
   bottom: 0; left: 0; right: 0;
   z-index: 2000;
-  background: var(--black);
-  border-top: 2px solid var(--red);
+  background: var(--panel-bg);
+  border-top: 2px solid var(--panel-accent);
   border-radius: 16px 16px 0 0;
   max-height: 75vh;
   overflow-y: auto;
