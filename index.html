@@ -219,8 +219,8 @@
       position: absolute;
       top: 18px;
       left: 18px;
-      width: min(360px, calc(100vw - 36px));
-      padding: 18px 20px 16px;
+      width: min(300px, calc(100vw - 36px));
+      padding: 16px 18px 14px;
     }
 
     .sidebar-eyebrow {
@@ -238,10 +238,15 @@
     }
 
     .sidebar-brand em {
+      display: block;
+      margin-top: 6px;
       font-style: italic;
       font-weight: 400;
-      color: #1d1714;
-      display: inline;
+      font-size: 0.5em;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--red);
+      opacity: 0.92;
     }
 
     .sidebar-tagline {
@@ -758,7 +763,8 @@
       }
 
       .sidebar-brand {
-        font-size: 28px;
+        font-size: 25px;
+        line-height: 0.98;
       }
 
       .sidebar-body {
@@ -804,6 +810,60 @@
     @keyframes shimmer {
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
+    }
+
+
+    .popup-img-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.28), transparent 32%),
+        linear-gradient(135deg, rgba(212,50,28,0.16), rgba(200,146,10,0.12) 45%, rgba(15,14,12,0.18));
+      z-index: 0;
+    }
+
+    .popup-img-wrap img,
+    .popup-fallback {
+      position: relative;
+      z-index: 1;
+    }
+
+    .popup-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(15,14,12,0.04), rgba(15,14,12,0.2));
+    }
+
+    .popup-fallback-inner {
+      max-width: 340px;
+    }
+
+    .popup-fallback-kicker {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.76);
+      margin-bottom: 10px;
+    }
+
+    .popup-fallback-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      line-height: 1.05;
+      color: rgba(255,255,255,0.96);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.28);
+    }
+
+    .personaje-foto {
+      filter: grayscale(1) contrast(1.08) brightness(0.94);
+      transform: scale(1.01);
     }
 
     @media (max-width: 768px) {
@@ -2383,8 +2443,8 @@ function slugifyText(value) {
 }
 
 var PLACE_IMAGE_OVERRIDES = {
-  'torre-de-londres': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Tower_of_London_viewed_from_the_River_Thames.jpg/1280px-Tower_of_London_viewed_from_the_River_Thames.jpg',
-  'abadia-de-westminster': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Westminster_Abbey_West_Door.jpg/1280px-Westminster_Abbey_West_Door.jpg',
+  'torre-de-londres': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Tower_of_London_viewed_from_the_River_Thames.jpg/1280px-Tower_of_London_viewed_from_the_River_Thames.jpg',
+  'abadia-de-westminster': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Westminster_Abbey_West_Door.jpg/1280px-Westminster_Abbey_West_Door.jpg',
   'museo-britanico': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/British_Museum_from_NE_2.JPG/1280px-British_Museum_from_NE_2.JPG',
   'palacio-de-buckingham': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Buckingham_Palace_from_gardens%2C_London%2C_UK_-_Diliff.jpg/1280px-Buckingham_Palace_from_gardens%2C_London%2C_UK_-_Diliff.jpg',
   'southwark-el-londres-de-shakespeare': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Shakespeare%27s_Globe_from_the_river.jpg/1280px-Shakespeare%27s_Globe_from_the_river.jpg',
@@ -2406,15 +2466,74 @@ var PLACE_IMAGE_OVERRIDES = {
   'postmans-park-el-memorial-de-los-heroes-anonimos': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Postman%27s_Park%2C_London.jpg/1280px-Postman%27s_Park%2C_London.jpg'
 };
 
-function getPlaceImageUrl(place) {
+var CATEGORY_IMAGE_FALLBACKS = {
+  'Histórico': [
+    'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1400&q=80',
+    'https://images.unsplash.com/photo-1488747279002-c8523379faaa?auto=format&fit=crop&w=1400&q=80'
+  ],
+  'Cine y Cultura Pop': [
+    'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1400&q=80',
+    'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80'
+  ],
+  'Barrios y Vida Local': [
+    'https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?auto=format&fit=crop&w=1400&q=80',
+    'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=1400&q=80'
+  ],
+  'Parques y Naturaleza': [
+    'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1400&q=80',
+    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1400&q=80'
+  ],
+  'Oculto y Curioso': [
+    'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=1400&q=80',
+    'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1400&q=80'
+  ]
+};
+
+function createSvgPlaceholder(place) {
+  var title = (place && (place.imageTitle || place.name) ? (place.imageTitle || place.name) : 'Londres').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  var cat = (place && place.category ? place.category : 'Londres').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  var svg = '' +
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720">' +
+      '<defs>' +
+        '<linearGradient id="g" x1="0" x2="1" y1="0" y2="1">' +
+          '<stop offset="0%" stop-color="#2b2622"/>' +
+          '<stop offset="50%" stop-color="#7b2a1a"/>' +
+          '<stop offset="100%" stop-color="#c8920a"/>' +
+        '</linearGradient>' +
+      '</defs>' +
+      '<rect width="1200" height="720" fill="url(#g)"/>' +
+      '<circle cx="960" cy="120" r="180" fill="rgba(255,255,255,0.08)"/>' +
+      '<circle cx="180" cy="620" r="220" fill="rgba(255,255,255,0.05)"/>' +
+      '<text x="600" y="300" text-anchor="middle" fill="#f7f3eb" font-family="Georgia, serif" font-size="66" font-style="italic">' + title + '</text>' +
+      '<text x="600" y="380" text-anchor="middle" fill="rgba(247,243,235,0.82)" font-family="Arial, sans-serif" font-size="24" letter-spacing="5">' + cat.toUpperCase() + '</text>' +
+    '</svg>';
+  return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+}
+
+function getPlaceImageCandidates(place) {
   var slug = slugifyText(place.name);
-  if (PLACE_IMAGE_OVERRIDES[slug]) return PLACE_IMAGE_OVERRIDES[slug];
-  if (place.category === 'Histórico') return 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1400&q=80';
-  if (place.category === 'Cine y Cultura Pop') return 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1400&q=80';
-  if (place.category === 'Barrios y Vida Local') return 'https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?auto=format&fit=crop&w=1400&q=80';
-  if (place.category === 'Parques y Naturaleza') return 'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1400&q=80';
-  if (place.category === 'Oculto y Curioso') return 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=1400&q=80';
-  return 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1400&q=80';
+  var list = [];
+  if (PLACE_IMAGE_OVERRIDES[slug]) list.push(PLACE_IMAGE_OVERRIDES[slug]);
+  if (CATEGORY_IMAGE_FALLBACKS[place.category]) {
+    list = list.concat(CATEGORY_IMAGE_FALLBACKS[place.category]);
+  }
+  list.push(createSvgPlaceholder(place));
+  return list.filter(Boolean);
+}
+
+function getPlaceImageUrl(place) {
+  return getPlaceImageCandidates(place)[0];
+}
+
+function ensurePopupFallbackVisible(wrap, place) {
+  if (!wrap) return;
+  var fallback = wrap.querySelector('.popup-fallback');
+  if (!fallback) return;
+  fallback.style.display = 'flex';
+  var sk = wrap.querySelector('.popup-img-skeleton');
+  if (sk) sk.remove();
+  var img = wrap.querySelector('img[data-place-image]');
+  if (img) img.style.display = 'none';
 }
 
 function hydratePopupImages(root) {
@@ -2423,17 +2542,46 @@ function hydratePopupImages(root) {
     if (img.dataset.ready === '1') return;
     img.dataset.ready = '1';
     var wrap = img.closest('.popup-img-wrap');
+    var placeData = null;
+    try {
+      placeData = JSON.parse(img.getAttribute('data-place-meta') || '{}');
+    } catch (e) {
+      placeData = {};
+    }
+    var candidates = [];
+    try {
+      candidates = JSON.parse(img.getAttribute('data-place-candidates') || '[]');
+    } catch (e) {
+      candidates = [];
+    }
+    if (!candidates.length) candidates = [createSvgPlaceholder(placeData)];
+    var index = 0;
+
+    function showCurrent() {
+      img.src = candidates[index];
+    }
+
     img.onload = function() {
+      img.style.display = 'block';
       img.style.opacity = '1';
       if (wrap) {
         var sk = wrap.querySelector('.popup-img-skeleton');
         if (sk) sk.remove();
+        var fallback = wrap.querySelector('.popup-fallback');
+        if (fallback) fallback.style.display = 'none';
       }
     };
+
     img.onerror = function() {
-      img.src = 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1400&q=80';
+      index += 1;
+      if (index < candidates.length) {
+        showCurrent();
+      } else {
+        ensurePopupFallbackVisible(wrap, placeData);
+      }
     };
-    img.src = img.getAttribute('data-place-image');
+
+    showCurrent();
   });
 }
 
@@ -2499,11 +2647,15 @@ function buildPopup(place) {
   var lugarContent;
   if (hasImage) {
     var imageUrl = getPlaceImageUrl(place);
+    var imageCandidates = getPlaceImageCandidates(place);
+    var imageMeta = JSON.stringify({ name: place.name, imageTitle: place.imageTitle, category: place.category }).replace(/"/g, '&quot;');
+    var imageCandidateAttr = JSON.stringify(imageCandidates).replace(/"/g, '&quot;');
     lugarContent =
       '<div id="' + id + '-lugar" class="popup-tab-content active">' +
         '<div class="popup-img-wrap">' +
           '<div class="popup-img-skeleton"></div>' +
-          '<img data-place-image="' + imageUrl + '" alt="' + place.imageTitle + '" loading="lazy" style="opacity:0;transition:opacity 0.25s ease;">' +
+          '<div class="popup-fallback"><div class="popup-fallback-inner"><div class="popup-fallback-kicker">Imagen de referencia</div><div class="popup-fallback-title">' + place.imageTitle + '</div></div></div>' +
+          '<img data-place-image="' + imageUrl + '" data-place-meta="' + imageMeta + '" data-place-candidates="' + imageCandidateAttr + '" alt="' + place.imageTitle + '" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" style="opacity:0;transition:opacity 0.25s ease;">' +
           '<div class="popup-img-caption">' + place.imageTitle + '</div>' +
         '</div>' +
         '<div class="popup-inner"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
@@ -3257,7 +3409,7 @@ function abrirPersonaje(id) {
       return '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;">' +
         '<div style="width:100%;max-width:360px;background:#111;border:1px solid #2a2926;border-radius:4px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.8);">' +
           '<div style="position:relative;height:300px;overflow:hidden;">' +
-            '<img src="' + p.foto + '" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;" onerror="this.style.display=\'none\'">' +
+            '<img src="' + p.foto + '" class="personaje-foto" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;" onerror="this.onerror=null;this.src=createSvgPlaceholder({name:this.alt,imageTitle:this.alt,category:\'Personaje\'});this.style.display=\'block\';" alt="' + p.nombre + '">' +
             '<div style="position:absolute;inset:0;background:linear-gradient(transparent 20%, #111);"></div>' +
             '<div style="position:absolute;bottom:16px;left:20px;">' +
               '<div style="font-family:\'Playfair Display\',serif;font-size:22px;font-weight:700;color:#fff;line-height:1.1;">' + p.nombre + '</div>' +
