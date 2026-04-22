@@ -384,7 +384,7 @@
   border-radius: 18px !important;
   background: var(--black) !important;
 }
-    .leaflet-popup-content { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+    .leaflet-popup-content { margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: min(560px, calc(100vw - 420px)) !important; }
     .leaflet-popup-content-wrapper {
   padding: 0 !important;
 }
@@ -427,15 +427,15 @@
 
     /* POPUP CARD */
     .popup-card {
-      width: min(320px, calc(100vw - 40px));
-      max-width: calc(100vw - 40px);
-      min-width: 240px;
+      width: min(320px, calc(100vw - 420px));
+      max-width: calc(100vw - 420px);
+      min-width: 0;
       overflow: hidden;
     }
     .popup-card.has-image {
-      width: min(620px, calc(100vw - 40px));
-      max-width: calc(100vw - 40px);
-      min-width: 280px;
+      width: min(560px, calc(100vw - 420px));
+      max-width: calc(100vw - 420px);
+      min-width: 0;
       overflow: hidden;
     }
 
@@ -973,7 +973,34 @@
       #map, #plan-pick-layer { top: 142px; }
     }
 
-  </style>
+  
+    @media (max-width: 768px) {
+      .leaflet-popup,
+      .leaflet-popup-content-wrapper,
+      .leaflet-popup-content,
+      .popup-card,
+      .popup-card.has-image {
+        width: calc(100vw - 24px) !important;
+        max-width: calc(100vw - 24px) !important;
+        min-width: 0 !important;
+      }
+
+      .popup-card.has-image img,
+      .popup-img-wrap {
+        height: 190px;
+        min-height: 190px;
+      }
+
+      .popup-actions {
+        flex-wrap: wrap;
+      }
+
+      .popup-link-btn {
+        flex: 1 1 calc(50% - 10px);
+      }
+    }
+
+</style>
 </head>
 <body>
 
@@ -2899,12 +2926,12 @@ function buildPopup(place) {
   var marker = L.marker([place.lat, place.lng], { icon: createPin(place.category) }).addTo(map);
 
   marker.bindPopup(buildPopup(place), {
-    maxWidth: place.category === 'Baños Públicos' ? 300 : 620,
-    minWidth: place.category === 'Baños Públicos' ? 260 : 240,
+    maxWidth: place.category === 'Baños Públicos' ? 300 : 560,
+    minWidth: place.category === 'Baños Públicos' ? 240 : 0,
     autoPan: true,
     keepInView: true,
-    autoPanPaddingTopLeft: [20, 20],
-    autoPanPaddingBottomRight: [340, 100]
+    autoPanPaddingTopLeft: [28, 28],
+    autoPanPaddingBottomRight: [360, 120]
   });
      var markerClickHandler = function() {
   marker.openPopup();
@@ -3020,11 +3047,12 @@ map.on('popupopen', function(e) {
     setTimeout(function() {
       try {
         map.panInside(e.popup.getLatLng(), {
-          paddingTopLeft: [24, 24],
-          paddingBottomRight: [320, 110]
+          paddingTopLeft: [36, 36],
+          paddingBottomRight: [380, 140]
         });
+        e.popup.update();
       } catch (err) {}
-    }, 80);
+    }, 120);
   }
 });
 
