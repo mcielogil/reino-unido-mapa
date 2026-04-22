@@ -2667,17 +2667,12 @@ function seleccionarHoras(horas) {
   clearPlanPointMarker();
   setPlanInteraction(true);
 
-  var panel = document.getElementById('plan-panel');
-  var step1 = document.getElementById('plan-step1');
-  var result = document.getElementById('plan-result');
   var status = document.getElementById('plan-status');
-
-  panel.style.display = 'block';
-  step1.style.display = 'block';
-  result.style.display = 'none';
-
   status.style.display = 'block';
-  status.textContent = 'Ahora tocá un punto del mapa para armar el recorrido desde esa zona. Si querés, primero arrastrá el mapa para ubicarte mejor.';
+  status.textContent = 'Ahora tocá un punto del mapa para armar el recorrido desde esa zona.';
+
+  document.getElementById('plan-result').style.display = 'none';
+  document.getElementById('plan-panel').style.display = 'none';
 }
 
 function handlePlanMapClick(e) {
