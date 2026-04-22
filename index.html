@@ -2593,6 +2593,28 @@ function buildLocalImageCandidates(place) {
   return uniqueList(candidates);
 }
 
+
+function createSvgPlaceholder(place) {
+  var title = (place && (place.imageTitle || place.name)) ? String(place.imageTitle || place.name) : 'Imagen de referencia';
+  var category = (place && place.category) ? String(place.category) : 'Londres';
+  function esc(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700">' +
+    '<defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0%" stop-color="#2a211b"/><stop offset="55%" stop-color="#5b3a2d"/><stop offset="100%" stop-color="#c8920a"/></linearGradient></defs>' +
+    '<rect width="1200" height="700" fill="url(#g)"/>' +
+    '<rect x="36" y="36" width="1128" height="628" rx="24" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>' +
+    '<text x="600" y="290" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#f6f1e8">' + esc(title) + '</text>' +
+    '<text x="600" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" letter-spacing="4" fill="rgba(255,255,255,0.72)">' + esc(category.toUpperCase()) + '</text>' +
+    '<text x="600" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" letter-spacing="3" fill="rgba(255,255,255,0.58)">IMAGEN NO DISPONIBLE</text>' +
+    '</svg>';
+  return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+}
+
 function getPlaceImageCandidates(place) {
   var list = buildLocalImageCandidates(place);
   list.push(createSvgPlaceholder(place));
