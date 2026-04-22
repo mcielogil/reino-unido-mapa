@@ -2439,39 +2439,37 @@ function createPin(category) {
     ];
 
 function slugifyText(value) {
-  return String(value || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
-var LOCAL_PLACE_IMAGE_FILES = {
-  "Torre de Londres": "./torre-londres.jpg",
-  "Abadía de Westminster": "./westminster.jpg",
-  "Museo Británico": "./museo-britanico.jpg",
-  "Palacio de Buckingham": "./buckingham.jpg",
-  "Southwark: El Londres de Shakespeare": "./southwark.jpg",
-  "St. Paul’s Cathedral": "./st-pauls.jpg",
-  "King’s Cross — Andén 9¾": "./kings-cross.jpg",
-  "Notting Hill y Portobello Road": "./notting-hill.jpg",
-  "Borough Market": "./borough-market.jpg",
-  "Brick Lane y el East End": "./brick-lane.jpg",
-  "Hyde Park": "./hyde-park.jpg",
-  "Highgate Cemetery": "./highgate.jpg",
-  "Dennis Severs' House": "./dennis-severs.jpg",
-  "Sir John Soane’s Museum": "./soane-museum.jpg",
-  "Tate Modern": "./tate-modern.jpg",
-  "Camden Town": "./camden.jpg",
-  "221B Baker Street — Sherlock Holmes": "./sherlock.jpg",
-  "Pub The Anchor — Donde bebía Shakespeare": "./the-anchor.jpg",
-  "Callejón de Jack the Ripper — Goulston Street": "./ripper.jpg",
-  "La Casa de Charles Dickens": "./dickens-house.jpg",
-  "Leadenhall Market — Diagon Alley": "./leadenhall.jpg",
-  "Crossbones Graveyard — El cementerio de las proscritas": "./crossbones.jpg",
-  "La Escalera del Ángel — Angel, Islington": "./angel.jpg",
-  "Cleopatra’s Needle — El obelisco que vio a Napoleón": "./cleopatra-needle.jpg",
-  "El Café donde nació el seguro moderno — Lloyd’s Coffee House": "./lloyds.jpg",
-  "Bunhill Fields — El cementerio de los disidentes": "./bunhill.jpg"
+var PLACE_LOCAL_IMAGE_MAP = {
+  'Torre de Londres': 'torre-londres.jpg',
+  'Abadía de Westminster': 'westminster.jpg',
+  'Museo Británico': 'museo-britanico.jpg',
+  'Palacio de Buckingham': 'buckingham.jpg',
+  'Southwark: El Londres de Shakespeare': 'southwark.jpg',
+  'St. Paul’s Cathedral': 'st-pauls.jpg',
+  'King’s Cross — Andén 9¾': 'kings-cross.jpg',
+  'Notting Hill y Portobello Road': 'notting-hill.jpg',
+  'Borough Market': 'borough-market.jpg',
+  'Brick Lane y el East End': 'brick-lane.jpg',
+  'Hyde Park': 'hyde-park.jpg',
+  'Highgate Cemetery': 'highgate.jpg',
+  "Dennis Severs' House": 'dennis-severs.jpg',
+  'Sir John Soane’s Museum': 'soane-museum.jpg',
+  'Tate Modern': 'tate-modern.jpg',
+  'Camden Town': 'camden.jpg',
+  '221B Baker Street — Sherlock Holmes': 'sherlock.jpg',
+  'Pub The Anchor — Donde bebía Shakespeare': 'the-anchor.jpg',
+  'Callejón de Jack the Ripper — Goulston Street': 'ripper.jpg',
+  'La Casa de Charles Dickens': 'dickens-house.jpg',
+  'Leadenhall Market — Diagon Alley': 'leadenhall.jpg',
+  'Crossbones Graveyard — El cementerio de las proscritas': 'crossbones.jpg',
+  'La Escalera del Ángel — Angel, Islington': 'angel.jpg',
+  'Cleopatra’s Needle — El obelisco que vio a Napoleón': 'cleopatra-needle.jpg',
+  'El Café donde nació el seguro moderno — Lloyd’s Coffee House': 'lloyds.jpg',
+  'Bunhill Fields — El cementerio de los disidentes': 'bunhill.jpg'
 };
-
-var CATEGORY_IMAGE_FALLBACKS = {};
 
 function createSvgPlaceholder(place) {
   var title = (place && (place.imageTitle || place.name) ? (place.imageTitle || place.name) : 'Londres').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -2494,26 +2492,21 @@ function createSvgPlaceholder(place) {
   return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
 }
 
-function getPlaceImageCandidates(place) {
-  var list = [];
-  if (place && LOCAL_PLACE_IMAGE_FILES[place.name]) {
-    list.push(LOCAL_PLACE_IMAGE_FILES[place.name]);
-  } else if (place && place.category !== 'Baños Públicos') {
-    list.push('./' + slugifyText(place.name) + '.jpg');
-  }
-  list.push(createSvgPlaceholder(place));
-  return list.filter(Boolean);
+function getPlaceImageUrl(place) {
+  if (!place) return createSvgPlaceholder(place);
+  var filename = PLACE_LOCAL_IMAGE_MAP[place.name];
+  if (filename) return './' + filename;
+  return createSvgPlaceholder(place);
 }
 
-function getPlaceImageUrl(place) {
-  return getPlaceImageCandidates(place)[0];
+function getPlaceImageCandidates(place) {
+  return [getPlaceImageUrl(place)];
 }
 
 function ensurePopupFallbackVisible(wrap, place) {
   if (!wrap) return;
   var fallback = wrap.querySelector('.popup-fallback');
-  if (!fallback) return;
-  fallback.style.display = 'flex';
+  if (fallback) fallback.style.display = 'flex';
   var sk = wrap.querySelector('.popup-img-skeleton');
   if (sk) sk.remove();
   var img = wrap.querySelector('img[data-place-image]');
@@ -2523,28 +2516,9 @@ function ensurePopupFallbackVisible(wrap, place) {
 function hydratePopupImages(root) {
   var scope = root && root.querySelectorAll ? root : document;
   scope.querySelectorAll('img[data-place-image]').forEach(function(img) {
-    if (img.dataset.ready === '1') return;
-    img.dataset.ready = '1';
+    if (img.dataset.bound === '1') return;
+    img.dataset.bound = '1';
     var wrap = img.closest('.popup-img-wrap');
-    var placeData = null;
-    try {
-      placeData = JSON.parse(img.getAttribute('data-place-meta') || '{}');
-    } catch (e) {
-      placeData = {};
-    }
-    var candidates = [];
-    try {
-      candidates = JSON.parse(img.getAttribute('data-place-candidates') || '[]');
-    } catch (e) {
-      candidates = [];
-    }
-    if (!candidates.length) candidates = [createSvgPlaceholder(placeData)];
-    var index = 0;
-
-    function showCurrent() {
-      img.src = candidates[index];
-    }
-
     img.onload = function() {
       img.style.display = 'block';
       img.style.opacity = '1';
@@ -2555,17 +2529,12 @@ function hydratePopupImages(root) {
         if (fallback) fallback.style.display = 'none';
       }
     };
-
     img.onerror = function() {
-      index += 1;
-      if (index < candidates.length) {
-        showCurrent();
-      } else {
-        ensurePopupFallbackVisible(wrap, placeData);
-      }
+      ensurePopupFallbackVisible(wrap, {});
     };
-
-    showCurrent();
+    if (img.complete && img.naturalWidth > 0) {
+      img.onload();
+    }
   });
 }
 
@@ -2631,15 +2600,12 @@ function buildPopup(place) {
   var lugarContent;
   if (hasImage) {
     var imageUrl = getPlaceImageUrl(place);
-    var imageCandidates = getPlaceImageCandidates(place);
-    var imageMeta = JSON.stringify({ name: place.name, imageTitle: place.imageTitle, category: place.category }).replace(/"/g, '&quot;');
-    var imageCandidateAttr = JSON.stringify(imageCandidates).replace(/"/g, '&quot;');
     lugarContent =
       '<div id="' + id + '-lugar" class="popup-tab-content active">' +
         '<div class="popup-img-wrap">' +
           '<div class="popup-img-skeleton"></div>' +
-          '<div class="popup-fallback"><div class="popup-fallback-inner"><div class="popup-fallback-kicker">Imagen de referencia</div><div class="popup-fallback-title">' + place.imageTitle + '</div></div></div>' +
-          '<img data-place-image="' + imageUrl + '" data-place-meta="' + imageMeta + '" data-place-candidates="' + imageCandidateAttr + '" alt="' + place.imageTitle + '" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" style="opacity:0;transition:opacity 0.25s ease;">' +
+          '<div class="popup-fallback" style="display:none;"><div class="popup-fallback-inner"><div class="popup-fallback-kicker">Imagen de referencia</div><div class="popup-fallback-title">' + place.imageTitle + '</div></div></div>' +
+          '<img data-place-image="1" src="' + imageUrl + '" alt="' + place.imageTitle + '" loading="eager" decoding="async" style="opacity:0;transition:opacity 0.25s ease;">' +
           '<div class="popup-img-caption">' + place.imageTitle + '</div>' +
         '</div>' +
         '<div class="popup-inner"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
