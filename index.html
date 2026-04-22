@@ -673,21 +673,28 @@
       font-style: normal;
     }
 
-    
-    .popup-hero {
+    .popup-card.has-image img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .popup-img-wrap {
       position: relative;
       flex-shrink: 0;
       width: 100%;
-      height: 230px;
       overflow: hidden;
       border-top: 1px solid #d9d0c3;
       border-bottom: 1px solid #d9d0c3;
-      background: #ece4d7 center center / cover no-repeat;
-      opacity: 0;
-      transition: opacity 0.25s ease;
+      background: #ece4d7;
+      min-height: 230px;
     }
 
-    .popup-hero.ready { opacity: 1; }
+    .popup-img-bg {
+      height: 230px;
+    }
 
     .popup-img-caption {
       position: absolute;
@@ -810,7 +817,7 @@
     }
 
 
-    .popup-hero::before {
+    .popup-img-wrap::before {
       content: '';
       position: absolute;
       inset: 0;
@@ -820,8 +827,8 @@
       z-index: 0;
     }
 
-    .popup-fallback,
-    .popup-img-caption {
+    .popup-img-wrap img,
+    .popup-fallback {
       position: relative;
       z-index: 1;
     }
@@ -2439,185 +2446,18 @@ function slugifyText(value) {
   return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
-var PLACE_IMAGE_OVERRIDES = {
-  'torre-de-londres': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Tower_of_London_viewed_from_the_River_Thames.jpg/1280px-Tower_of_London_viewed_from_the_River_Thames.jpg',
-  'abadia-de-westminster': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Westminster_Abbey_West_Door.jpg/1280px-Westminster_Abbey_West_Door.jpg',
-  'museo-britanico': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/British_Museum_from_NE_2.JPG/1280px-British_Museum_from_NE_2.JPG',
-  'palacio-de-buckingham': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Buckingham_Palace_from_gardens%2C_London%2C_UK_-_Diliff.jpg/1280px-Buckingham_Palace_from_gardens%2C_London%2C_UK_-_Diliff.jpg',
-  'southwark-el-londres-de-shakespeare': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Shakespeare%27s_Globe_from_the_river.jpg/1280px-Shakespeare%27s_Globe_from_the_river.jpg',
-  'st-pauls-cathedral': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/St_Paul%27s_Cathedral_and_Millennium_Bridge_from_One_New_Change.jpg/1280px-St_Paul%27s_Cathedral_and_Millennium_Bridge_from_One_New_Change.jpg',
-  'kings-cross-anden-9': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/King%27s_Cross_railway_station_%28August_2014%29.jpg/1280px-King%27s_Cross_railway_station_%28August_2014%29.jpg',
-  'notting-hill-y-portobello-road': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Portobello_Road_Market.jpg/1280px-Portobello_Road_Market.jpg',
-  'borough-market': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Borough_Market.jpg/1280px-Borough_Market.jpg',
-  'brick-lane-y-el-east-end': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Brick_Lane_Street_Art.jpg/1280px-Brick_Lane_Street_Art.jpg',
-  'hyde-park': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Hyde_Park_London_-_September_2005.jpg/1280px-Hyde_Park_London_-_September_2005.jpg',
-  'highgate-cemetery': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Highgate_Cemetery_East.JPG/1280px-Highgate_Cemetery_East.JPG',
-  'sir-john-soanes-museum': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Soane_Museum%2C_Lincoln%27s_Inn_Fields%2C_London.jpg/1280px-Soane_Museum%2C_Lincoln%27s_Inn_Fields%2C_London.jpg',
-  'tate-modern': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Tate_Modern_%285202001512%29.jpg/1280px-Tate_Modern_%285202001512%29.jpg',
-  'camden-town': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Camden_Lock_market.jpg/1280px-Camden_Lock_market.jpg',
-  '221b-baker-street-sherlock-holmes': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Sherlock_Holmes_Museum_221b_Baker_Street.jpg/1280px-Sherlock_Holmes_Museum_221b_Baker_Street.jpg',
-  'leadenhall-market-diagon-alley': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Leadenhall_Market_In_London_-_Feb_2006_edit1.jpg/1280px-Leadenhall_Market_In_London_-_Feb_2006_edit1.jpg',
-  'la-casa-de-charles-dickens': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/48_Doughty_Street.jpg/1280px-48_Doughty_Street.jpg',
-  'cleopatras-needle-el-obelisco-que-vio-a-napoleon': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Cleopatra%27s_Needle_London_2005-06-12.jpg/1280px-Cleopatra%27s_Needle_London_2005-06-12.jpg',
-  'bunhill-fields-el-cementerio-de-los-disidentes': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Bunhill_Fields_May_2006.jpg/1280px-Bunhill_Fields_May_2006.jpg',
-  'postmans-park-el-memorial-de-los-heroes-anonimos': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Postman%27s_Park%2C_London.jpg/1280px-Postman%27s_Park%2C_London.jpg'
-};
-
-var CATEGORY_IMAGE_FALLBACKS = {
-  'Histórico': [
-    'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1400&q=80',
-    'https://images.unsplash.com/photo-1488747279002-c8523379faaa?auto=format&fit=crop&w=1400&q=80'
-  ],
-  'Cine y Cultura Pop': [
-    'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1400&q=80',
-    'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80'
-  ],
-  'Barrios y Vida Local': [
-    'https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?auto=format&fit=crop&w=1400&q=80',
-    'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=1400&q=80'
-  ],
-  'Parques y Naturaleza': [
-    'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1400&q=80',
-    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1400&q=80'
-  ],
-  'Oculto y Curioso': [
-    'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=1400&q=80',
-    'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1400&q=80'
-  ]
-};
-
-var POPUP_IMAGE_CACHE = {};
-
-function escapeHtml(value) {
-  return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
-function createSvgPlaceholder(place) {
-  var title = escapeHtml(place && (place.imageTitle || place.name) ? (place.imageTitle || place.name) : 'Londres');
-  var cat = escapeHtml(place && place.category ? place.category : 'Londres');
-  var svg = '' +
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720">' +
-      '<defs>' +
-        '<linearGradient id="g" x1="0" x2="1" y1="0" y2="1">' +
-          '<stop offset="0%" stop-color="#2b2622"/>' +
-          '<stop offset="50%" stop-color="#7b2a1a"/>' +
-          '<stop offset="100%" stop-color="#c8920a"/>' +
-        '</linearGradient>' +
-      '</defs>' +
-      '<rect width="1200" height="720" fill="url(#g)"/>' +
-      '<circle cx="960" cy="120" r="180" fill="rgba(255,255,255,0.08)"/>' +
-      '<circle cx="180" cy="620" r="220" fill="rgba(255,255,255,0.05)"/>' +
-      '<text x="600" y="300" text-anchor="middle" fill="#f7f3eb" font-family="Georgia, serif" font-size="66" font-style="italic">' + title + '</text>' +
-      '<text x="600" y="380" text-anchor="middle" fill="rgba(247,243,235,0.82)" font-family="Arial, sans-serif" font-size="24" letter-spacing="5">' + cat.toUpperCase() + '</text>' +
-    '</svg>';
-  return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
-}
-
-function getPlaceImageCandidates(place) {
-  var slug = slugifyText(place.name);
-  var list = [];
-  if (PLACE_IMAGE_OVERRIDES[slug]) list.push(PLACE_IMAGE_OVERRIDES[slug]);
-  if (CATEGORY_IMAGE_FALLBACKS[place.category]) list = list.concat(CATEGORY_IMAGE_FALLBACKS[place.category]);
-  list.push(createSvgPlaceholder(place));
-  return list.filter(Boolean);
-}
-
-function getPlaceImageKey(place) {
-  return slugifyText(place.name || place.imageTitle || 'londres');
-}
-
-function getPlaceImageResolved(place) {
-  var key = getPlaceImageKey(place);
-  if (POPUP_IMAGE_CACHE[key]) return POPUP_IMAGE_CACHE[key];
-  return null;
-}
-
-function updateOpenPopupLayout() {
-  setTimeout(function() {
-    if (map && map._popup && typeof map._popup.update === 'function') map._popup.update();
-  }, 0);
-}
-
-function preloadPlaceImage(place, done) {
-  var key = getPlaceImageKey(place);
-  if (POPUP_IMAGE_CACHE[key]) {
-    done(POPUP_IMAGE_CACHE[key]);
-    return;
+var PLACE_IMAGES = {};
+places.forEach(function(place) {
+  if (place.category !== 'Baños Públicos') {
+    PLACE_IMAGES[place.name] = slugifyText(place.name) + '.jpg';
   }
-  var candidates = getPlaceImageCandidates(place).slice();
-  var index = 0;
+});
 
-  function tryNext() {
-    var url = candidates[index];
-    if (!url) {
-      POPUP_IMAGE_CACHE[key] = createSvgPlaceholder(place);
-      done(POPUP_IMAGE_CACHE[key]);
-      return;
-    }
-    var probe = new Image();
-    probe.decoding = 'async';
-    probe.referrerPolicy = 'no-referrer';
-    probe.onload = function() {
-      POPUP_IMAGE_CACHE[key] = url;
-      done(url);
-    };
-    probe.onerror = function() {
-      index += 1;
-      tryNext();
-    };
-    probe.src = url;
-  }
-
-  tryNext();
+function getPlaceImageUrl(place) {
+  return PLACE_IMAGES[place.name] || '';
 }
 
-function paintPopupHero(hero, url) {
-  if (!hero) return;
-  hero.style.backgroundImage = 'url("' + String(url).replace(/"/g, '%22') + '")';
-  hero.classList.add('ready');
-  hero.classList.add('has-bg');
-  var fallback = hero.querySelector('.popup-fallback');
-  if (fallback) fallback.style.display = 'none';
-  var sk = hero.querySelector('.popup-img-skeleton');
-  if (sk) sk.remove();
-  updateOpenPopupLayout();
-}
-
-function showPopupHeroFallback(hero) {
-  if (!hero) return;
-  hero.classList.add('ready');
-  hero.classList.remove('has-bg');
-  hero.style.backgroundImage = 'none';
-  var fallback = hero.querySelector('.popup-fallback');
-  if (fallback) fallback.style.display = 'flex';
-  var sk = hero.querySelector('.popup-img-skeleton');
-  if (sk) sk.remove();
-  updateOpenPopupLayout();
-}
-
-function hydratePopupImages(root) {
-  var scope = root && root.querySelectorAll ? root : document;
-  scope.querySelectorAll('.popup-hero[data-place-key]').forEach(function(hero) {
-    if (hero.dataset.started === '1') return;
-    hero.dataset.started = '1';
-    var placeData = null;
-    try {
-      placeData = JSON.parse(hero.getAttribute('data-place-meta') || '{}');
-    } catch (e) {
-      placeData = {};
-    }
-    var cached = getPlaceImageResolved(placeData);
-    if (cached) {
-      paintPopupHero(hero, cached);
-      return;
-    }
-    preloadPlaceImage(placeData, function(url) {
-      if (!hero.isConnected) return;
-      if (String(url || '').indexOf('data:image/svg+xml') === 0) showPopupHeroFallback(hero);
-      else paintPopupHero(hero, url);
-    });
-  });
-}
+/* 3) REEMPLAZAR completa la función buildPopup(place) por esta */
 
 function buildPopup(place) {
   var id = 'popup-' + Math.random().toString(36).substr(2,9);
@@ -2639,10 +2479,9 @@ function buildPopup(place) {
     '</div>';
   }
 
-  var hasImage = !!place.imageTitle;
-  var escapedLugar = place.lugar.replace(/'/g, "\\'").replace(/\"/g, '&quot;');
-  var placeMetaAttr = escapeHtml(JSON.stringify({ name: place.name, imageTitle: place.imageTitle, category: place.category }));
-  var placeKey = getPlaceImageKey(place);
+  var imageUrl = getPlaceImageUrl(place);
+  var hasImage = !!imageUrl;
+  var escapedLugar = place.lugar.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
   var header =
     '<div class="popup-header">' +
@@ -2670,10 +2509,8 @@ function buildPopup(place) {
   if (hasImage) {
     lugarContent =
       '<div id="' + id + '-lugar" class="popup-tab-content active">' +
-        '<div class="popup-hero" data-place-key="' + placeKey + '" data-place-meta="' + placeMetaAttr + '">' +
-          '<div class="popup-img-skeleton"></div>' +
-          '<div class="popup-fallback"><div class="popup-fallback-inner"><div class="popup-fallback-kicker">Imagen de referencia</div><div class="popup-fallback-title">' + place.imageTitle + '</div></div></div>' +
-          '<div class="popup-img-caption">' + place.imageTitle + '</div>' +
+        '<div class="popup-img-wrap popup-img-bg" style="background-image:url(\'' + imageUrl + '\');background-size:cover;background-position:center center;background-repeat:no-repeat;">' +
+          '<div class="popup-img-caption">' + (place.imageTitle || place.name) + '</div>' +
         '</div>' +
         '<div class="popup-inner"><div class="popup-text"><p>' + place.lugar + '</p></div></div>' +
       '</div>';
@@ -2698,7 +2535,7 @@ function buildPopup(place) {
 
   var para3Content =
     '<div id="' + id + '-para3" class="popup-tab-content simple-content">' +
-      '<div class="tab-label">Cómo Vivirlo</div>' +
+      '<div class="tab-label">Vivirlo Bien</div>' +
       '<div class="tab-body"><p>' + place.paraLasTres + '</p></div>' +
     '</div>';
 
@@ -2719,20 +2556,17 @@ function buildPopup(place) {
     '</div>';
 }
 
-window.switchTab = function(id, tab) {
-  var card = document.getElementById(id);
-  if (!card) return;
-  card.querySelectorAll('.popup-tab').forEach(function(t) { t.classList.remove('active'); });
-  card.querySelectorAll('.popup-tab-content').forEach(function(c) { c.classList.remove('active'); });
-  var at = card.querySelector('[onclick*="\'' + tab + '\'"]');
-  var ac = document.getElementById(id + '-' + tab);
-  if (at) at.classList.add('active');
-  if (ac) {
-    ac.classList.add('active');
-    hydratePopupImages(ac);
-    updateOpenPopupLayout();
-  }
-};
+    window.switchTab = function(id, tab) {
+      var card = document.getElementById(id);
+      if (!card) return;
+      card.querySelectorAll('.popup-tab').forEach(function(t) { t.classList.remove('active'); });
+      card.querySelectorAll('.popup-tab-content').forEach(function(c) { c.classList.remove('active'); });
+      var at = card.querySelector('[onclick*="\'' + tab + '\'"]');
+      var ac = document.getElementById(id + '-' + tab);
+      if (at) at.classList.add('active');
+      if (ac) ac.classList.add('active');
+    };
+
     function syncFilterButtons() {
       document.querySelectorAll('[data-filter]').forEach(function(el) {
         if (activeFilters.has(el.getAttribute('data-filter'))) el.classList.add('active');
@@ -2759,8 +2593,8 @@ window.switchTab = function(id, tab) {
   var marker = L.marker([place.lat, place.lng], { icon: createPin(place.category) }).addTo(map);
 
   marker.bindPopup(buildPopup(place), {
-    maxWidth: place.category === 'Baños Públicos' ? 300 : 620,
-    minWidth: place.category === 'Baños Públicos' ? 280 : 320
+    maxWidth: place.category === 'Baños Públicos' ? 300 : 560,
+    minWidth: place.category === 'Baños Públicos' ? 280 : 460
   });
      var markerClickHandler = function() {
   marker.openPopup();
@@ -2872,24 +2706,19 @@ renderMobileFilters();
 // ---- BOTTOM SHEET (mobile) ----
 var isMobile = window.innerWidth <= 768;
 
-map.on('popupopen', function(e) {
-  var el = e && e.popup && e.popup.getElement ? e.popup.getElement() : null;
-  if (!isMobile) {
-    hydratePopupImages(el || document);
-    return;
-  }
-
-  var content = e.popup.getContent();
-  var sheet = document.getElementById('bottom-sheet');
-  var overlay = document.getElementById('bottom-sheet-overlay');
-  var sheetContent = document.getElementById('bottom-sheet-content');
-  sheetContent.innerHTML = content;
-  hydratePopupImages(sheetContent);
-  sheet.style.display = 'block';
-  overlay.style.display = 'block';
-  setTimeout(function(){ sheet.style.transform = 'translateY(0)'; }, 10);
-  map.closePopup();
-});
+if (isMobile) {
+  map.on('popupopen', function(e) {
+    var content = e.popup.getContent();
+    var sheet = document.getElementById('bottom-sheet');
+    var overlay = document.getElementById('bottom-sheet-overlay');
+    var sheetContent = document.getElementById('bottom-sheet-content');
+    sheetContent.innerHTML = content;
+    sheet.style.display = 'block';
+    overlay.style.display = 'block';
+    setTimeout(function(){ sheet.style.transform = 'translateY(0)'; }, 10);
+    map.closePopup();
+  });
+}
 
 window.closeBottomSheet = function() {
   var sheet = document.getElementById('bottom-sheet');
