@@ -218,8 +218,8 @@
 
     .sidebar-top {
       position: absolute;
-      top: 18px;
-      left: 18px;
+      top: 8px;
+      left: 12px;
       width: min(300px, calc(100vw - 36px));
       padding: 16px 18px 14px;
     }
@@ -1006,9 +1006,9 @@
 
     #lang-toggle {
       position: fixed;
-      top: 18px;
-      right: 18px;
-      z-index: 1006;
+      top: 8px;
+      left: 12px;
+      z-index: 10001;
       display: inline-flex;
       align-items: center;
       gap: 4px;
@@ -1059,8 +1059,8 @@
 
     @media (max-width: 768px) {
       #lang-toggle {
-        top: calc(var(--mobile-topbar-h, 0px) + 14px);
-        right: 14px;
+        top: max(8px, calc(var(--mobile-topbar-h, 0px) + 8px));
+        left: 10px;
       }
 
       .lang-toggle-btn {
@@ -1102,12 +1102,11 @@
 </head>
 <body>
 
+  <div id="opening">
   <div id="lang-toggle" aria-label="Language switch">
     <button type="button" class="lang-toggle-btn active" data-lang="es" onclick="setLanguage('es')">ES</button>
     <button type="button" class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
   </div>
-
-  <div id="opening">
   <div id="envelope-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;width:100%;cursor:pointer;background-image:url('https://mcielogil.github.io/reino-unido-mapa/great-britain-cover.jpg');background-size:cover;background-position:center;" onclick="window.abrirSobre && window.abrirSobre()">
     <div style="position:relative;width:min(320px,80vw);">
       <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.9));">
