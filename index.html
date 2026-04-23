@@ -1002,6 +1002,75 @@
 #place-panel .popup-inner {
   max-height: none;
 }
+
+
+    #lang-toggle {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 1006;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      border-radius: 999px;
+      background: rgba(246, 241, 232, 0.88);
+      border: 1px solid rgba(74, 73, 68, 0.14);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.14);
+    }
+
+    .lang-toggle-btn {
+      border: none;
+      background: transparent;
+      color: #5b554d;
+      min-width: 46px;
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .lang-toggle-btn:hover {
+      color: var(--black);
+      transform: translateY(-1px);
+    }
+
+    .lang-toggle-btn.active {
+      background: var(--red);
+      color: var(--white);
+      box-shadow: 0 8px 18px rgba(212,50,28,0.28);
+    }
+
+    #lang-toggle.loading {
+      pointer-events: none;
+    }
+
+    #lang-toggle.loading .lang-toggle-btn {
+      opacity: 0.72;
+    }
+
+    @media (max-width: 768px) {
+      #lang-toggle {
+        top: calc(var(--mobile-topbar-h, 0px) + 14px);
+        right: 14px;
+      }
+
+      .lang-toggle-btn {
+        min-width: 42px;
+        height: 32px;
+        padding: 0 12px;
+        font-size: 10px;
+      }
+    }
+
 @media (max-width: 768px) {
   #place-panel {
     top: auto;
@@ -1032,6 +1101,11 @@
 </style>
 </head>
 <body>
+
+  <div id="lang-toggle" aria-label="Language switch">
+    <button type="button" class="lang-toggle-btn active" data-lang="es" onclick="setLanguage('es')">ES</button>
+    <button type="button" class="lang-toggle-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+  </div>
 
   <div id="opening">
   <div id="envelope-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;width:100%;cursor:pointer;background-image:url('https://mcielogil.github.io/reino-unido-mapa/great-britain-cover.jpg');background-size:cover;background-position:center;" onclick="window.abrirSobre && window.abrirSobre()">
@@ -4583,5 +4657,257 @@ function marcarVisitado(btn, nombre) {
   background: rgba(0,0,0,0.5);
   z-index: 1999;
 "></div>
+
+<script>
+(function() {
+  var currentLanguage = localStorage.getItem('ui-language') || 'es';
+  var translationCache = {};
+  var translating = false;
+  var mutationTimer = null;
+  var observer = null;
+  var suppressMutations = false;
+  var textSelectorsToSkip = 'script, style, noscript, iframe, svg, code';
+  var attributeNames = ['placeholder', 'title', 'aria-label'];
+  var skipTags = { SCRIPT: true, STYLE: true, NOSCRIPT: true, IFRAME: true, TEXTAREA: true };
+
+  function normalizeText(text) {
+    return (text || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function shouldSkipNode(node) {
+    if (!node || !node.parentElement) return true;
+    var parent = node.parentElement;
+    if (skipTags[parent.tagName]) return true;
+    if (parent.closest(textSelectorsToSkip)) return true;
+    if (parent.closest('#lang-toggle')) return true;
+    if (parent.isContentEditable) return true;
+    if (parent.closest('.leaflet-control-attribution')) return true;
+    return !normalizeText(node.nodeValue);
+  }
+
+  function collectTextNodes(root) {
+    var scope = root && root.nodeType ? root : document.body;
+    var walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
+      acceptNode: function(node) {
+        return shouldSkipNode(node) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    return nodes;
+  }
+
+  function collectAttributeNodes(root) {
+    var scope = root && root.querySelectorAll ? root : document;
+    var items = [];
+    attributeNames.forEach(function(attr) {
+      scope.querySelectorAll('[' + attr + ']').forEach(function(el) {
+        if (el.closest('#lang-toggle')) return;
+        var value = el.getAttribute(attr);
+        if (!normalizeText(value)) return;
+        items.push({ element: el, attr: attr, value: value });
+      });
+    });
+    return items;
+  }
+
+  function restoreSpanish(root) {
+    collectTextNodes(root).forEach(function(node) {
+      if (node.__originalText != null) node.nodeValue = node.__originalText;
+    });
+    collectAttributeNodes(root).forEach(function(item) {
+      var key = '__originalAttr_' + item.attr.replace(/[^a-z]/gi, '_');
+      if (item.element[key] != null) item.element.setAttribute(item.attr, item.element[key]);
+    });
+    document.documentElement.lang = 'es';
+  }
+
+  async function translateBatch(texts) {
+    if (!texts.length) return [];
+    var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=es&tl=en&dt=t&q=' + texts.map(function(text) {
+      return encodeURIComponent(text);
+    }).join('&q=');
+    var response = await fetch(url);
+    if (!response.ok) throw new Error('Translation request failed');
+    var data = await response.json();
+    if (!Array.isArray(data)) throw new Error('Unexpected translation response');
+    return data.map(function(entry) {
+      return Array.isArray(entry) && entry[0] ? entry[0].map(function(part) { return part[0] || ''; }).join('') : '';
+    });
+  }
+
+  async function getTranslations(texts) {
+    var unique = [];
+    var seen = {};
+    texts.forEach(function(text) {
+      var key = normalizeText(text);
+      if (!key || translationCache[key] || seen[key]) return;
+      seen[key] = true;
+      unique.push(key);
+    });
+    for (var i = 0; i < unique.length; i += 25) {
+      var batch = unique.slice(i, i + 25);
+      var translated = await translateBatch(batch);
+      batch.forEach(function(source, index) {
+        translationCache[source] = translated[index] || source;
+      });
+    }
+    return texts.map(function(text) {
+      var key = normalizeText(text);
+      return translationCache[key] || text;
+    });
+  }
+
+  async function applyEnglish(root) {
+    var textNodes = collectTextNodes(root);
+    var attrNodes = collectAttributeNodes(root);
+    var texts = [];
+
+    textNodes.forEach(function(node) {
+      if (node.__originalText == null) node.__originalText = node.nodeValue;
+      texts.push(node.__originalText);
+    });
+
+    attrNodes.forEach(function(item) {
+      var key = '__originalAttr_' + item.attr.replace(/[^a-z]/gi, '_');
+      if (item.element[key] == null) item.element[key] = item.value;
+      texts.push(item.element[key]);
+    });
+
+    if (!texts.length) {
+      document.documentElement.lang = 'en';
+      return;
+    }
+
+    var translated = await getTranslations(texts);
+    var index = 0;
+
+    textNodes.forEach(function(node) {
+      node.nodeValue = translated[index++] || node.__originalText;
+    });
+
+    attrNodes.forEach(function(item) {
+      item.element.setAttribute(item.attr, translated[index++] || item.element[item.attr]);
+    });
+
+    document.documentElement.lang = 'en';
+  }
+
+  function updateToggleUI() {
+    var toggle = document.getElementById('lang-toggle');
+    if (!toggle) return;
+    toggle.querySelectorAll('.lang-toggle-btn').forEach(function(btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLanguage);
+    });
+  }
+
+  async function translateVisibleContent(root) {
+    if (translating) return;
+    translating = true;
+    suppressMutations = true;
+    var toggle = document.getElementById('lang-toggle');
+    if (toggle) toggle.classList.add('loading');
+    try {
+      if (currentLanguage === 'en') await applyEnglish(root || document.body);
+      else restoreSpanish(root || document.body);
+    } catch (error) {
+      console.error('Translation error:', error);
+    } finally {
+      if (toggle) toggle.classList.remove('loading');
+      updateToggleUI();
+      suppressMutations = false;
+      translating = false;
+    }
+  }
+
+  window.setLanguage = async function(lang) {
+    if (lang !== 'es' && lang !== 'en') return;
+    currentLanguage = lang;
+    localStorage.setItem('ui-language', lang);
+    await translateVisibleContent(document.body);
+  };
+
+  window.getCurrentLanguage = function() {
+    return currentLanguage;
+  };
+
+  function pickBestEnglishVoice() {
+    var voices = window.speechSynthesis.getVoices();
+    var preferredNames = ['Samantha', 'Google UK English Female', 'Google US English', 'Microsoft Aria', 'Microsoft Guy'];
+    for (var i = 0; i < preferredNames.length; i++) {
+      var match = voices.find(function(v) { return v.name && v.name.toLowerCase().indexOf(preferredNames[i].toLowerCase()) !== -1; });
+      if (match) return match;
+    }
+    return voices.find(function(v) { return v.lang && v.lang.toLowerCase().indexOf('en') === 0; }) || null;
+  }
+
+  var originalToggleAudio = window.toggleAudio;
+  if (typeof originalToggleAudio === 'function') {
+    window.toggleAudio = async function(btn, text) {
+      if (currentLanguage !== 'en') {
+        originalToggleAudio(btn, text);
+        return;
+      }
+      try {
+        var translated = (await getTranslations([text]))[0] || text;
+        if (window.currentBtn === btn) {
+          originalToggleAudio(btn, translated);
+          return;
+        }
+        stopSpeech();
+        isPaused = false;
+        var utterance = new SpeechSynthesisUtterance(cleanSpeechText(translated));
+        utterance.rate = 0.98;
+        utterance.pitch = 1;
+        var voice = pickBestEnglishVoice();
+        if (voice) { utterance.voice = voice; utterance.lang = voice.lang; }
+        else { utterance.lang = 'en-GB'; }
+        utterance.onend = function() {
+          if (window.currentBtn) {
+            window.currentBtn.classList.remove('playing');
+            window.currentBtn.innerHTML = speakerIcon();
+            window.currentBtn = null;
+          }
+          isPaused = false;
+        };
+        btn.classList.add('playing');
+        btn.innerHTML = pauseIcon();
+        window.currentBtn = btn;
+        window.speechSynthesis.speak(utterance);
+      } catch (error) {
+        console.error('Audio translation error:', error);
+        originalToggleAudio(btn, text);
+      }
+    };
+  }
+
+  function queueRetranslate() {
+    if (currentLanguage !== 'en') return;
+    clearTimeout(mutationTimer);
+    mutationTimer = setTimeout(function() {
+      translateVisibleContent(document.body);
+    }, 120);
+  }
+
+  function initObserver() {
+    if (observer) observer.disconnect();
+    observer = new MutationObserver(function(mutations) {
+      if (suppressMutations) return;
+      var shouldRetranslate = mutations.some(function(mutation) {
+        return mutation.type === 'childList' || mutation.type === 'characterData';
+      });
+      if (shouldRetranslate) queueRetranslate();
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    updateToggleUI();
+    initObserver();
+    translateVisibleContent(document.body);
+  });
+})();
+</script>
+
 </body>
 </html>
