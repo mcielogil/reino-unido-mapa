@@ -1031,71 +1031,68 @@
 
 
 
-    /* LANGUAGE SWITCH */
     #lang-switch {
-      position: fixed !important;
-      top: max(8px, env(safe-area-inset-top, 0px) + 8px) !important;
-      left: max(10px, env(safe-area-inset-left, 0px) + 10px) !important;
-      z-index: 10050 !important;
+      position: fixed;
+      top: 8px;
+      left: 10px;
+      z-index: 10001;
       display: flex;
       align-items: center;
       gap: 6px;
       padding: 7px 11px;
       border-radius: 999px;
-      background: rgba(15, 14, 12, 0.58);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.22);
-      color: #f3ecdf;
+      background: rgba(15,14,12,0.54);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.28);
+      color: #f4efe4;
       font-family: 'DM Sans', sans-serif;
       font-size: 11px;
       font-weight: 500;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      user-select: none;
-    }
-
-    #lang-switch[data-hidden="true"] {
-      opacity: 0;
-      pointer-events: none;
+      line-height: 1;
     }
 
     #lang-switch button {
       appearance: none;
       background: transparent;
       border: none;
-      padding: 0;
-      margin: 0;
       color: inherit;
       cursor: pointer;
+      opacity: 0.55;
+      padding: 0;
       font: inherit;
       letter-spacing: inherit;
       text-transform: inherit;
-      opacity: 0.56;
-      transition: opacity 0.2s ease, color 0.2s ease;
+      transition: opacity 0.18s ease, color 0.18s ease;
     }
 
-    #lang-switch button.active,
+    #lang-switch span {
+      opacity: 0.42;
+      pointer-events: none;
+    }
+
     #lang-switch button:hover,
-    #lang-switch button:focus-visible {
+    #lang-switch button:focus-visible,
+    #lang-switch button.active {
       opacity: 1;
       color: #ffffff;
       outline: none;
     }
 
-    #lang-switch span {
-      opacity: 0.45;
+    #opening.fade-out #lang-switch {
+      opacity: 0;
+      transition: opacity 0.35s ease;
       pointer-events: none;
     }
 
     @media (max-width: 768px) {
       #lang-switch {
-        top: max(6px, env(safe-area-inset-top, 0px) + 6px) !important;
-        left: max(8px, env(safe-area-inset-left, 0px) + 8px) !important;
-        padding: 6px 10px;
-        font-size: 10px;
-        letter-spacing: 0.16em;
+        top: 6px;
+        left: 8px;
+        padding: 7px 10px;
       }
     }
 
@@ -1103,14 +1100,12 @@
 </head>
 <body>
 
-<div id="lang-switch" data-no-translate="true" aria-label="Language switcher">
-  <button type="button" onclick="window.setLang && window.setLang('es')" id="btn-es" class="active" data-no-translate="true">ES</button>
-  <span data-no-translate="true">/</span>
-  <button type="button" onclick="window.setLang && window.setLang('en')" id="btn-en" data-no-translate="true">EN</button>
-</div>
-
-
   <div id="opening">
+  <div id="lang-switch" data-no-translate="true" aria-label="Language switch">
+    <button type="button" id="lang-btn-es" onclick="setAppLanguage('es')">ES</button>
+    <span>/</span>
+    <button type="button" id="lang-btn-en" onclick="setAppLanguage('en')">EN</button>
+  </div>
   <div id="envelope-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;width:100%;cursor:pointer;background-image:url('https://mcielogil.github.io/reino-unido-mapa/great-britain-cover.jpg');background-size:cover;background-position:center;" onclick="window.abrirSobre && window.abrirSobre()">
     <div style="position:relative;width:min(320px,80vw);">
       <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.9));">
@@ -1123,21 +1118,21 @@
         <text x="160" y="107" text-anchor="middle" font-family="Playfair Display, serif" font-size="22" font-style="italic" font-weight="700" fill="white">G</text>
       </svg>
     </div>
-    <div style="margin-top:24px;font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#3a3934;">Para las que saben mirar</div>
-    <div style="margin-top:10px;font-family:\'Playfair Display\',serif;font-style:italic;font-size:12px;color:#2a2926;animation:blink 2s infinite;">Tocá para abrir</div>
+    <div id="intro-envelope-kicker" data-manual-i18n="true" style="margin-top:24px;font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#3a3934;">Para las que saben mirar</div>
+    <div id="intro-envelope-open" data-manual-i18n="true" style="margin-top:10px;font-family:\'Playfair Display\',serif;font-style:italic;font-size:12px;color:#2a2926;animation:blink 2s infinite;">Tocá para abrir</div>
   </div>
 
   <div id="carta-screen" style="display:none;align-items:center;justify-content:center;height:100vh;padding:24px;overflow-y:auto;box-sizing:border-box;background-image:url('https://mcielogil.github.io/reino-unido-mapa/great-britain-cover.jpg');background-size:cover;background-position:center;">
     <div style="max-width:420px;width:100%;background:#f7f3eb;padding:40px 32px;box-shadow:0 32px 80px rgba(0,0,0,0.9);position:relative;border-radius:2px;">
       <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(0,0,0,0.03) 28px,rgba(0,0,0,0.03) 29px);border-radius:2px;pointer-events:none;"></div>
       <div style="position:relative;">
-        <div style="font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#c8920a;margin-bottom:16px;">Gran Bretaña</div>
-        <div style="font-family:\'Playfair Display\',serif;font-size:26px;font-weight:700;color:#1a1612;line-height:1.1;margin-bottom:20px;">Ah.<br><em style="font-weight:400;">Llegaron.</em></div>
+        <div id="intro-letter-kicker" data-manual-i18n="true" style="font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#c8920a;margin-bottom:16px;">Gran Bretaña</div>
+        <div id="intro-letter-title" data-manual-i18n="true" style="font-family:\'Playfair Display\',serif;font-size:26px;font-weight:700;color:#1a1612;line-height:1.1;margin-bottom:20px;">Ah.<br><em style="font-weight:400;">Llegaron.</em></div>
         <div style="width:36px;height:1px;background:#c8920a;margin-bottom:20px;"></div>
-        <div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:12px;">Las estaba esperando — no a ustedes en particular, claro. Nunca espero a nadie en especial Pero sí a alguien que llegue con los ojos abiertos y las manos libres.</div>
-        <div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:12px;">Tengo reyes enterrados y secretos sin resolver. Tengo callejones que vieron cosas que ningún libro se atrevió a contar del todo. Tengo dos mil años de ambición, de genio, de traición y de belleza — todo mezclado, todo vivo todavía.</div>
-        <div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:28px;">No soy fácil. Nunca lo fui. Pero a las que saben mirar, les cuento todo.</div>
-        <button onclick="enterMap()" style="background:var(--red);border:none;color:#fff;padding:14px 36px;font-family:\'DM Sans\',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;">¿Entran?</button>
+        <div id="intro-letter-p1" data-manual-i18n="true" style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:12px;">Las estaba esperando — no a ustedes en particular, claro. Nunca espero a nadie en especial Pero sí a alguien que llegue con los ojos abiertos y las manos libres.</div>
+        <div id="intro-letter-p2" data-manual-i18n="true" style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:12px;">Tengo reyes enterrados y secretos sin resolver. Tengo callejones que vieron cosas que ningún libro se atrevió a contar del todo. Tengo dos mil años de ambición, de genio, de traición y de belleza — todo mezclado, todo vivo todavía.</div>
+        <div id="intro-letter-p3" data-manual-i18n="true" style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:28px;">No soy fácil. Nunca lo fui. Pero a las que saben mirar, les cuento todo.</div>
+        <button id="intro-enter-btn" data-manual-i18n="true" onclick="enterMap()" style="background:var(--red);border:none;color:#fff;padding:14px 36px;font-family:\'DM Sans\',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;">¿Entran?</button>
       </div>
     </div>
   </div>
@@ -1284,11 +1279,281 @@
 <script>
 </script>
 <script>
+
+     var APP_LANGUAGE_STORAGE_KEY = 'londres_punto_por_punto_lang';
+     var currentLang = localStorage.getItem(APP_LANGUAGE_STORAGE_KEY) || 'es';
+     var translationCache = Object.create(null);
+     var translationPromises = Object.create(null);
+     var translationObserver = null;
+
+     var introCopy = {
+      es: {
+        envelopeKicker: 'Para las que saben mirar',
+        envelopeOpen: 'Tocá para abrir',
+        letterKicker: 'Gran Bretaña',
+        letterTitle: 'Ah.<br><em style="font-weight:400;">Llegaron.</em>',
+        letterP1: 'Las estaba esperando — no a ustedes en particular, claro. Nunca espero a nadie en especial. Pero sí a alguien que llegue con los ojos abiertos y las manos libres.',
+        letterP2: 'Tengo reyes enterrados y secretos sin resolver. Tengo callejones que vieron cosas que ningún libro se atrevió a contar del todo. Tengo dos mil años de ambición, de genio, de traición y de belleza — todo mezclado, todo vivo todavía.',
+        letterP3: 'No soy fácil. Nunca lo fui. Pero a las que saben mirar, les cuento todo.',
+        enterBtn: '¿Entran?'
+      },
+      en: {
+        envelopeKicker: 'For those who know how to look',
+        envelopeOpen: 'Tap to open',
+        letterKicker: 'Great Britain',
+        letterTitle: 'Oh,<br><em style="font-weight:400;">you’ve arrived.</em>',
+        letterP1: 'I was waiting for you — not for you in particular, of course. I never wait for anyone in particular. But I do wait for someone who arrives with their eyes open and their hands free.',
+        letterP2: 'I have buried kings and unsolved secrets. I have alleys that saw things no book ever dared to tell in full. I have two thousand years of ambition, genius, betrayal, and beauty — all mixed together, all still alive.',
+        letterP3: 'I am not easy. I never was. But for those who know how to look, I tell everything.',
+        enterBtn: 'Will you come in?'
+      }
+     };
+
+     var manualTranslations = {
+      'Buscar lugar': 'Search place',
+      'Buscar lugar...': 'Search place...',
+      'Filtrar por tipo': 'Filter by type',
+      'Histórico': 'Historical',
+      'Cine y Cultura Pop': 'Film & Pop Culture',
+      'Barrios y Vida Local': 'Neighborhoods & Local Life',
+      'Parques y Naturaleza': 'Parks & Nature',
+      'Oculto y Curioso': 'Hidden & Curious',
+      'Baños Públicos': 'Public Toilets',
+      'Londres': 'London',
+      'Plan del día': 'Day plan',
+      'Personajes': 'Characters',
+      'La Ciudad': 'The City',
+      'Desafíos': 'Challenges',
+      'Marcá lo que van haciendo. Se guarda automáticamente.': 'Check off what you do. It saves automatically.',
+      'Tu plan del día': 'Your day plan',
+      'Elegí cuántas horas tienen y después tocá un punto del mapa.': 'Choose how many hours you have, then tap a point on the map.',
+      'Te armo un itinerario con lugares cerca de esa zona, no del centro que quedó visible.': 'I’ll build you an itinerary with places near that area, not the city center that happened to be visible.',
+      '2 horas': '2 hours',
+      '4 horas': '4 hours',
+      'Día completo': 'Full day',
+      'Borrar ruta': 'Clear route',
+      'Ver mi ubicación': 'See my location',
+      'Colección': 'Collection',
+      'Cerrar': 'Close',
+      'Marcar visitado': 'Mark visited',
+      '✓ Visitado': '✓ Visited',
+      'm de distancia': 'm away',
+      'Tocá para abrir': 'Tap to open',
+      'Para las que saben mirar': 'For those who know how to look',
+      'Gran Bretaña': 'Great Britain',
+      '¿Entran?': 'Will you come in?',
+      'Ah. Llegaron.': 'Oh, you’ve arrived.',
+      'Ahora tocá cualquier punto del mapa para plantar el pin y armar el recorrido desde esa zona.': 'Now tap any point on the map to drop the pin and build the route from that area.',
+      'Primero tocá el botón de localización.': 'Tap the location button first.',
+      'Primero tocá el botón de ubicación (⊙)': 'Tap the location button first (⊙).',
+      'No pude acceder a tu ubicación. Revisá permisos del navegador.': 'I couldn’t access your location. Check your browser permissions.',
+      'Tu navegador no soporta geolocalización.': 'Your browser does not support geolocation.',
+      'No encontramos resultados': 'No results found'
+     };
+
+     function normalizeTranslationKey(text) {
+      return (text || '').replace(/\s+/g, ' ').trim();
+     }
+
+     function preserveEdgeWhitespace(original, translated) {
+      var leading = (original.match(/^\s*/) || [''])[0];
+      var trailing = (original.match(/\s*$/) || [''])[0];
+      return leading + translated + trailing;
+     }
+
+     function runtimeText(esText, enText) {
+      return currentLang === 'en' ? (enText || manualTranslations[normalizeTranslationKey(esText)] || esText) : esText;
+     }
+
+     function updateLanguageButtons() {
+      var esBtn = document.getElementById('lang-btn-es');
+      var enBtn = document.getElementById('lang-btn-en');
+      if (esBtn) esBtn.classList.toggle('active', currentLang === 'es');
+      if (enBtn) enBtn.classList.toggle('active', currentLang === 'en');
+     }
+
+     function applyIntroLanguage(lang) {
+      var copy = introCopy[lang] || introCopy.es;
+      var map = {
+        'intro-envelope-kicker': 'envelopeKicker',
+        'intro-envelope-open': 'envelopeOpen',
+        'intro-letter-kicker': 'letterKicker',
+        'intro-letter-title': 'letterTitle',
+        'intro-letter-p1': 'letterP1',
+        'intro-letter-p2': 'letterP2',
+        'intro-letter-p3': 'letterP3',
+        'intro-enter-btn': 'enterBtn'
+      };
+      Object.keys(map).forEach(function(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        if (id === 'intro-letter-title') el.innerHTML = copy[map[id]];
+        else el.textContent = copy[map[id]];
+      });
+      updateLanguageButtons();
+     }
+
+     function shouldSkipElement(element) {
+      return !element || !!element.closest('[data-no-translate], [data-manual-i18n], script, style, noscript, textarea');
+     }
+
+     function shouldTranslateTextNode(node) {
+      if (!node || node.nodeType !== 3 || node._i18nApplying) return false;
+      if (!node.parentElement || shouldSkipElement(node.parentElement)) return false;
+      if (!normalizeTranslationKey(node.nodeValue)) return false;
+      return true;
+     }
+
+     async function translateText(text) {
+      var normalized = normalizeTranslationKey(text);
+      if (!normalized || currentLang !== 'en') return text;
+      if (manualTranslations[normalized]) return preserveEdgeWhitespace(text, manualTranslations[normalized]);
+      if (translationCache[normalized]) return preserveEdgeWhitespace(text, translationCache[normalized]);
+      if (!translationPromises[normalized]) {
+        translationPromises[normalized] = fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=es&tl=en&dt=t&q=' + encodeURIComponent(normalized))
+          .then(function(res) { return res.json(); })
+          .then(function(data) {
+            var translated = Array.isArray(data) && Array.isArray(data[0]) ? data[0].map(function(part) { return part[0]; }).join('') : normalized;
+            translationCache[normalized] = translated || normalized;
+            return translationCache[normalized];
+          })
+          .catch(function() {
+            translationCache[normalized] = normalized;
+            return normalized;
+          })
+          .finally(function() {
+            delete translationPromises[normalized];
+          });
+      }
+      var translated = await translationPromises[normalized];
+      return preserveEdgeWhitespace(text, translated);
+     }
+
+     async function translateTextNode(node) {
+      if (!shouldTranslateTextNode(node)) return;
+      if (node._i18nOriginal === undefined) node._i18nOriginal = node.nodeValue;
+      var original = node._i18nOriginal;
+      var translated = await translateText(original);
+      node._i18nApplying = true;
+      node.nodeValue = translated;
+      node._i18nApplying = false;
+     }
+
+     function restoreTextNode(node) {
+      if (node && node.nodeType === 3 && node._i18nOriginal !== undefined) {
+        node._i18nApplying = true;
+        node.nodeValue = node._i18nOriginal;
+        node._i18nApplying = false;
+      }
+     }
+
+     async function translateAttributesForElement(element) {
+      if (!element || element.nodeType !== 1 || shouldSkipElement(element)) return;
+      var attrs = ['placeholder', 'title', 'aria-label'];
+      for (var i = 0; i < attrs.length; i++) {
+        var attr = attrs[i];
+        if (!element.hasAttribute(attr)) continue;
+        var dataKey = 'i18nOriginal' + attr.replace(/[^a-z]/gi, '');
+        if (!element.dataset[dataKey]) element.dataset[dataKey] = element.getAttribute(attr);
+        var original = element.dataset[dataKey];
+        var translated = await translateText(original);
+        element.setAttribute(attr, translated);
+      }
+      if ((element.tagName === 'INPUT' || element.tagName === 'BUTTON') && element.hasAttribute('value')) {
+        if (!element.dataset.i18nOriginalValue) element.dataset.i18nOriginalValue = element.value;
+        element.value = await translateText(element.dataset.i18nOriginalValue);
+      }
+     }
+
+     function restoreAttributesForElement(element) {
+      if (!element || element.nodeType !== 1) return;
+      var attrs = ['placeholder', 'title', 'aria-label'];
+      attrs.forEach(function(attr) {
+        var dataKey = 'i18nOriginal' + attr.replace(/[^a-z]/gi, '');
+        if (element.dataset && element.dataset[dataKey]) element.setAttribute(attr, element.dataset[dataKey]);
+      });
+      if (element.dataset && element.dataset.i18nOriginalValue !== undefined) element.value = element.dataset.i18nOriginalValue;
+     }
+
+     async function applyLanguageToSubtree(root) {
+      if (currentLang !== 'en' || !root) return;
+      if (root.nodeType === 3) {
+        await translateTextNode(root);
+        return;
+      }
+      if (root.nodeType !== 1) return;
+      await translateAttributesForElement(root);
+      var elements = root.querySelectorAll('*');
+      for (var i = 0; i < elements.length; i++) {
+        await translateAttributesForElement(elements[i]);
+      }
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+      var node;
+      var jobs = [];
+      while ((node = walker.nextNode())) {
+        if (shouldTranslateTextNode(node)) jobs.push(translateTextNode(node));
+      }
+      await Promise.all(jobs);
+     }
+
+     function restoreLanguageInSubtree(root) {
+      if (!root) return;
+      if (root.nodeType === 3) {
+        restoreTextNode(root);
+        return;
+      }
+      if (root.nodeType !== 1) return;
+      restoreAttributesForElement(root);
+      var elements = root.querySelectorAll('*');
+      for (var i = 0; i < elements.length; i++) restoreAttributesForElement(elements[i]);
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+      var node;
+      while ((node = walker.nextNode())) restoreTextNode(node);
+     }
+
+     function startTranslationObserver() {
+      if (translationObserver || !document.body) return;
+      translationObserver = new MutationObserver(function(mutations) {
+        if (currentLang !== 'en') return;
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'characterData') {
+            if (!mutation.target._i18nApplying) translateTextNode(mutation.target);
+            return;
+          }
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeType === 1 || node.nodeType === 3) applyLanguageToSubtree(node);
+          });
+        });
+      });
+      translationObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
+     }
+
+     function setAppLanguage(lang) {
+      currentLang = lang === 'en' ? 'en' : 'es';
+      localStorage.setItem(APP_LANGUAGE_STORAGE_KEY, currentLang);
+      applyIntroLanguage(currentLang);
+      updateLanguageButtons();
+      if (currentLang === 'en') applyLanguageToSubtree(document.body);
+      else restoreLanguageInSubtree(document.body);
+     }
+
+     function initAppLanguage() {
+      applyIntroLanguage(currentLang);
+      startTranslationObserver();
+      if (currentLang === 'en') applyLanguageToSubtree(document.body);
+     }
+
+     window.addEventListener('load', initAppLanguage);
+
      function enterMap() {
       var o = document.getElementById('opening');
       o.classList.add('fade-out');
       setTimeout(function() { o.style.display = 'none'; }, 1000);
+      if (currentLang === 'en') {
+        setTimeout(function() { applyLanguageToSubtree(document.body); }, 80);
+      }
     }
+
 window.abrirSobre = function() {
   document.getElementById('envelope-screen').style.display = 'none';
   var carta = document.getElementById('carta-screen');
@@ -1324,7 +1589,7 @@ function updateUserLocation(position, shouldCenter) {
 
 function handleLocationError(error) {
   console.error('Geolocation error:', error);
-  alert('No pude acceder a tu ubicación. Revisá permisos del navegador.');
+  alert(runtimeText('No pude acceder a tu ubicación. Revisá permisos del navegador.', "I couldn't access your location. Check your browser permissions."));
 }
 
 function clearRoute() {
@@ -1336,7 +1601,7 @@ function clearRoute() {
 
 window.showRouteToPlace = function(lat, lng) {
   if (!userMarker) {
-    alert('Primero tocá el botón de localización.');
+    alert(runtimeText('Primero tocá el botón de localización.', "Tap the location button first."));
     locateUser();
     return;
   }
@@ -1351,7 +1616,7 @@ window.showRouteToPlace = function(lat, lng) {
 };
 
 function locateUser() {
-  if (!navigator.geolocation) { alert('Tu navegador no soporta geolocalización.'); return; }
+  if (!navigator.geolocation) { alert(runtimeText('Tu navegador no soporta geolocalización.', "Your browser does not support geolocation.")); return; }
   navigator.geolocation.getCurrentPosition(
     function(position) { updateUserLocation(position, true); },
     handleLocationError,
@@ -1402,11 +1667,21 @@ function startWatchingUserLocation() {
       return voices.find(function(v) { return v.lang && v.lang.toLowerCase().startsWith('es'); }) || null;
     }
 
+    function pickBestEnglishVoice() {
+      var voices = window.speechSynthesis.getVoices();
+      var preferredNames = ['Samantha','Daniel','Google US English','Google UK English', 'Microsoft Aria', 'Microsoft Guy'];
+      for (var i = 0; i < preferredNames.length; i++) {
+        var match = voices.find(function(v) { return v.name && v.name.toLowerCase().indexOf(preferredNames[i].toLowerCase()) !== -1; });
+        if (match) return match;
+      }
+      return voices.find(function(v) { return v.lang && v.lang.toLowerCase().indexOf('en') === 0; }) || null;
+    }
+
     function cleanSpeechText(text) {
       return text.replace(/—/g, ', ').replace(/\s+/g, ' ').trim();
     }
 
-    function toggleAudio(btn, text) {
+    async function toggleAudio(btn, text) {
       if (currentBtn === btn) {
         if (isPaused) { window.speechSynthesis.resume(); isPaused = false; btn.innerHTML = pauseIcon(); }
         else { window.speechSynthesis.pause(); isPaused = true; btn.innerHTML = playIcon(); }
@@ -1414,9 +1689,11 @@ function startWatchingUserLocation() {
       }
       stopSpeech();
       isPaused = false;
-      var utterance = new SpeechSynthesisUtterance(cleanSpeechText(text));
+      var spokenText = text;
+      if (currentLang === 'en') spokenText = await translateText(text);
+      var utterance = new SpeechSynthesisUtterance(cleanSpeechText(spokenText));
       utterance.rate = 0.98; utterance.pitch = 1;
-      var voice = pickBestSpanishVoice();
+      var voice = currentLang === 'en' ? pickBestEnglishVoice() : pickBestSpanishVoice();
       if (voice) { utterance.voice = voice; utterance.lang = voice.lang; }
       utterance.onend = function() {
         if (currentBtn) { currentBtn.classList.remove('playing'); currentBtn.innerHTML = speakerIcon(); currentBtn = null; }
@@ -3459,7 +3736,7 @@ function seleccionarHoras(horas) {
   clearPlanPointMarker();
   setPlanInteraction(true);
 
-  alert('Ahora tocá cualquier punto del mapa para plantar el pin y armar el recorrido desde esa zona.');
+  alert(runtimeText('Ahora tocá cualquier punto del mapa para plantar el pin y armar el recorrido desde esa zona.', "Now tap any point on the map to drop the pin and build the route from that area."));
 
   document.getElementById('plan-result').style.display = 'none';
   document.getElementById('plan-panel').style.display = 'none';
@@ -4557,7 +4834,7 @@ function mostrarCercanos() {
     return;
   }
   if (!userMarker) {
-    alert('Primero tocá el botón de ubicación (⊙)');
+    alert(runtimeText('Primero tocá el botón de ubicación (⊙)', "Tap the location button first (⊙)."));
     return;
   }
   var userLat = userMarker.getLatLng().lat;
@@ -4573,7 +4850,7 @@ function mostrarCercanos() {
     var metros = Math.round(obj.dist * 111000);
     var btn = document.createElement('div');
     btn.style.cssText = 'padding:8px 0;border-bottom:1px solid #1e1d1a;cursor:pointer;';
-    btn.innerHTML = '<div style="font-family:DM Sans,sans-serif;font-size:12px;color:var(--white);">' + obj.place.name + '</div><div style="font-family:DM Sans,sans-serif;font-size:10px;color:#9c907e;margin-top:2px;">' + metros + 'm de distancia</div>';
+    btn.innerHTML = '<div style="font-family:DM Sans,sans-serif;font-size:12px;color:var(--white);">' + obj.place.name + '</div><div style="font-family:DM Sans,sans-serif;font-size:10px;color:#9c907e;margin-top:2px;">' + metros + runtimeText('m de distancia', "m away") + '</div>';
     btn.onclick = function() {
       map.setView([obj.place.lat, obj.place.lng], 16);
       obj.marker.openPopup();
@@ -4587,14 +4864,14 @@ function marcarVisitado(btn, nombre) {
   var key = visitedStorageKey(nombre);
   if (localStorage.getItem(key)) {
     localStorage.removeItem(key);
-    btn.textContent = 'Marcar visitado';
+    btn.textContent = runtimeText('Marcar visitado', "Mark visited");
     btn.style.borderColor = '';
     btn.style.color = '';
     var obj = allMarkers.find(function(o){ return o.place.name.replace(/[^a-zA-Z0-9]/g,'') === nombre; });
     if (obj) obj.marker.setIcon(createPin(obj.place.category));
   } else {
     localStorage.setItem(key, '1');
-    btn.textContent = '✓ Visitado';
+    btn.textContent = runtimeText('✓ Visitado', "✓ Visited");
     btn.style.borderColor = '#4a6741';
     btn.style.color = '#4a6741';
     var obj = allMarkers.find(function(o){ return o.place.name.replace(/[^a-zA-Z0-9]/g,'') === nombre; });
@@ -4660,271 +4937,5 @@ function marcarVisitado(btn, nombre) {
   background: rgba(0,0,0,0.5);
   z-index: 1999;
 "></div>
-
-<script>
-(function () {
-  var LANG_KEY = 'lppp_lang';
-  var CACHE_KEY = 'lppp_translation_cache_v1';
-  var currentLang = localStorage.getItem(LANG_KEY) || 'es';
-  var translating = false;
-  var queuedNodes = new Set();
-  var flushScheduled = false;
-  var observer = null;
-  var suppressObserver = false;
-  var translationCache = {};
-  try {
-    translationCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}') || {};
-  } catch (e) {
-    translationCache = {};
-  }
-
-  function persistCache() {
-    try {
-      localStorage.setItem(CACHE_KEY, JSON.stringify(translationCache));
-    } catch (e) {}
-  }
-
-  function rememberOriginalText(node, value) {
-    if (!node || !value) return;
-    if (node.__originalText == null) node.__originalText = value;
-  }
-
-  function rememberOriginalAttr(el, attr, value) {
-    if (!el || value == null || value === '') return;
-    if (!el.__originalAttrs) el.__originalAttrs = {};
-    if (!(attr in el.__originalAttrs)) el.__originalAttrs[attr] = value;
-  }
-
-  function getCacheKey(text, targetLang) {
-    return targetLang + '::' + text;
-  }
-
-  function shouldSkipElement(el) {
-    if (!el || el.nodeType !== 1) return false;
-    if (el.closest('[data-no-translate="true"]')) return true;
-    var tag = el.tagName;
-    if (!tag) return false;
-    tag = tag.toUpperCase();
-    return tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT' || tag === 'CODE' || tag === 'PRE' || tag === 'SVG' || tag === 'PATH' || tag === 'IMG' || tag === 'TEXTAREA' || tag === 'OPTION';
-  }
-
-  function isMeaningfulText(text) {
-    if (!text) return false;
-    var trimmed = text.replace(/\s+/g, ' ').trim();
-    if (!trimmed) return false;
-    if (trimmed === 'ES' || trimmed === 'EN' || trimmed === '/') return false;
-    if (/^[\d\s.,:;!?%£$€()\-+\/]+$/.test(trimmed)) return false;
-    return /[A-Za-zÁÉÍÓÚáéíóúÑñÜü]/.test(trimmed);
-  }
-
-  async function fetchTranslation(text, targetLang) {
-    var key = getCacheKey(text, targetLang);
-    if (translationCache[key]) return translationCache[key];
-
-    var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=es&tl=' + encodeURIComponent(targetLang) + '&dt=t&q=' + encodeURIComponent(text);
-    var response = await fetch(url);
-    if (!response.ok) throw new Error('Translation request failed');
-    var data = await response.json();
-    var translated = Array.isArray(data && data[0]) ? data[0].map(function (part) { return part[0] || ''; }).join('') : text;
-    translationCache[key] = translated;
-    persistCache();
-    return translated;
-  }
-
-  async function translateTextNode(node, targetLang) {
-    if (!node || node.nodeType !== 3) return;
-    var parent = node.parentElement;
-    if (!parent || shouldSkipElement(parent)) return;
-    var original = node.__originalText != null ? node.__originalText : node.nodeValue;
-    if (!isMeaningfulText(original)) return;
-    rememberOriginalText(node, original);
-    if (targetLang === 'es') {
-      node.nodeValue = node.__originalText;
-      return;
-    }
-    try {
-      var translated = await fetchTranslation(node.__originalText, targetLang);
-      node.nodeValue = translated;
-    } catch (e) {}
-  }
-
-  async function translateAttribute(el, attr, targetLang) {
-    if (!el || shouldSkipElement(el)) return;
-    var current = el.getAttribute(attr);
-    var original = (el.__originalAttrs && el.__originalAttrs[attr]) || current;
-    if (!isMeaningfulText(original)) return;
-    rememberOriginalAttr(el, attr, original);
-    if (targetLang === 'es') {
-      el.setAttribute(attr, el.__originalAttrs[attr]);
-      return;
-    }
-    try {
-      var translated = await fetchTranslation(el.__originalAttrs[attr], targetLang);
-      el.setAttribute(attr, translated);
-    } catch (e) {}
-  }
-
-  async function processNode(root, targetLang) {
-    if (!root) return;
-    if (root.nodeType === 3) {
-      await translateTextNode(root, targetLang);
-      return;
-    }
-    if (root.nodeType !== 1 || shouldSkipElement(root)) return;
-
-    await translateAttribute(root, 'placeholder', targetLang);
-    await translateAttribute(root, 'title', targetLang);
-    await translateAttribute(root, 'aria-label', targetLang);
-    if (root.tagName === 'INPUT' && (root.type === 'button' || root.type === 'submit') && root.value) {
-      var originalValue = root.__originalValue != null ? root.__originalValue : root.value;
-      if (isMeaningfulText(originalValue)) {
-        if (root.__originalValue == null) root.__originalValue = originalValue;
-        if (targetLang === 'es') root.value = root.__originalValue;
-        else {
-          try { root.value = await fetchTranslation(root.__originalValue, targetLang); } catch (e) {}
-        }
-      }
-    }
-
-    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode: function (node) {
-        if (!node.parentElement || shouldSkipElement(node.parentElement)) return NodeFilter.FILTER_REJECT;
-        return isMeaningfulText(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-      }
-    });
-
-    var textNodes = [];
-    while (walker.nextNode()) textNodes.push(walker.currentNode);
-    for (var i = 0; i < textNodes.length; i++) {
-      await translateTextNode(textNodes[i], targetLang);
-    }
-
-    var attrNodes = root.querySelectorAll('[placeholder],[title],[aria-label],input[type="button"],input[type="submit"]');
-    for (var j = 0; j < attrNodes.length; j++) {
-      await translateAttribute(attrNodes[j], 'placeholder', targetLang);
-      await translateAttribute(attrNodes[j], 'title', targetLang);
-      await translateAttribute(attrNodes[j], 'aria-label', targetLang);
-      if (attrNodes[j].tagName === 'INPUT' && (attrNodes[j].type === 'button' || attrNodes[j].type === 'submit') && attrNodes[j].value) {
-        var v = attrNodes[j].__originalValue != null ? attrNodes[j].__originalValue : attrNodes[j].value;
-        if (isMeaningfulText(v)) {
-          if (attrNodes[j].__originalValue == null) attrNodes[j].__originalValue = v;
-          if (targetLang === 'es') attrNodes[j].value = attrNodes[j].__originalValue;
-          else {
-            try { attrNodes[j].value = await fetchTranslation(attrNodes[j].__originalValue, targetLang); } catch (e) {}
-          }
-        }
-      }
-    }
-  }
-
-  async function flushQueue() {
-    if (translating) return;
-    flushScheduled = false;
-    if (!queuedNodes.size) return;
-    translating = true;
-    suppressObserver = true;
-    var nodes = Array.from(queuedNodes);
-    queuedNodes.clear();
-    try {
-      for (var i = 0; i < nodes.length; i++) {
-        await processNode(nodes[i], currentLang);
-      }
-    } finally {
-      suppressObserver = false;
-      translating = false;
-    }
-    if (queuedNodes.size) scheduleFlush();
-  }
-
-  function scheduleFlush() {
-    if (flushScheduled) return;
-    flushScheduled = true;
-    setTimeout(flushQueue, 0);
-  }
-
-  function queueNode(node) {
-    if (!node) return;
-    queuedNodes.add(node);
-    scheduleFlush();
-  }
-
-  function applyLangButtonState() {
-    var esBtn = document.getElementById('btn-es');
-    var enBtn = document.getElementById('btn-en');
-    if (esBtn) esBtn.classList.toggle('active', currentLang === 'es');
-    if (enBtn) enBtn.classList.toggle('active', currentLang === 'en');
-  }
-
-  function initObserver() {
-    if (observer) observer.disconnect();
-    observer = new MutationObserver(function (mutations) {
-      if (suppressObserver) return;
-      mutations.forEach(function (mutation) {
-        if (mutation.type === 'childList') {
-          mutation.addedNodes.forEach(function (node) {
-            if (node.nodeType === 1 || node.nodeType === 3) queueNode(node);
-          });
-        }
-        if (mutation.type === 'characterData' && mutation.target) {
-          queueNode(mutation.target);
-        }
-        if (mutation.type === 'attributes' && mutation.target) {
-          queueNode(mutation.target);
-        }
-      });
-    });
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      characterData: true,
-      attributes: true,
-      attributeFilter: ['placeholder', 'title', 'aria-label', 'value']
-    });
-  }
-
-  async function setLang(lang) {
-    currentLang = lang === 'en' ? 'en' : 'es';
-    localStorage.setItem(LANG_KEY, currentLang);
-    applyLangButtonState();
-    queueNode(document.body);
-  }
-
-  window.setLang = setLang;
-
-  var originalToggleAudio = window.toggleAudio;
-  window.toggleAudio = async function (btn, text) {
-    var speechText = text;
-    if (currentLang === 'en' && typeof text === 'string' && isMeaningfulText(text)) {
-      try {
-        speechText = await fetchTranslation(text, 'en');
-      } catch (e) {
-        speechText = text;
-      }
-    }
-    return originalToggleAudio ? originalToggleAudio(btn, speechText) : undefined;
-  };
-
-  var originalPickBestSpanishVoice = window.pickBestSpanishVoice;
-  window.pickBestSpanishVoice = function () {
-    if (currentLang === 'en' && window.speechSynthesis) {
-      var voices = window.speechSynthesis.getVoices() || [];
-      var preferred = ['Google US English', 'Samantha', 'Karen', 'Moira', 'Daniel', 'Microsoft Aria', 'Microsoft Guy'];
-      for (var i = 0; i < preferred.length; i++) {
-        var found = voices.find(function (v) { return v.name && v.name.toLowerCase().indexOf(preferred[i].toLowerCase()) !== -1; });
-        if (found) return found;
-      }
-      return voices.find(function (v) { return v.lang && v.lang.toLowerCase().indexOf('en') === 0; }) || (originalPickBestSpanishVoice ? originalPickBestSpanishVoice() : null);
-    }
-    return originalPickBestSpanishVoice ? originalPickBestSpanishVoice() : null;
-  };
-
-  document.addEventListener('DOMContentLoaded', function () {
-    applyLangButtonState();
-    initObserver();
-    queueNode(document.body);
-  });
-})();
-</script>
-
 </body>
 </html>
