@@ -1297,7 +1297,7 @@ function updateUserLocation(position, shouldCenter) {
 
 function handleLocationError(error) {
   console.error('Geolocation error:', error);
-  alert('No pude acceder a tu ubicación. Revisá permisos del navegador.');
+  alert(window.__lppUi('noLocationAccess'));
 }
 
 function clearRoute() {
@@ -1309,7 +1309,7 @@ function clearRoute() {
 
 window.showRouteToPlace = function(lat, lng) {
   if (!userMarker) {
-    alert('Primero tocá el botón de localización.');
+    alert(window.__lppUi('firstLocation'));
     locateUser();
     return;
   }
@@ -1324,7 +1324,7 @@ window.showRouteToPlace = function(lat, lng) {
 };
 
 function locateUser() {
-  if (!navigator.geolocation) { alert('Tu navegador no soporta geolocalización.'); return; }
+  if (!navigator.geolocation) { alert(window.__lppUi('noGeolocation')); return; }
   navigator.geolocation.getCurrentPosition(
     function(position) { updateUserLocation(position, true); },
     handleLocationError,
@@ -4529,7 +4529,7 @@ function mostrarCercanos() {
     return;
   }
   if (!userMarker) {
-    alert('Primero tocá el botón de ubicación (⊙)');
+    alert(window.__lppUi('firstLocationNearby'));
     return;
   }
   var userLat = userMarker.getLatLng().lat;
@@ -4545,7 +4545,7 @@ function mostrarCercanos() {
     var metros = Math.round(obj.dist * 111000);
     var btn = document.createElement('div');
     btn.style.cssText = 'padding:8px 0;border-bottom:1px solid #1e1d1a;cursor:pointer;';
-    btn.innerHTML = '<div style="font-family:DM Sans,sans-serif;font-size:12px;color:var(--white);">' + obj.place.name + '</div><div style="font-family:DM Sans,sans-serif;font-size:10px;color:#9c907e;margin-top:2px;">' + metros + 'm de distancia</div>';
+    btn.innerHTML = '<div style="font-family:DM Sans,sans-serif;font-size:12px;color:var(--white);">' + obj.place.name + '</div><div style="font-family:DM Sans,sans-serif;font-size:10px;color:#9c907e;margin-top:2px;">' + metros + window.__lppUi('distanceAway') + '</div>';
     btn.onclick = function() {
       map.setView([obj.place.lat, obj.place.lng], 16);
       obj.marker.openPopup();
@@ -4559,14 +4559,14 @@ function marcarVisitado(btn, nombre) {
   var key = visitedStorageKey(nombre);
   if (localStorage.getItem(key)) {
     localStorage.removeItem(key);
-    btn.textContent = 'Marcar visitado';
+    btn.textContent = window.__lppUi('markVisited');
     btn.style.borderColor = '';
     btn.style.color = '';
     var obj = allMarkers.find(function(o){ return o.place.name.replace(/[^a-zA-Z0-9]/g,'') === nombre; });
     if (obj) obj.marker.setIcon(createPin(obj.place.category));
   } else {
     localStorage.setItem(key, '1');
-    btn.textContent = '✓ Visitado';
+    btn.textContent = window.__lppUi('visited');
     btn.style.borderColor = '#4a6741';
     btn.style.color = '#4a6741';
     var obj = allMarkers.find(function(o){ return o.place.name.replace(/[^a-zA-Z0-9]/g,'') === nombre; });
@@ -4633,19 +4633,116 @@ function marcarVisitado(btn, nombre) {
   z-index: 1999;
 "></div>
 
+
 <script>
 (function() {
   var btnEs = document.getElementById('lang-btn-es');
   var btnEn = document.getElementById('lang-btn-en');
-  var langSwitch = document.getElementById('lang-switch');
-  var translateInitialized = false;
   var currentLang = localStorage.getItem('lpp_lang') === 'en' ? 'en' : 'es';
+
+  var UI_COPY = {
+    es: {
+      title: 'Londres, punto por punto',
+      brandHtml: 'Londres,<br><em>punto por punto</em>',
+      searchLabel: 'Buscar lugar',
+      searchPlaceholder: 'Buscar lugar',
+      searchPlaceholderMobile: 'Buscar lugar...',
+      filterLabel: 'Filtrar por tipo',
+      navLondon: 'Londres',
+      navPlan: 'Plan del día',
+      navCharacters: 'Personajes',
+      close: 'Cerrar',
+      cityTab: 'La Ciudad',
+      challengesTab: 'Desafíos',
+      cityWelcome: 'Bienvenidas a Londres.',
+      challengesHelp: 'Marcá lo que van haciendo. Se guarda automáticamente.',
+      planTitle: 'Tu plan del día',
+      planIntro: 'Elegí cuántas horas tienen y después tocá un punto del mapa.',
+      planSub: 'Te armo un itinerario con lugares cerca de esa zona, no del centro que quedó visible.',
+      twoHours: '2 horas',
+      fourHours: '4 horas',
+      fullDay: 'Día completo',
+      clearRoute: 'Borrar ruta',
+      locateTitle: 'Ver mi ubicación',
+      collection: 'Colección',
+      navCharactersTitle: 'Personajes',
+      hiddenCharacter: 'Personaje oculto',
+      discovered: 'Descubierto',
+      character: 'Personaje',
+      discoveredCollection: 'Colección descubierta',
+      tapSeeMore: 'Tocá “Ver más” para abrir la carta completa.',
+      seeMore: 'Ver más',
+      markVisited: 'Marcar visitado',
+      visited: '✓ Visitado',
+      firstLocation: 'Primero tocá el botón de localización.',
+      noGeolocation: 'Tu navegador no soporta geolocalización.',
+      noLocationAccess: 'No pude acceder a tu ubicación. Revisá permisos del navegador.',
+      firstLocationNearby: 'Primero tocá el botón de ubicación (⊙)',
+      distanceAway: 'm de distancia',
+      pointChosen: 'Punto elegido',
+      filters: {
+        'Histórico': 'Histórico',
+        'Cine y Cultura Pop': 'Cine y Cultura Pop',
+        'Barrios y Vida Local': 'Barrios y Vida Local',
+        'Parques y Naturaleza': 'Parques y Naturaleza',
+        'Oculto y Curioso': 'Oculto y Curioso'
+      }
+    },
+    en: {
+      title: 'London, point by point',
+      brandHtml: 'London,<br><em>point by point</em>',
+      searchLabel: 'Search places',
+      searchPlaceholder: 'Search places',
+      searchPlaceholderMobile: 'Search places...',
+      filterLabel: 'Filter by type',
+      navLondon: 'London',
+      navPlan: 'Day plan',
+      navCharacters: 'Characters',
+      close: 'Close',
+      cityTab: 'The City',
+      challengesTab: 'Challenges',
+      cityWelcome: 'Welcome to London.',
+      challengesHelp: 'Check off what you do. It saves automatically.',
+      planTitle: 'Your day plan',
+      planIntro: 'Choose how many hours you have and then tap a point on the map.',
+      planSub: 'I will build you an itinerary with places near that area, not from the center left visible on the map.',
+      twoHours: '2 hours',
+      fourHours: '4 hours',
+      fullDay: 'Full day',
+      clearRoute: 'Clear route',
+      locateTitle: 'Show my location',
+      collection: 'Collection',
+      navCharactersTitle: 'Characters',
+      hiddenCharacter: 'Hidden character',
+      discovered: 'Discovered',
+      character: 'Character',
+      discoveredCollection: 'Discovered collection',
+      tapSeeMore: 'Tap “See more” to open the full card.',
+      seeMore: 'See more',
+      markVisited: 'Mark visited',
+      visited: '✓ Visited',
+      firstLocation: 'Tap the location button first.',
+      noGeolocation: 'Your browser does not support geolocation.',
+      noLocationAccess: 'I could not access your location. Check your browser permissions.',
+      firstLocationNearby: 'Tap the location button first (⊙)',
+      distanceAway: 'm away',
+      pointChosen: 'Chosen point',
+      filters: {
+        'Histórico': 'Historical',
+        'Cine y Cultura Pop': 'Film & Pop Culture',
+        'Barrios y Vida Local': 'Neighborhoods & Local Life',
+        'Parques y Naturaleza': 'Parks & Nature',
+        'Oculto y Curioso': 'Hidden & Curious'
+      }
+    }
+  };
+
   var INTRO_COPY = {
     es: {
       prompt: 'Tocá para abrir',
       kicker: 'Gran Bretaña',
       titleHtml: 'Ah.<br><em style="font-weight:400;">Llegaron.</em>',
-      p1: 'Las estaba esperando — no a ustedes en particular, claro. Nunca espero a nadie en especial Pero sí a alguien que llegue con los ojos abiertos y las manos libres.',
+      p1: 'Las estaba esperando — no a ustedes en particular, claro. Nunca espero a nadie en especial. Pero sí a alguien que llegue con los ojos abiertos y las manos libres.',
       p2: 'Tengo reyes enterrados y secretos sin resolver. Tengo callejones que vieron cosas que ningún libro se atrevió a contar del todo. Tengo dos mil años de ambición, de genio, de traición y de belleza — todo mezclado, todo vivo todavía.',
       p3: 'No soy fácil. Nunca lo fui. Pero a las que saben mirar, les cuento todo.',
       button: '¿Entran?'
@@ -4653,35 +4750,20 @@ function marcarVisitado(btn, nombre) {
     en: {
       prompt: 'Tap to open',
       kicker: 'Great Britain',
-      titleHtml: 'Oh.<br><em style="font-weight:400;">You've arrived.</em>',
+      titleHtml: 'Oh.<br><em style="font-weight:400;">You made it.</em>',
       p1: 'I was waiting for you — not you in particular, of course. I never wait for anyone in particular. But I do wait for someone who arrives with their eyes open and their hands free.',
-      p2: 'I have buried kings and unsolved secrets. I have alleys that saw things no book dared to tell in full. I have two thousand years of ambition, genius, betrayal, and beauty — all mixed together, all still alive.',
-      p3: 'I am not easy. I never was. But to those who know how to look, I tell everything.',
-      button: 'Will you come in?'
+      p2: 'I have buried kings and unsolved secrets. I have alleys that saw things no book ever dared to tell in full. I hold two thousand years of ambition, genius, betrayal, and beauty — all mixed together, all still alive.',
+      p3: 'I am not easy. I never was. But for those who know how to look, I tell everything.',
+      button: 'Coming in?'
     }
   };
 
-  function setCookie(name, value) {
-    var maxAge = 60 * 60 * 24 * 365;
-    document.cookie = name + '=' + value + '; path=/; max-age=' + maxAge;
-    document.cookie = name + '=' + value + '; path=/; domain=' + window.location.hostname + '; max-age=' + maxAge;
+  function ui(key) {
+    return (UI_COPY[currentLang] || UI_COPY.es)[key];
   }
 
-  function getCookie(name) {
-    var match = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/[.$?*|{}()\[\]\\/+^]/g, '\\$&') + '=([^;]*)'));
-    return match ? decodeURIComponent(match[1]) : '';
-  }
-
-  function setTranslateCookies(lang) {
-    var value = lang === 'en' ? '/es/en' : '/es/es';
-    setCookie('googtrans', value);
-  }
-
-  function looksTranslatedToEnglish() {
-    var htmlLang = (document.documentElement.getAttribute('lang') || '').toLowerCase();
-    var bodyClass = (document.body.className || '').toLowerCase();
-    return htmlLang.indexOf('en') === 0 || bodyClass.indexOf('translated') !== -1;
-  }
+  window.__lppUi = function(key) { return ui(key); };
+  window.__lppLang = currentLang;
 
   function setActiveButtons() {
     if (btnEs) btnEs.classList.toggle('active', currentLang === 'es');
@@ -4706,99 +4788,131 @@ function marcarVisitado(btn, nombre) {
     if (button) button.textContent = copy.button;
   }
 
-  window.googleTranslateElementInit = function() {
-    if (translateInitialized) return;
-    if (!window.google || !window.google.translate || !window.google.translate.TranslateElement) return;
-    translateInitialized = true;
-    new google.translate.TranslateElement({
-      pageLanguage: 'es',
-      includedLanguages: 'en',
-      autoDisplay: false,
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element');
+  function relabelFilterButtons(selector) {
+    document.querySelectorAll(selector).forEach(function(btn) {
+      var key = btn.getAttribute('data-filter');
+      var label = UI_COPY[currentLang].filters[key];
+      if (!label) return;
+      var pip = btn.querySelector('.filter-pip');
+      btn.innerHTML = '';
+      if (pip) btn.appendChild(pip);
+      btn.appendChild(document.createTextNode(' ' + label));
+    });
+  }
 
-    if (currentLang === 'en') {
-      var tries = 0;
-      var timer = setInterval(function() {
-        var combo = document.querySelector('.goog-te-combo');
-        tries += 1;
-        if (combo) {
-          combo.value = 'en';
-          combo.dispatchEvent(new Event('change'));
-          clearInterval(timer);
-        } else if (tries > 40) {
-          clearInterval(timer);
-        }
-      }, 250);
-    }
-  };
+  function applyStaticTranslations() {
+    var pageTitle = document.querySelector('title');
+    if (pageTitle) pageTitle.textContent = ui('title');
 
-  function ensureTranslateScript() {
-    if (window.google && window.google.translate && window.google.translate.TranslateElement) {
-      window.googleTranslateElementInit();
-      return;
-    }
-    if (document.getElementById('google-translate-script')) return;
-    var script = document.createElement('script');
-    script.id = 'google-translate-script';
-    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    script.async = true;
-    document.head.appendChild(script);
+    var brand = document.querySelector('.sidebar-brand');
+    if (brand) brand.innerHTML = ui('brandHtml');
+
+    var searchLabels = document.querySelectorAll('.sidebar-section-label');
+    if (searchLabels[0]) searchLabels[0].textContent = ui('searchLabel');
+    if (searchLabels[1]) searchLabels[1].textContent = ui('filterLabel');
+
+    var searchInput = document.getElementById('search-input');
+    if (searchInput) searchInput.placeholder = ui('searchPlaceholder');
+
+    var searchInputMobile = document.getElementById('search-input-mobile');
+    if (searchInputMobile) searchInputMobile.placeholder = ui('searchPlaceholderMobile');
+
+    var bottomBtns = document.querySelectorAll('#bottom-nav .bottom-nav-btn span');
+    if (bottomBtns[0]) bottomBtns[0].textContent = ui('navLondon');
+    if (bottomBtns[1]) bottomBtns[1].textContent = ui('navPlan');
+    if (bottomBtns[2]) bottomBtns[2].textContent = ui('navCharacters');
+
+    var cityTitle = document.querySelector('#city-card [style*="font-size:32px"]');
+    if (cityTitle) cityTitle.textContent = ui('navLondon');
+
+    var cityButtons = document.querySelectorAll('#city-card button');
+    if (cityButtons[0]) cityButtons[0].textContent = ui('close');
+    if (cityButtons[1]) cityButtons[1].textContent = ui('cityTab');
+    if (cityButtons[2]) cityButtons[2].textContent = ui('challengesTab');
+
+    var cityWelcome = document.querySelector('#city-content-historia p');
+    if (cityWelcome) cityWelcome.textContent = ui('cityWelcome');
+
+    var challengesHelp = document.querySelector('#city-content-desafios > div');
+    if (challengesHelp) challengesHelp.textContent = ui('challengesHelp');
+
+    var planTitle = document.querySelector('#plan-panel [style*="font-size:24px"]');
+    if (planTitle) planTitle.textContent = ui('planTitle');
+
+    var planTexts = document.querySelectorAll('#plan-step1 > div');
+    if (planTexts[0]) planTexts[0].textContent = ui('planIntro');
+    if (planTexts[1]) planTexts[1].textContent = ui('planSub');
+
+    var hourButtons = document.querySelectorAll('#plan-step1 button');
+    if (hourButtons[0]) hourButtons[0].textContent = ui('twoHours');
+    if (hourButtons[1]) hourButtons[1].textContent = ui('fourHours');
+    if (hourButtons[2]) hourButtons[2].textContent = ui('fullDay');
+
+    var planClose = document.querySelector('#plan-panel > div button');
+    if (planClose) planClose.textContent = ui('close');
+
+    var clearRouteBtn = document.getElementById('clear-route-btn');
+    if (clearRouteBtn) clearRouteBtn.textContent = ui('clearRoute');
+
+    var locateBtn = document.querySelector('.locate-btn');
+    if (locateBtn) locateBtn.title = ui('locateTitle');
+
+    var personajesHeader = document.querySelector('#personajes-panel [style*="letter-spacing:0.2em"]');
+    if (personajesHeader) personajesHeader.textContent = ui('collection');
+
+    var personajesTitle = document.querySelector('#personajes-panel [style*="font-size:22px"]');
+    if (personajesTitle) personajesTitle.textContent = ui('navCharactersTitle');
+
+    var placeClose = document.getElementById('place-panel-close');
+    if (placeClose) placeClose.setAttribute('aria-label', ui('close'));
+
+    relabelFilterButtons('.filter-btn');
   }
 
   function persistLanguage(lang) {
     currentLang = lang === 'en' ? 'en' : 'es';
+    window.__lppLang = currentLang;
     localStorage.setItem('lpp_lang', currentLang);
+    document.documentElement.setAttribute('lang', currentLang);
     setActiveButtons();
     applyIntroLanguage();
+    applyStaticTranslations();
   }
 
   function setLanguage(lang) {
-    var nextLang = lang === 'en' ? 'en' : 'es';
-    var cookieValue = getCookie('googtrans');
-    var shouldReload = false;
-
-    persistLanguage(nextLang);
-
-    if (nextLang === 'en') {
-      setTranslateCookies('en');
-      ensureTranslateScript();
-      shouldReload = !looksTranslatedToEnglish() || cookieValue !== '/es/en';
-    } else {
-      setTranslateCookies('es');
-      shouldReload = looksTranslatedToEnglish() || cookieValue === '/es/en';
-    }
-
-    if (shouldReload) {
-      sessionStorage.setItem('lpp_lang_reload', nextLang);
-      window.location.reload();
+    persistLanguage(lang);
+    try {
+      if (typeof renderMarkers === 'function') renderMarkers();
+      if (typeof searchPlaces === 'function') {
+        var desktop = document.getElementById('search-input');
+        var mobile = document.getElementById('search-input-mobile');
+        var q = (desktop && desktop.value) || (mobile && mobile.value) || '';
+        if (q) searchPlaces(q);
+      }
+      if (typeof cargarDesafios === 'function') cargarDesafios();
+      if (typeof renderPersonajesList === 'function') renderPersonajesList();
+    } catch (err) {
+      console.warn('Language refresh warning:', err);
     }
   }
 
   if (btnEs) {
     btnEs.addEventListener('click', function(e) {
       e.preventDefault();
-      if (currentLang !== 'es' || looksTranslatedToEnglish()) setLanguage('es');
+      setLanguage('es');
     });
   }
 
   if (btnEn) {
     btnEn.addEventListener('click', function(e) {
       e.preventDefault();
-      if (currentLang !== 'en' || !looksTranslatedToEnglish()) setLanguage('en');
+      setLanguage('en');
     });
   }
 
-  var originalEnterMap = window.enterMap;
-  window.enterMap = function() {
-    if (langSwitch) langSwitch.classList.add('hidden');
-    return typeof originalEnterMap === 'function' ? originalEnterMap.apply(this, arguments) : undefined;
-  };
-
   persistLanguage(currentLang);
-  setTranslateCookies(currentLang);
-  ensureTranslateScript();
 })();
+</script>
 </script>
 
 </body>
