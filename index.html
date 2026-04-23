@@ -909,43 +909,18 @@
       }
       #mobile-filter-bar {
         display:flex;
+        flex-direction:column;
         gap:8px;
-        overflow-x:auto;
         margin-top:8px;
-        padding:2px 2px 4px;
-        scrollbar-width:none;
       }
-      #mobile-filter-bar::-webkit-scrollbar { display:none; }
       #mobile-filter-bar .filter-btn {
-        flex:0 0 auto;
-        min-width:max-content;
-        padding:9px 42px 9px 12px;
-        background:rgba(255,255,255,0.18);
-        color:#f3ecdf;
-        border:1px solid rgba(255,255,255,0.12);
+        width:100%;
       }
-      #mobile-filter-bar .filter-btn:hover { background:rgba(255,255,255,0.24); }
-      #mobile-filter-bar .filter-btn::after {
-        width:32px;
-        height:18px;
-        background:rgba(255,255,255,0.16);
-        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
-      }
-      #mobile-filter-bar .filter-btn::before {
-        right:26px;
-        background:rgba(255,255,255,0.96);
-      }
-      #mobile-filter-bar .filter-btn.active {
-        background:rgba(255,255,255,0.26);
-        color:#fff7eb;
-        border-color:rgba(255,255,255,0.18);
-      }
-      #mobile-filter-bar .filter-btn.active::after { background:rgba(200,146,10,0.4); }
-      #mobile-filter-bar .filter-pip { opacity:1; }
+      #mobile-filter-bar .filter-pip { opacity:0.9; }
       .sidebar-body { display:none; }
       .sidebar-top {
         position:fixed;
-        top:86px;
+        top:calc(var(--mobile-topbar-h, 78px) + 12px);
         left:16px;
         right:16px;
         width:auto;
@@ -3145,7 +3120,21 @@ function renderMobileFilters() {
   syncFilterButtons();
 }
 
+
+function syncMobileChrome() {
+  var controls = document.getElementById('mobile-controls');
+  var root = document.documentElement;
+  if (!controls || window.innerWidth > 768) {
+    root.style.setProperty('--mobile-topbar-h', '0px');
+    return;
+  }
+  root.style.setProperty('--mobile-topbar-h', controls.offsetHeight + 'px');
+}
+
 renderMobileFilters();
+syncMobileChrome();
+window.addEventListener('resize', syncMobileChrome);
+window.addEventListener('load', syncMobileChrome);
 
 map.on('popupopen', function(e) {
   if (e && e.popup && e.popup.getElement) hydratePopupImages(e.popup.getElement());
