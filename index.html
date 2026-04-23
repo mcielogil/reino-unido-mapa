@@ -1032,36 +1032,63 @@
 
 #lang-switch {
   position: fixed;
-  top: 8px;
-  left: 10px;
+  top: 10px;
+  left: 12px;
   z-index: 10001;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
+  gap: 5px;
+  padding: 5px 9px;
   border-radius: 999px;
-  background: rgba(15,14,12,0.42);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: #f3ecdf;
+  background: rgba(246, 241, 232, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #3a3632;
   font-family: 'DM Sans', sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.18em;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  border: 1px solid rgba(74,73,68,0.10);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 #lang-switch button {
-  background: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
   border: none;
   color: inherit;
-  opacity: 0.62;
+  opacity: 0.48;
   cursor: pointer;
   font: inherit;
   letter-spacing: inherit;
   text-transform: inherit;
+  padding: 3px 4px 4px;
+  line-height: 1;
+  border-radius: 6px;
+  transition: opacity 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 #lang-switch button.active {
   opacity: 1;
-  color: #fff;
+  color: #1d1714;
+  background: rgba(255,255,255,0.34);
+  position: relative;
+}
+#lang-switch button.active::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 1px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.95;
+}
+#lang-switch button:hover {
+  opacity: 0.82;
+}
+#lang-switch span {
+  opacity: 0.35;
 }
 #lang-switch.hidden { display: none !important; }
 #google_translate_element,
@@ -1072,6 +1099,19 @@
 body { top: 0 !important; }
 body.goog-te-banner-frame.skiptranslate { top: 0 !important; }
 .goog-te-gadget { font-size: 0 !important; color: transparent !important; }
+
+@media (max-width: 768px) {
+  #lang-switch {
+    top: 88px;
+    left: 14px;
+    padding: 5px 8px;
+    font-size: 9px;
+    gap: 4px;
+  }
+  #lang-switch button {
+    padding: 3px 3px 4px;
+  }
+}
 
 </style>
 </head>
