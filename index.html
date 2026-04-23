@@ -2973,10 +2973,12 @@ function buildPopup(place) {
       '<div class="tab-body"><p>' + comoTexto + '</p></div>' +
     '</div>';
 
+  var visitKey = place.name.replace(/[^a-zA-Z0-9]/g, '');
+  var isVisited = !!localStorage.getItem('v-' + visitKey);
   var actions =
   '<div class="popup-actions">' +
-  '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">Ver ruta</button>' +
-  '<button class="popup-link-btn" onclick="marcarVisitado(this, \'' + place.name.replace(/[^a-zA-Z0-9]/g, '') + '\')" style="' + (localStorage.getItem('v-' + place.name.replace(/[^a-zA-Z0-9]/g, '')) ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (localStorage.getItem('v-' + place.name.replace(/[^a-zA-Z0-9]/g, '')) ? '✓ Visitado' : 'Marcar visitado') + '</button>' +
+  '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">' + (window.__lppUi ? window.__lppUi('seeRoute') : 'Ver ruta') + '</button>' +
+  '<button class="popup-link-btn" onclick="marcarVisitado(this, \'" + visitKey + "\')" style="' + (isVisited ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (isVisited ? (window.__lppUi ? window.__lppUi('visited') : '✓ Visitado') : (window.__lppUi ? window.__lppUi('markVisited') : 'Marcar visitado')) + '</button>' +
   '</div>';
   return '<div class="popup-card' + (hasImage ? ' has-image' : '') + '" id="' + id + '">' +
     header + tabs + lugarContent + historiaContent + curiosidadesContent + para3Content + comoContent + actions +
@@ -4678,8 +4680,8 @@ function marcarVisitado(btn, nombre) {
       noGeolocation: 'Tu navegador no soporta geolocalización.',
       noLocationAccess: 'No pude acceder a tu ubicación. Revisá permisos del navegador.',
       firstLocationNearby: 'Primero tocá el botón de ubicación (⊙)',
-      distanceAway: 'm de distancia',
-      pointChosen: 'Punto elegido',
+      distanceAway: (window.__lppUi ? window.__lppUi('distanceAway') : 'm de distancia'),
+      pointChosen: (window.__lppUi ? window.__lppUi('pointChosen') : 'Punto elegido'),
       filters: {
         'Histórico': 'Histórico',
         'Cine y Cultura Pop': 'Cine y Cultura Pop',
@@ -4896,23 +4898,233 @@ function marcarVisitado(btn, nombre) {
     }
   }
 
+  window.setLanguage = setLanguage;
+
   if (btnEs) {
     btnEs.addEventListener('click', function(e) {
       e.preventDefault();
-      setLanguage('es');
+      window.setLanguage('es');
     });
   }
 
   if (btnEn) {
     btnEn.addEventListener('click', function(e) {
       e.preventDefault();
-      setLanguage('en');
+      window.setLanguage('en');
     });
   }
 
   persistLanguage(currentLang);
 })();
 </script>
+<script>
+(function(){
+  var CACHE_KEY = 'lpp_runtime_translations_v1';
+  var cache = {};
+  try { cache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}') || {}; } catch (e) { cache = {}; }
+  var observer = null;
+  var translating = new WeakSet();
+
+  function currentLang() {
+    return window.__lppLang || localStorage.getItem('lpp_lang') || 'es';
+  }
+
+  function saveCache() {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); } catch (e) {}
+  }
+
+  function cacheKey(text, target) {
+    return target + '::' + text;
+  }
+
+  function splitLongText(text, maxLen) {
+    maxLen = maxLen || 1200;
+    if (!text || text.length <= maxLen) return [text];
+    var parts = [];
+    var paras = text.split(/(\n\n+)/);
+    var chunk = '';
+    paras.forEach(function(part) {
+      if ((chunk + part).length > maxLen && chunk) {
+        parts.push(chunk);
+        chunk = part;
+      } else {
+        chunk += part;
+      }
+    });
+    if (chunk) parts.push(chunk);
+    return parts;
+  }
+
+  async function fetchGoogleTranslate(text, target) {
+    var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=es&tl=' + encodeURIComponent(target) + '&dt=t&q=' + encodeURIComponent(text);
+    var res = await fetch(url, { method: 'GET' });
+    if (!res.ok) throw new Error('translate http ' + res.status);
+    var data = await res.json();
+    if (!Array.isArray(data) || !Array.isArray(data[0])) throw new Error('translate bad payload');
+    return data[0].map(function(row){ return row && row[0] ? row[0] : ''; }).join('');
+  }
+
+  async function translateText(text, target) {
+    target = target || 'en';
+    if (!text || !text.trim() || target === 'es') return text;
+    var key = cacheKey(text, target);
+    if (cache[key]) return cache[key];
+    var pieces = splitLongText(text, 1100);
+    var out = '';
+    for (var i = 0; i < pieces.length; i++) {
+      out += await fetchGoogleTranslate(pieces[i], target);
+    }
+    cache[key] = out;
+    saveCache();
+    return out;
+  }
+
+  async function translateElementTextNodes(root) {
+    if (!root || translating.has(root) || currentLang() !== 'en') return;
+    translating.add(root);
+    try {
+      if (root.dataset && !root.dataset.lppOriginalHtml) root.dataset.lppOriginalHtml = root.innerHTML;
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode: function(node) {
+          if (!node || !node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          var parent = node.parentElement;
+          if (!parent) return NodeFilter.FILTER_REJECT;
+          var tag = parent.tagName;
+          if (/^(SCRIPT|STYLE|NOSCRIPT|SVG|PATH)$/i.test(tag)) return NodeFilter.FILTER_REJECT;
+          if (parent.closest('[data-no-auto-translate="true"]')) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      var nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      for (var i = 0; i < nodes.length; i++) {
+        var n = nodes[i];
+        var original = n.nodeValue;
+        try {
+          n.nodeValue = await translateText(original, 'en');
+        } catch (e) {
+          console.warn('Translate text failed', e);
+        }
+      }
+      var attrEls = root.querySelectorAll ? root.querySelectorAll('[placeholder],[title],[aria-label],[alt]') : [];
+      for (var j = 0; j < attrEls.length; j++) {
+        var el = attrEls[j];
+        var attrs = ['placeholder','title','aria-label','alt'];
+        for (var k = 0; k < attrs.length; k++) {
+          var attr = attrs[k];
+          var val = el.getAttribute(attr);
+          if (!val || !val.trim()) continue;
+          try { el.setAttribute(attr, await translateText(val, 'en')); } catch (e) {}
+        }
+      }
+    } finally {
+      translating.delete(root);
+    }
+  }
+
+  function translateKnownContainers() {
+    if (currentLang() !== 'en') return;
+    [
+      document.getElementById('city-content-historia'),
+      document.getElementById('city-content-desafios'),
+      document.getElementById('plan-panel'),
+      document.getElementById('place-panel-inner'),
+      document.getElementById('personajes-panel'),
+      document.getElementById('personaje-content'),
+      document.getElementById('search-results'),
+      document.getElementById('search-results-mobile'),
+      document.getElementById('nearby-panel'),
+      document.getElementById('bottom-sheet')
+    ].forEach(function(el){ if (el) translateElementTextNodes(el); });
+  }
+
+  function startObserver() {
+    if (observer) return;
+    observer = new MutationObserver(function(mutations) {
+      if (currentLang() !== 'en') return;
+      mutations.forEach(function(m) {
+        m.addedNodes.forEach(function(node) {
+          if (!node || node.nodeType !== 1) return;
+          translateElementTextNodes(node);
+        });
+      });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  var originalSetLanguage = window.setLanguage;
+  window.setLanguage = function(lang) {
+    if (lang === 'es' && currentLang() === 'en') {
+      localStorage.setItem('lpp_lang', 'es');
+      location.reload();
+      return;
+    }
+    if (typeof originalSetLanguage === 'function') originalSetLanguage(lang);
+    if (lang === 'en') {
+      startObserver();
+      setTimeout(translateKnownContainers, 80);
+      setTimeout(translateKnownContainers, 600);
+      setTimeout(translateKnownContainers, 1800);
+    }
+  };
+
+  var originalAbrirPersonajes = window.abrirPersonajes;
+  if (typeof originalAbrirPersonajes === 'function') {
+    window.abrirPersonajes = function() {
+      originalAbrirPersonajes.apply(this, arguments);
+      if (currentLang() === 'en') setTimeout(translateKnownContainers, 80);
+    };
+  }
+
+  var originalAbrirPersonaje = window.abrirPersonaje;
+  if (typeof originalAbrirPersonaje === 'function') {
+    window.abrirPersonaje = function() {
+      originalAbrirPersonaje.apply(this, arguments);
+      if (currentLang() === 'en') setTimeout(translateKnownContainers, 80);
+    };
+  }
+
+  var originalOpenPlacePanel = window.openPlacePanel;
+  if (typeof originalOpenPlacePanel === 'function') {
+    window.openPlacePanel = function() {
+      originalOpenPlacePanel.apply(this, arguments);
+      if (currentLang() === 'en') setTimeout(translateKnownContainers, 80);
+    };
+  }
+
+  var originalSearchPlaces = window.searchPlaces;
+  if (typeof originalSearchPlaces === 'function') {
+    window.searchPlaces = function() {
+      var res = originalSearchPlaces.apply(this, arguments);
+      if (currentLang() === 'en') setTimeout(translateKnownContainers, 80);
+      return res;
+    };
+  }
+
+  var originalRenderPlan = window.renderPlanDesdePunto;
+  if (typeof originalRenderPlan === 'function') {
+    window.renderPlanDesdePunto = function() {
+      var res = originalRenderPlan.apply(this, arguments);
+      if (currentLang() === 'en') setTimeout(translateKnownContainers, 120);
+      return res;
+    };
+  }
+
+  var originalMostrarCercanos = window.mostrarCercanos;
+  if (typeof originalMostrarCercanos === 'function') {
+    window.mostrarCercanos = function() {
+      var res = originalMostrarCercanos.apply(this, arguments);
+      if (currentLang() === 'en') setTimeout(translateKnownContainers, 80);
+      return res;
+    };
+  }
+
+  if (currentLang() === 'en') {
+    startObserver();
+    setTimeout(translateKnownContainers, 80);
+    setTimeout(translateKnownContainers, 700);
+  }
+})();
 </script>
 
 </body>
