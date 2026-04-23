@@ -1097,7 +1097,6 @@ body.goog-te-banner-frame.skiptranslate { top: 0 !important; }
         <text x="160" y="107" text-anchor="middle" font-family="Playfair Display, serif" font-size="22" font-style="italic" font-weight="700" fill="white">G</text>
       </svg>
     </div>
-    <div id="intro-envelope-eyebrow" style="margin-top:24px;font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#3a3934;">Para las que saben mirar</div>
     <div id="intro-envelope-prompt" style="margin-top:10px;font-family:\'Playfair Display\',serif;font-style:italic;font-size:12px;color:#2a2926;animation:blink 2s infinite;">Tocá para abrir</div>
   </div>
 
@@ -1420,7 +1419,6 @@ map.doubleClickZoom.enable();
 map.boxZoom.enable();
 map.keyboard.enable();
 
-startWatchingUserLocation();
 startWatchingUserLocation();
 
 map.on('popupclose', function() { stopSpeech(); });
@@ -4637,15 +4635,13 @@ function marcarVisitado(btn, nombre) {
 
 <script>
 (function() {
-  var currentLang = 'es';
   var btnEs = document.getElementById('lang-btn-es');
   var btnEn = document.getElementById('lang-btn-en');
   var langSwitch = document.getElementById('lang-switch');
   var translateInitialized = false;
-  var pendingTranslate = false;
+  var currentLang = localStorage.getItem('lpp_lang') === 'en' ? 'en' : 'es';
   var INTRO_COPY = {
     es: {
-      eyebrow: 'Para las que saben mirar',
       prompt: 'Tocá para abrir',
       kicker: 'Gran Bretaña',
       titleHtml: 'Ah.<br><em style="font-weight:400;">Llegaron.</em>',
@@ -4655,7 +4651,6 @@ function marcarVisitado(btn, nombre) {
       button: '¿Entran?'
     },
     en: {
-      eyebrow: 'For those who know how to look',
       prompt: 'Tap to open',
       kicker: 'Great Britain',
       titleHtml: 'Oh.<br><em style="font-weight:400;">You've arrived.</em>',
@@ -4666,14 +4661,35 @@ function marcarVisitado(btn, nombre) {
     }
   };
 
+  function setCookie(name, value) {
+    var maxAge = 60 * 60 * 24 * 365;
+    document.cookie = name + '=' + value + '; path=/; max-age=' + maxAge;
+    document.cookie = name + '=' + value + '; path=/; domain=' + window.location.hostname + '; max-age=' + maxAge;
+  }
+
+  function getCookie(name) {
+    var match = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/[.$?*|{}()\[\]\\/+^]/g, '\\$&') + '=([^;]*)'));
+    return match ? decodeURIComponent(match[1]) : '';
+  }
+
+  function setTranslateCookies(lang) {
+    var value = lang === 'en' ? '/es/en' : '/es/es';
+    setCookie('googtrans', value);
+  }
+
+  function looksTranslatedToEnglish() {
+    var htmlLang = (document.documentElement.getAttribute('lang') || '').toLowerCase();
+    var bodyClass = (document.body.className || '').toLowerCase();
+    return htmlLang.indexOf('en') === 0 || bodyClass.indexOf('translated') !== -1;
+  }
+
   function setActiveButtons() {
-    btnEs.classList.toggle('active', currentLang === 'es');
-    btnEn.classList.toggle('active', currentLang === 'en');
+    if (btnEs) btnEs.classList.toggle('active', currentLang === 'es');
+    if (btnEn) btnEn.classList.toggle('active', currentLang === 'en');
   }
 
   function applyIntroLanguage() {
     var copy = INTRO_COPY[currentLang] || INTRO_COPY.es;
-    var eyebrow = document.getElementById('intro-envelope-eyebrow');
     var prompt = document.getElementById('intro-envelope-prompt');
     var kicker = document.getElementById('intro-letter-kicker');
     var title = document.getElementById('intro-letter-title');
@@ -4681,7 +4697,6 @@ function marcarVisitado(btn, nombre) {
     var p2 = document.getElementById('intro-letter-p2');
     var p3 = document.getElementById('intro-letter-p3');
     var button = document.getElementById('intro-letter-button');
-    if (eyebrow) eyebrow.textContent = copy.eyebrow;
     if (prompt) prompt.textContent = copy.prompt;
     if (kicker) kicker.textContent = copy.kicker;
     if (title) title.innerHTML = copy.titleHtml;
@@ -4691,28 +4706,9 @@ function marcarVisitado(btn, nombre) {
     if (button) button.textContent = copy.button;
   }
 
-  function applyGoogleTranslate(lang) {
-    if (lang !== 'en') return;
-    pendingTranslate = true;
-    var tries = 0;
-    var timer = setInterval(function() {
-      var combo = document.querySelector('.goog-te-combo');
-      tries += 1;
-      if (combo) {
-        combo.value = 'en';
-        combo.dispatchEvent(new Event('change'));
-        clearInterval(timer);
-        pendingTranslate = false;
-      }
-      if (tries > 40) {
-        clearInterval(timer);
-        pendingTranslate = false;
-      }
-    }, 250);
-  }
-
   window.googleTranslateElementInit = function() {
     if (translateInitialized) return;
+    if (!window.google || !window.google.translate || !window.google.translate.TranslateElement) return;
     translateInitialized = true;
     new google.translate.TranslateElement({
       pageLanguage: 'es',
@@ -4720,7 +4716,21 @@ function marcarVisitado(btn, nombre) {
       autoDisplay: false,
       layout: google.translate.TranslateElement.InlineLayout.SIMPLE
     }, 'google_translate_element');
-    if (pendingTranslate || currentLang === 'en') applyGoogleTranslate('en');
+
+    if (currentLang === 'en') {
+      var tries = 0;
+      var timer = setInterval(function() {
+        var combo = document.querySelector('.goog-te-combo');
+        tries += 1;
+        if (combo) {
+          combo.value = 'en';
+          combo.dispatchEvent(new Event('change'));
+          clearInterval(timer);
+        } else if (tries > 40) {
+          clearInterval(timer);
+        }
+      }, 250);
+    }
   };
 
   function ensureTranslateScript() {
@@ -4736,34 +4746,58 @@ function marcarVisitado(btn, nombre) {
     document.head.appendChild(script);
   }
 
-  function setLanguage(lang) {
+  function persistLanguage(lang) {
     currentLang = lang === 'en' ? 'en' : 'es';
+    localStorage.setItem('lpp_lang', currentLang);
     setActiveButtons();
     applyIntroLanguage();
   }
 
-  btnEs.addEventListener('click', function(e) {
-    e.preventDefault();
-    setLanguage('es');
-  });
+  function setLanguage(lang) {
+    var nextLang = lang === 'en' ? 'en' : 'es';
+    var cookieValue = getCookie('googtrans');
+    var shouldReload = false;
 
-  btnEn.addEventListener('click', function(e) {
-    e.preventDefault();
-    setLanguage('en');
-  });
+    persistLanguage(nextLang);
+
+    if (nextLang === 'en') {
+      setTranslateCookies('en');
+      ensureTranslateScript();
+      shouldReload = !looksTranslatedToEnglish() || cookieValue !== '/es/en';
+    } else {
+      setTranslateCookies('es');
+      shouldReload = looksTranslatedToEnglish() || cookieValue === '/es/en';
+    }
+
+    if (shouldReload) {
+      sessionStorage.setItem('lpp_lang_reload', nextLang);
+      window.location.reload();
+    }
+  }
+
+  if (btnEs) {
+    btnEs.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (currentLang !== 'es' || looksTranslatedToEnglish()) setLanguage('es');
+    });
+  }
+
+  if (btnEn) {
+    btnEn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (currentLang !== 'en' || !looksTranslatedToEnglish()) setLanguage('en');
+    });
+  }
 
   var originalEnterMap = window.enterMap;
   window.enterMap = function() {
-    langSwitch.classList.add('hidden');
-    var result = typeof originalEnterMap === 'function' ? originalEnterMap.apply(this, arguments) : undefined;
-    if (currentLang === 'en') {
-      ensureTranslateScript();
-      setTimeout(function() { applyGoogleTranslate('en'); }, 1200);
-    }
-    return result;
+    if (langSwitch) langSwitch.classList.add('hidden');
+    return typeof originalEnterMap === 'function' ? originalEnterMap.apply(this, arguments) : undefined;
   };
 
-  setLanguage('es');
+  persistLanguage(currentLang);
+  setTranslateCookies(currentLang);
+  ensureTranslateScript();
 })();
 </script>
 
