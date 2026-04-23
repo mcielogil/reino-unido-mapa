@@ -1033,8 +1033,8 @@
 
     #lang-switch {
       position: fixed;
-      top: 8px;
-      left: 10px;
+      top: 6px;
+      left: 8px;
       z-index: 10001;
       display: flex;
       align-items: center;
@@ -1101,11 +1101,6 @@
 <body>
 
   <div id="opening">
-  <div id="lang-switch" data-no-translate="true" aria-label="Language switch">
-    <button type="button" id="lang-btn-es" onclick="setAppLanguage('es')">ES</button>
-    <span>/</span>
-    <button type="button" id="lang-btn-en" onclick="setAppLanguage('en')">EN</button>
-  </div>
   <div id="envelope-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;width:100%;cursor:pointer;background-image:url('https://mcielogil.github.io/reino-unido-mapa/great-britain-cover.jpg');background-size:cover;background-position:center;" onclick="window.abrirSobre && window.abrirSobre()">
     <div style="position:relative;width:min(320px,80vw);">
       <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.9));">
@@ -1118,21 +1113,21 @@
         <text x="160" y="107" text-anchor="middle" font-family="Playfair Display, serif" font-size="22" font-style="italic" font-weight="700" fill="white">G</text>
       </svg>
     </div>
-    <div id="intro-envelope-kicker" data-manual-i18n="true" style="margin-top:24px;font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#3a3934;">Para las que saben mirar</div>
-    <div id="intro-envelope-open" data-manual-i18n="true" style="margin-top:10px;font-family:\'Playfair Display\',serif;font-style:italic;font-size:12px;color:#2a2926;animation:blink 2s infinite;">Tocá para abrir</div>
+    <div style="margin-top:24px;font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#3a3934;">Para las que saben mirar</div>
+    <div style="margin-top:10px;font-family:\'Playfair Display\',serif;font-style:italic;font-size:12px;color:#2a2926;animation:blink 2s infinite;">Tocá para abrir</div>
   </div>
 
   <div id="carta-screen" style="display:none;align-items:center;justify-content:center;height:100vh;padding:24px;overflow-y:auto;box-sizing:border-box;background-image:url('https://mcielogil.github.io/reino-unido-mapa/great-britain-cover.jpg');background-size:cover;background-position:center;">
     <div style="max-width:420px;width:100%;background:#f7f3eb;padding:40px 32px;box-shadow:0 32px 80px rgba(0,0,0,0.9);position:relative;border-radius:2px;">
       <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(0,0,0,0.03) 28px,rgba(0,0,0,0.03) 29px);border-radius:2px;pointer-events:none;"></div>
       <div style="position:relative;">
-        <div id="intro-letter-kicker" data-manual-i18n="true" style="font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#c8920a;margin-bottom:16px;">Gran Bretaña</div>
-        <div id="intro-letter-title" data-manual-i18n="true" style="font-family:\'Playfair Display\',serif;font-size:26px;font-weight:700;color:#1a1612;line-height:1.1;margin-bottom:20px;">Ah.<br><em style="font-weight:400;">Llegaron.</em></div>
+        <div style="font-family:\'DM Sans\',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#c8920a;margin-bottom:16px;">Gran Bretaña</div>
+        <div style="font-family:\'Playfair Display\',serif;font-size:26px;font-weight:700;color:#1a1612;line-height:1.1;margin-bottom:20px;">Ah.<br><em style="font-weight:400;">Llegaron.</em></div>
         <div style="width:36px;height:1px;background:#c8920a;margin-bottom:20px;"></div>
-        <div id="intro-letter-p1" data-manual-i18n="true" style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:12px;">Las estaba esperando — no a ustedes en particular, claro. Nunca espero a nadie en especial Pero sí a alguien que llegue con los ojos abiertos y las manos libres.</div>
-        <div id="intro-letter-p2" data-manual-i18n="true" style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:12px;">Tengo reyes enterrados y secretos sin resolver. Tengo callejones que vieron cosas que ningún libro se atrevió a contar del todo. Tengo dos mil años de ambición, de genio, de traición y de belleza — todo mezclado, todo vivo todavía.</div>
-        <div id="intro-letter-p3" data-manual-i18n="true" style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:28px;">No soy fácil. Nunca lo fui. Pero a las que saben mirar, les cuento todo.</div>
-        <button id="intro-enter-btn" data-manual-i18n="true" onclick="enterMap()" style="background:var(--red);border:none;color:#fff;padding:14px 36px;font-family:\'DM Sans\',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;">¿Entran?</button>
+        <div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:12px;">Las estaba esperando — no a ustedes en particular, claro. Nunca espero a nadie en especial Pero sí a alguien que llegue con los ojos abiertos y las manos libres.</div>
+        <div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:12px;">Tengo reyes enterrados y secretos sin resolver. Tengo callejones que vieron cosas que ningún libro se atrevió a contar del todo. Tengo dos mil años de ambición, de genio, de traición y de belleza — todo mezclado, todo vivo todavía.</div>
+        <div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:13px;line-height:1.9;color:#4a4540;margin-bottom:28px;">No soy fácil. Nunca lo fui. Pero a las que saben mirar, les cuento todo.</div>
+        <button onclick="enterMap()" style="background:var(--red);border:none;color:#fff;padding:14px 36px;font-family:\'DM Sans\',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;">¿Entran?</button>
       </div>
     </div>
   </div>
@@ -1279,281 +1274,47 @@
 <script>
 </script>
 <script>
-
-     var APP_LANGUAGE_STORAGE_KEY = 'londres_punto_por_punto_lang';
-     var currentLang = localStorage.getItem(APP_LANGUAGE_STORAGE_KEY) || 'es';
-     var translationCache = Object.create(null);
-     var translationPromises = Object.create(null);
-     var translationObserver = null;
-
-     var introCopy = {
-      es: {
-        envelopeKicker: 'Para las que saben mirar',
-        envelopeOpen: 'Tocá para abrir',
-        letterKicker: 'Gran Bretaña',
-        letterTitle: 'Ah.<br><em style="font-weight:400;">Llegaron.</em>',
-        letterP1: 'Las estaba esperando — no a ustedes en particular, claro. Nunca espero a nadie en especial. Pero sí a alguien que llegue con los ojos abiertos y las manos libres.',
-        letterP2: 'Tengo reyes enterrados y secretos sin resolver. Tengo callejones que vieron cosas que ningún libro se atrevió a contar del todo. Tengo dos mil años de ambición, de genio, de traición y de belleza — todo mezclado, todo vivo todavía.',
-        letterP3: 'No soy fácil. Nunca lo fui. Pero a las que saben mirar, les cuento todo.',
-        enterBtn: '¿Entran?'
-      },
-      en: {
-        envelopeKicker: 'For those who know how to look',
-        envelopeOpen: 'Tap to open',
-        letterKicker: 'Great Britain',
-        letterTitle: 'Oh,<br><em style="font-weight:400;">you’ve arrived.</em>',
-        letterP1: 'I was waiting for you — not for you in particular, of course. I never wait for anyone in particular. But I do wait for someone who arrives with their eyes open and their hands free.',
-        letterP2: 'I have buried kings and unsolved secrets. I have alleys that saw things no book ever dared to tell in full. I have two thousand years of ambition, genius, betrayal, and beauty — all mixed together, all still alive.',
-        letterP3: 'I am not easy. I never was. But for those who know how to look, I tell everything.',
-        enterBtn: 'Will you come in?'
-      }
-     };
-
-     var manualTranslations = {
-      'Buscar lugar': 'Search place',
-      'Buscar lugar...': 'Search place...',
-      'Filtrar por tipo': 'Filter by type',
-      'Histórico': 'Historical',
-      'Cine y Cultura Pop': 'Film & Pop Culture',
-      'Barrios y Vida Local': 'Neighborhoods & Local Life',
-      'Parques y Naturaleza': 'Parks & Nature',
-      'Oculto y Curioso': 'Hidden & Curious',
-      'Baños Públicos': 'Public Toilets',
-      'Londres': 'London',
-      'Plan del día': 'Day plan',
-      'Personajes': 'Characters',
-      'La Ciudad': 'The City',
-      'Desafíos': 'Challenges',
-      'Marcá lo que van haciendo. Se guarda automáticamente.': 'Check off what you do. It saves automatically.',
-      'Tu plan del día': 'Your day plan',
-      'Elegí cuántas horas tienen y después tocá un punto del mapa.': 'Choose how many hours you have, then tap a point on the map.',
-      'Te armo un itinerario con lugares cerca de esa zona, no del centro que quedó visible.': 'I’ll build you an itinerary with places near that area, not the city center that happened to be visible.',
-      '2 horas': '2 hours',
-      '4 horas': '4 hours',
-      'Día completo': 'Full day',
-      'Borrar ruta': 'Clear route',
-      'Ver mi ubicación': 'See my location',
-      'Colección': 'Collection',
-      'Cerrar': 'Close',
-      'Marcar visitado': 'Mark visited',
-      '✓ Visitado': '✓ Visited',
-      'm de distancia': 'm away',
-      'Tocá para abrir': 'Tap to open',
-      'Para las que saben mirar': 'For those who know how to look',
-      'Gran Bretaña': 'Great Britain',
-      '¿Entran?': 'Will you come in?',
-      'Ah. Llegaron.': 'Oh, you’ve arrived.',
-      'Ahora tocá cualquier punto del mapa para plantar el pin y armar el recorrido desde esa zona.': 'Now tap any point on the map to drop the pin and build the route from that area.',
-      'Primero tocá el botón de localización.': 'Tap the location button first.',
-      'Primero tocá el botón de ubicación (⊙)': 'Tap the location button first (⊙).',
-      'No pude acceder a tu ubicación. Revisá permisos del navegador.': 'I couldn’t access your location. Check your browser permissions.',
-      'Tu navegador no soporta geolocalización.': 'Your browser does not support geolocation.',
-      'No encontramos resultados': 'No results found'
-     };
-
-     function normalizeTranslationKey(text) {
-      return (text || '').replace(/\s+/g, ' ').trim();
-     }
-
-     function preserveEdgeWhitespace(original, translated) {
-      var leading = (original.match(/^\s*/) || [''])[0];
-      var trailing = (original.match(/\s*$/) || [''])[0];
-      return leading + translated + trailing;
-     }
-
-     function runtimeText(esText, enText) {
-      return currentLang === 'en' ? (enText || manualTranslations[normalizeTranslationKey(esText)] || esText) : esText;
-     }
-
-     function updateLanguageButtons() {
-      var esBtn = document.getElementById('lang-btn-es');
-      var enBtn = document.getElementById('lang-btn-en');
-      if (esBtn) esBtn.classList.toggle('active', currentLang === 'es');
-      if (enBtn) enBtn.classList.toggle('active', currentLang === 'en');
-     }
-
-     function applyIntroLanguage(lang) {
-      var copy = introCopy[lang] || introCopy.es;
-      var map = {
-        'intro-envelope-kicker': 'envelopeKicker',
-        'intro-envelope-open': 'envelopeOpen',
-        'intro-letter-kicker': 'letterKicker',
-        'intro-letter-title': 'letterTitle',
-        'intro-letter-p1': 'letterP1',
-        'intro-letter-p2': 'letterP2',
-        'intro-letter-p3': 'letterP3',
-        'intro-enter-btn': 'enterBtn'
-      };
-      Object.keys(map).forEach(function(id) {
-        var el = document.getElementById(id);
-        if (!el) return;
-        if (id === 'intro-letter-title') el.innerHTML = copy[map[id]];
-        else el.textContent = copy[map[id]];
-      });
-      updateLanguageButtons();
-     }
-
-     function shouldSkipElement(element) {
-      return !element || !!element.closest('[data-no-translate], [data-manual-i18n], script, style, noscript, textarea');
-     }
-
-     function shouldTranslateTextNode(node) {
-      if (!node || node.nodeType !== 3 || node._i18nApplying) return false;
-      if (!node.parentElement || shouldSkipElement(node.parentElement)) return false;
-      if (!normalizeTranslationKey(node.nodeValue)) return false;
-      return true;
-     }
-
-     async function translateText(text) {
-      var normalized = normalizeTranslationKey(text);
-      if (!normalized || currentLang !== 'en') return text;
-      if (manualTranslations[normalized]) return preserveEdgeWhitespace(text, manualTranslations[normalized]);
-      if (translationCache[normalized]) return preserveEdgeWhitespace(text, translationCache[normalized]);
-      if (!translationPromises[normalized]) {
-        translationPromises[normalized] = fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=es&tl=en&dt=t&q=' + encodeURIComponent(normalized))
-          .then(function(res) { return res.json(); })
-          .then(function(data) {
-            var translated = Array.isArray(data) && Array.isArray(data[0]) ? data[0].map(function(part) { return part[0]; }).join('') : normalized;
-            translationCache[normalized] = translated || normalized;
-            return translationCache[normalized];
-          })
-          .catch(function() {
-            translationCache[normalized] = normalized;
-            return normalized;
-          })
-          .finally(function() {
-            delete translationPromises[normalized];
-          });
-      }
-      var translated = await translationPromises[normalized];
-      return preserveEdgeWhitespace(text, translated);
-     }
-
-     async function translateTextNode(node) {
-      if (!shouldTranslateTextNode(node)) return;
-      if (node._i18nOriginal === undefined) node._i18nOriginal = node.nodeValue;
-      var original = node._i18nOriginal;
-      var translated = await translateText(original);
-      node._i18nApplying = true;
-      node.nodeValue = translated;
-      node._i18nApplying = false;
-     }
-
-     function restoreTextNode(node) {
-      if (node && node.nodeType === 3 && node._i18nOriginal !== undefined) {
-        node._i18nApplying = true;
-        node.nodeValue = node._i18nOriginal;
-        node._i18nApplying = false;
-      }
-     }
-
-     async function translateAttributesForElement(element) {
-      if (!element || element.nodeType !== 1 || shouldSkipElement(element)) return;
-      var attrs = ['placeholder', 'title', 'aria-label'];
-      for (var i = 0; i < attrs.length; i++) {
-        var attr = attrs[i];
-        if (!element.hasAttribute(attr)) continue;
-        var dataKey = 'i18nOriginal' + attr.replace(/[^a-z]/gi, '');
-        if (!element.dataset[dataKey]) element.dataset[dataKey] = element.getAttribute(attr);
-        var original = element.dataset[dataKey];
-        var translated = await translateText(original);
-        element.setAttribute(attr, translated);
-      }
-      if ((element.tagName === 'INPUT' || element.tagName === 'BUTTON') && element.hasAttribute('value')) {
-        if (!element.dataset.i18nOriginalValue) element.dataset.i18nOriginalValue = element.value;
-        element.value = await translateText(element.dataset.i18nOriginalValue);
-      }
-     }
-
-     function restoreAttributesForElement(element) {
-      if (!element || element.nodeType !== 1) return;
-      var attrs = ['placeholder', 'title', 'aria-label'];
-      attrs.forEach(function(attr) {
-        var dataKey = 'i18nOriginal' + attr.replace(/[^a-z]/gi, '');
-        if (element.dataset && element.dataset[dataKey]) element.setAttribute(attr, element.dataset[dataKey]);
-      });
-      if (element.dataset && element.dataset.i18nOriginalValue !== undefined) element.value = element.dataset.i18nOriginalValue;
-     }
-
-     async function applyLanguageToSubtree(root) {
-      if (currentLang !== 'en' || !root) return;
-      if (root.nodeType === 3) {
-        await translateTextNode(root);
-        return;
-      }
-      if (root.nodeType !== 1) return;
-      await translateAttributesForElement(root);
-      var elements = root.querySelectorAll('*');
-      for (var i = 0; i < elements.length; i++) {
-        await translateAttributesForElement(elements[i]);
-      }
-      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
-      var node;
-      var jobs = [];
-      while ((node = walker.nextNode())) {
-        if (shouldTranslateTextNode(node)) jobs.push(translateTextNode(node));
-      }
-      await Promise.all(jobs);
-     }
-
-     function restoreLanguageInSubtree(root) {
-      if (!root) return;
-      if (root.nodeType === 3) {
-        restoreTextNode(root);
-        return;
-      }
-      if (root.nodeType !== 1) return;
-      restoreAttributesForElement(root);
-      var elements = root.querySelectorAll('*');
-      for (var i = 0; i < elements.length; i++) restoreAttributesForElement(elements[i]);
-      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
-      var node;
-      while ((node = walker.nextNode())) restoreTextNode(node);
-     }
-
-     function startTranslationObserver() {
-      if (translationObserver || !document.body) return;
-      translationObserver = new MutationObserver(function(mutations) {
-        if (currentLang !== 'en') return;
-        mutations.forEach(function(mutation) {
-          if (mutation.type === 'characterData') {
-            if (!mutation.target._i18nApplying) translateTextNode(mutation.target);
-            return;
-          }
-          mutation.addedNodes.forEach(function(node) {
-            if (node.nodeType === 1 || node.nodeType === 3) applyLanguageToSubtree(node);
-          });
-        });
-      });
-      translationObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
-     }
-
-     function setAppLanguage(lang) {
-      currentLang = lang === 'en' ? 'en' : 'es';
-      localStorage.setItem(APP_LANGUAGE_STORAGE_KEY, currentLang);
-      applyIntroLanguage(currentLang);
-      updateLanguageButtons();
-      if (currentLang === 'en') applyLanguageToSubtree(document.body);
-      else restoreLanguageInSubtree(document.body);
-     }
-
-     function initAppLanguage() {
-      applyIntroLanguage(currentLang);
-      startTranslationObserver();
-      if (currentLang === 'en') applyLanguageToSubtree(document.body);
-     }
-
-     window.addEventListener('load', initAppLanguage);
-
+var APP_LANGUAGE_STORAGE_KEY = 'lpp-language';
+var currentLang = localStorage.getItem(APP_LANGUAGE_STORAGE_KEY) === 'en' ? 'en' : 'es';
+var introCopy = {es:{envelopeKicker:'Para las que saben mirar',envelopeOpen:'Tocá para abrir',letterKicker:'Gran Bretaña',letterTitle:'Ah.<br><em style="font-weight:400;">Llegaron.</em>',letterP1:'Las estaba esperando — no a ustedes en particular, claro. Nunca espero a nadie en especial. Pero sí a alguien que llegue con los ojos abiertos y las manos libres.',letterP2:'Tengo reyes enterrados y secretos sin resolver. Tengo callejones que vieron cosas que ningún libro se atrevió a contar del todo. Tengo dos mil años de ambición, de genio, de traición y de belleza — todo mezclado, todo vivo todavía.',letterP3:'No soy fácil. Nunca lo fui. Pero a las que saben mirar, les cuento todo.',enterBtn:'¿Entran?'},en:{envelopeKicker:'For those who know how to look',envelopeOpen:'Tap to open',letterKicker:'Great Britain',letterTitle:'Oh.<br><em style="font-weight:400;">You’ve arrived.</em>',letterP1:'I was waiting for you — not for you in particular, of course. I never wait for anyone in particular. But I do wait for someone who arrives with their eyes open and their hands free.',letterP2:'I have buried kings and unresolved secrets. I have alleys that saw things no book ever dared to tell in full. I have two thousand years of ambition, genius, betrayal, and beauty — all mixed together, all still alive.',letterP3:'I am not easy. I never was. But for those who know how to look, I tell everything.',enterBtn:'Will you come in?'}};
+var manualTranslations={'Buscar lugar':'Search place','Buscar lugar...':'Search place...','Filtrar por tipo':'Filter by type','Histórico':'Historical','Cine y Cultura Pop':'Film & Pop Culture','Barrios y Vida Local':'Neighborhoods & Local Life','Parques y Naturaleza':'Parks & Nature','Oculto y Curioso':'Hidden & Curious','Baños Públicos':'Public Toilets','Londres':'London','Plan del día':'Day plan','Personajes':'Characters','La Ciudad':'The City','Desafíos':'Challenges','Marcá lo que van haciendo. Se guarda automáticamente.':'Check off what you do. It saves automatically.','Tu plan del día':'Your day plan','Elegí cuántas horas tienen y después tocá un punto del mapa.':'Choose how many hours you have, then tap a point on the map.','Te armo un itinerario con lugares cerca de esa zona, no del centro que quedó visible.':'I’ll build you an itinerary with places near that area, not the city center that happened to be visible.','2 horas':'2 hours','4 horas':'4 hours','Día completo':'Full day','Borrar ruta':'Clear route','Ver mi ubicación':'See my location','Colección':'Collection','Cerrar':'Close','Marcar visitado':'Mark as visited','✓ Visitado':'✓ Visited','m de distancia':'m away','Tocá para abrir':'Tap to open','Para las que saben mirar':'For those who know how to look','Gran Bretaña':'Great Britain','¿Entran?':'Will you come in?','Ah. Llegaron.':'Oh. You’ve arrived.','Ahora tocá cualquier punto del mapa para plantar el pin y armar el recorrido desde esa zona.':'Now tap any point on the map to drop the pin and build the route from that area.','Primero tocá el botón de localización.':'Tap the location button first.','Primero tocá el botón de ubicación (⊙)':'Tap the location button first (⊙)','No pude acceder a tu ubicación. Revisá permisos del navegador.':'I couldn’t access your location. Check your browser permissions.','Tu navegador no soporta geolocalización.':'Your browser does not support geolocation.','No encontramos resultados':'No results found',' horas':' hours','Recorrido':'Guide','Londres, punto por punto':'London, point by point'};
+var translationCache={};try{translationCache=JSON.parse(localStorage.getItem('lpp-translation-cache')||'{}')||{}}catch(e){translationCache={}}
+var translationObserver=null,translationPromises={},translationQueue=[],activeTranslationRequests=0,MAX_CONCURRENT_TRANSLATIONS=2,cacheDirty=false,cacheFlushTimer=null;
+function normalizeTranslationKey(text){return (text||'').replace(/\s+/g,' ').trim()}
+function preserveEdgeWhitespace(original,translated){var leading=(original.match(/^\s*/)||[''])[0];var trailing=(original.match(/\s*$/)||[''])[0];return leading+translated+trailing}
+function flushTranslationCacheSoon(){if(cacheFlushTimer)return;cacheFlushTimer=setTimeout(function(){cacheFlushTimer=null;if(!cacheDirty)return;cacheDirty=false;try{var keys=Object.keys(translationCache);if(keys.length>350){var trimmed={};keys.slice(-350).forEach(function(key){trimmed[key]=translationCache[key]});translationCache=trimmed}localStorage.setItem('lpp-translation-cache',JSON.stringify(translationCache))}catch(e){}},600)}
+function runtimeText(esText,enText){return currentLang==='en'?(enText||manualTranslations[normalizeTranslationKey(esText)]||esText):esText}
+function updateLanguageButtons(){var esBtn=document.getElementById('lang-btn-es');var enBtn=document.getElementById('lang-btn-en');if(esBtn)esBtn.classList.toggle('active',currentLang==='es');if(enBtn)enBtn.classList.toggle('active',currentLang==='en')}
+function applyIntroLanguage(lang){var copy=introCopy[lang]||introCopy.es;var map={'intro-envelope-kicker':'envelopeKicker','intro-envelope-open':'envelopeOpen','intro-letter-kicker':'letterKicker','intro-letter-title':'letterTitle','intro-letter-p1':'letterP1','intro-letter-p2':'letterP2','intro-letter-p3':'letterP3','intro-enter-btn':'enterBtn'};Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(!el)return;if(id==='intro-letter-title')el.innerHTML=copy[map[id]];else el.textContent=copy[map[id]]});updateLanguageButtons()}
+function shouldSkipElement(element){return !element||!!element.closest('[data-no-translate], [data-manual-i18n], script, style, noscript, textarea')}
+function shouldTranslateTextNode(node){if(!node||node.nodeType!==3||node._i18nApplying)return false;if(!node.parentElement||shouldSkipElement(node.parentElement))return false;if(!normalizeTranslationKey(node.nodeValue))return false;return true}
+function requestTranslationFetch(normalized){return new Promise(function(resolve){if(!navigator.onLine){resolve(normalized);return}var controller=typeof AbortController!=='undefined'?new AbortController():null;var timeoutId=setTimeout(function(){if(controller)controller.abort();resolve(normalized)},3500);fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=es&tl=en&dt=t&q='+encodeURIComponent(normalized),controller?{signal:controller.signal}:undefined).then(function(res){if(!res.ok)throw new Error('translate failed');return res.json()}).then(function(data){clearTimeout(timeoutId);var translated=Array.isArray(data)&&Array.isArray(data[0])?data[0].map(function(part){return part[0]}).join(''):normalized;resolve(translated||normalized)}).catch(function(){clearTimeout(timeoutId);resolve(normalized)})})}
+function pumpTranslationQueue(){while(activeTranslationRequests<MAX_CONCURRENT_TRANSLATIONS&&translationQueue.length){activeTranslationRequests+=1;var job=translationQueue.shift();requestTranslationFetch(job.key).then(function(translated){translationCache[this.key]=translated;cacheDirty=true;flushTranslationCacheSoon();this.resolve(translated)}.bind(job)).finally(function(){activeTranslationRequests-=1;pumpTranslationQueue()})}}
+function queueTranslation(normalized){if(translationCache[normalized])return Promise.resolve(translationCache[normalized]);if(translationPromises[normalized])return translationPromises[normalized];translationPromises[normalized]=new Promise(function(resolve){translationQueue.push({key:normalized,resolve:function(translated){delete translationPromises[normalized];resolve(translated)}});pumpTranslationQueue()});return translationPromises[normalized]}
+async function translateText(text){var normalized=normalizeTranslationKey(text);if(!normalized||currentLang!=='en')return text;if(manualTranslations[normalized])return preserveEdgeWhitespace(text,manualTranslations[normalized]);var translated=await queueTranslation(normalized);return preserveEdgeWhitespace(text,translated)}
+async function translateTextNode(node){if(!shouldTranslateTextNode(node))return;if(node._i18nOriginal===undefined)node._i18nOriginal=node.nodeValue;var original=node._i18nOriginal;var translated=await translateText(original);if(currentLang!=='en')return;node._i18nApplying=true;node.nodeValue=translated;node._i18nApplying=false}
+function restoreTextNode(node){if(node&&node.nodeType===3&&node._i18nOriginal!==undefined){node._i18nApplying=true;node.nodeValue=node._i18nOriginal;node._i18nApplying=false}}
+async function translateAttributesForElement(element){if(!element||element.nodeType!==1||shouldSkipElement(element))return;var attrs=['placeholder','title','aria-label'];for(var i=0;i<attrs.length;i++){var attr=attrs[i];if(!element.hasAttribute(attr))continue;var dataKey='i18nOriginal'+attr.replace(/[^a-z]/gi,'');if(!element.dataset[dataKey])element.dataset[dataKey]=element.getAttribute(attr);var original=element.dataset[dataKey];var translated=await translateText(original);if(currentLang==='en')element.setAttribute(attr,translated)}if((element.tagName==='INPUT'||element.tagName==='BUTTON')&&element.hasAttribute('value')){if(!element.dataset.i18nOriginalValue)element.dataset.i18nOriginalValue=element.value;element.value=await translateText(element.dataset.i18nOriginalValue)}}
+function restoreAttributesForElement(element){if(!element||element.nodeType!==1)return;var attrs=['placeholder','title','aria-label'];attrs.forEach(function(attr){var dataKey='i18nOriginal'+attr.replace(/[^a-z]/gi,'');if(element.dataset&&element.dataset[dataKey])element.setAttribute(attr,element.dataset[dataKey])});if(element.dataset&&element.dataset.i18nOriginalValue!==undefined)element.value=element.dataset.i18nOriginalValue}
+function applyLanguageToSubtree(root){if(currentLang!=='en'||!root)return;if(root.nodeType===3){translateTextNode(root);return}if(root.nodeType!==1)return;translateAttributesForElement(root);var elements=root.querySelectorAll('*');for(var i=0;i<elements.length;i++)translateAttributesForElement(elements[i]);var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);var node;while((node=walker.nextNode()))translateTextNode(node)}
+function restoreLanguageInSubtree(root){if(!root)return;if(root.nodeType===3){restoreTextNode(root);return}if(root.nodeType!==1)return;restoreAttributesForElement(root);var elements=root.querySelectorAll('*');for(var i=0;i<elements.length;i++)restoreAttributesForElement(elements[i]);var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);var node;while((node=walker.nextNode()))restoreTextNode(node)}
+function startTranslationObserver(){if(translationObserver||!document.body)return;translationObserver=new MutationObserver(function(mutations){if(currentLang!=='en')return;mutations.forEach(function(mutation){if(mutation.type==='characterData'){if(!mutation.target._i18nApplying)translateTextNode(mutation.target);return}mutation.addedNodes.forEach(function(node){if(node.nodeType===1||node.nodeType===3)applyLanguageToSubtree(node)})})});translationObserver.observe(document.body,{childList:true,subtree:true,characterData:true})}
+function nudgeTranslationPass(){if(currentLang!=='en')return;applyLanguageToSubtree(document.body)}
+function setAppLanguage(lang){currentLang=lang==='en'?'en':'es';localStorage.setItem(APP_LANGUAGE_STORAGE_KEY,currentLang);applyIntroLanguage(currentLang);updateLanguageButtons();if(currentLang==='en'){nudgeTranslationPass();setTimeout(nudgeTranslationPass,250);setTimeout(nudgeTranslationPass,1200)}else{restoreLanguageInSubtree(document.body)}}
+function initAppLanguage(){applyIntroLanguage(currentLang);startTranslationObserver();if(currentLang==='en'){setTimeout(nudgeTranslationPass,60);setTimeout(nudgeTranslationPass,800)}document.addEventListener('click',function(){if(currentLang==='en')setTimeout(nudgeTranslationPass,90)},true)}
+window.addEventListener('load',initAppLanguage);
+function pickBestEnglishVoice(){var voices=window.speechSynthesis.getVoices();var preferredNames=['Samantha','Google US English','Google UK English Female','Microsoft Aria','Microsoft Jenny','Daniel'];for(var i=0;i<preferredNames.length;i++){var match=voices.find(function(v){return v.name&&v.name.toLowerCase().indexOf(preferredNames[i].toLowerCase())!==-1});if(match)return match}return voices.find(function(v){return v.lang&&v.lang.toLowerCase().indexOf('en')===0})||null}
+</script>
+<script>
      function enterMap() {
       var o = document.getElementById('opening');
       o.classList.add('fade-out');
       setTimeout(function() { o.style.display = 'none'; }, 1000);
       if (currentLang === 'en') {
         setTimeout(function() { applyLanguageToSubtree(document.body); }, 80);
+        setTimeout(function() { applyLanguageToSubtree(document.body); }, 700);
       }
     }
-
 window.abrirSobre = function() {
   document.getElementById('envelope-screen').style.display = 'none';
   var carta = document.getElementById('carta-screen');
@@ -1601,7 +1362,7 @@ function clearRoute() {
 
 window.showRouteToPlace = function(lat, lng) {
   if (!userMarker) {
-    alert(runtimeText('Primero tocá el botón de localización.', "Tap the location button first."));
+    alert(runtimeText('Primero tocá el botón de localización.', 'Tap the location button first.'));
     locateUser();
     return;
   }
@@ -1616,7 +1377,7 @@ window.showRouteToPlace = function(lat, lng) {
 };
 
 function locateUser() {
-  if (!navigator.geolocation) { alert(runtimeText('Tu navegador no soporta geolocalización.', "Your browser does not support geolocation.")); return; }
+  if (!navigator.geolocation) { alert(runtimeText('Tu navegador no soporta geolocalización.', 'Your browser does not support geolocation.')); return; }
   navigator.geolocation.getCurrentPosition(
     function(position) { updateUserLocation(position, true); },
     handleLocationError,
@@ -1667,16 +1428,6 @@ function startWatchingUserLocation() {
       return voices.find(function(v) { return v.lang && v.lang.toLowerCase().startsWith('es'); }) || null;
     }
 
-    function pickBestEnglishVoice() {
-      var voices = window.speechSynthesis.getVoices();
-      var preferredNames = ['Samantha','Daniel','Google US English','Google UK English', 'Microsoft Aria', 'Microsoft Guy'];
-      for (var i = 0; i < preferredNames.length; i++) {
-        var match = voices.find(function(v) { return v.name && v.name.toLowerCase().indexOf(preferredNames[i].toLowerCase()) !== -1; });
-        if (match) return match;
-      }
-      return voices.find(function(v) { return v.lang && v.lang.toLowerCase().indexOf('en') === 0; }) || null;
-    }
-
     function cleanSpeechText(text) {
       return text.replace(/—/g, ', ').replace(/\s+/g, ' ').trim();
     }
@@ -1689,9 +1440,8 @@ function startWatchingUserLocation() {
       }
       stopSpeech();
       isPaused = false;
-      var spokenText = text;
-      if (currentLang === 'en') spokenText = await translateText(text);
-      var utterance = new SpeechSynthesisUtterance(cleanSpeechText(spokenText));
+      var speechText = currentLang === 'en' ? await translateText(cleanSpeechText(text)) : cleanSpeechText(text);
+      var utterance = new SpeechSynthesisUtterance(speechText);
       utterance.rate = 0.98; utterance.pitch = 1;
       var voice = currentLang === 'en' ? pickBestEnglishVoice() : pickBestSpanishVoice();
       if (voice) { utterance.voice = voice; utterance.lang = voice.lang; }
@@ -3736,7 +3486,7 @@ function seleccionarHoras(horas) {
   clearPlanPointMarker();
   setPlanInteraction(true);
 
-  alert(runtimeText('Ahora tocá cualquier punto del mapa para plantar el pin y armar el recorrido desde esa zona.', "Now tap any point on the map to drop the pin and build the route from that area."));
+  alert('Ahora tocá cualquier punto del mapa para plantar el pin y armar el recorrido desde esa zona.');
 
   document.getElementById('plan-result').style.display = 'none';
   document.getElementById('plan-panel').style.display = 'none';
@@ -4834,7 +4584,7 @@ function mostrarCercanos() {
     return;
   }
   if (!userMarker) {
-    alert(runtimeText('Primero tocá el botón de ubicación (⊙)', "Tap the location button first (⊙)."));
+    alert('Primero tocá el botón de ubicación (⊙)');
     return;
   }
   var userLat = userMarker.getLatLng().lat;
@@ -4850,7 +4600,7 @@ function mostrarCercanos() {
     var metros = Math.round(obj.dist * 111000);
     var btn = document.createElement('div');
     btn.style.cssText = 'padding:8px 0;border-bottom:1px solid #1e1d1a;cursor:pointer;';
-    btn.innerHTML = '<div style="font-family:DM Sans,sans-serif;font-size:12px;color:var(--white);">' + obj.place.name + '</div><div style="font-family:DM Sans,sans-serif;font-size:10px;color:#9c907e;margin-top:2px;">' + metros + runtimeText('m de distancia', "m away") + '</div>';
+    btn.innerHTML = '<div style="font-family:DM Sans,sans-serif;font-size:12px;color:var(--white);">' + obj.place.name + '</div><div style="font-family:DM Sans,sans-serif;font-size:10px;color:#9c907e;margin-top:2px;">' + metros + runtimeText('m de distancia', 'm away') + '</div>';
     btn.onclick = function() {
       map.setView([obj.place.lat, obj.place.lng], 16);
       obj.marker.openPopup();
@@ -4864,14 +4614,14 @@ function marcarVisitado(btn, nombre) {
   var key = visitedStorageKey(nombre);
   if (localStorage.getItem(key)) {
     localStorage.removeItem(key);
-    btn.textContent = runtimeText('Marcar visitado', "Mark visited");
+    btn.textContent = runtimeText('Marcar visitado', 'Mark as visited');
     btn.style.borderColor = '';
     btn.style.color = '';
     var obj = allMarkers.find(function(o){ return o.place.name.replace(/[^a-zA-Z0-9]/g,'') === nombre; });
     if (obj) obj.marker.setIcon(createPin(obj.place.category));
   } else {
     localStorage.setItem(key, '1');
-    btn.textContent = runtimeText('✓ Visitado', "✓ Visited");
+    btn.textContent = runtimeText('✓ Visitado', '✓ Visited');
     btn.style.borderColor = '#4a6741';
     btn.style.color = '#4a6741';
     var obj = allMarkers.find(function(o){ return o.place.name.replace(/[^a-zA-Z0-9]/g,'') === nombre; });
