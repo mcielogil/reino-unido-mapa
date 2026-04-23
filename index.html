@@ -426,8 +426,8 @@
     }
 
     /* POPUP CARD */
-    .popup-card { max-width: 300px; min-width: 240px; }
-    .popup-card.has-image { max-width: 620px; min-width: 520px; }
+    .popup-card { max-width: 320px; min-width: 252px; }
+    .popup-card.has-image { max-width: 700px; min-width: 580px; }
 
     .popup-header {
       background: transparent;
@@ -675,8 +675,9 @@
 
     .popup-card.has-image img {
       width: 100%;
-      height: 230px;
+      height: 100%;
       object-fit: cover;
+      object-position: center center;
       flex-shrink: 0;
       display: block;
     }
@@ -689,7 +690,8 @@
       border-top: 1px solid #d9d0c3;
       border-bottom: 1px solid #d9d0c3;
       background: #ece4d7;
-      min-height: 230px;
+      min-height: 320px;
+      aspect-ratio: 4 / 3;
     }
 
     .popup-img-caption {
@@ -698,7 +700,7 @@
       left: 0;
       right: 0;
       background: linear-gradient(transparent, rgba(15,14,12,0.85));
-      padding: 20px 10px 8px;
+      padding: 28px 14px 10px;
       font-family: 'DM Sans', sans-serif;
       font-size: 9px;
       font-weight: 400;
@@ -706,6 +708,10 @@
       color: rgba(250,250,248,0.6);
       text-align: center;
       font-style: italic;
+    }
+
+    .popup-card.has-image .popup-inner {
+      max-height: 260px;
     }
 
     .popup-inner { padding: 20px 22px; flex: 1; min-width: 0; background: var(--paper-solid); }
@@ -773,6 +779,21 @@
         right: 16px;
         width: auto;
         max-height: calc(100vh - 180px);
+      }
+
+      .popup-card {
+        max-width: min(92vw, 360px);
+        min-width: min(92vw, 280px);
+      }
+
+      .popup-card.has-image {
+        max-width: min(92vw, 420px);
+        min-width: min(92vw, 320px);
+      }
+
+      .popup-img-wrap {
+        min-height: 220px;
+        aspect-ratio: 4 / 3;
       }
     }
 
@@ -993,10 +1014,14 @@
   #place-panel-inner {
     max-height: 78vh;
   }
-  #place-panel .popup-img-wrap,
+  #place-panel .popup-img-wrap {
+    min-height: 220px;
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
   #place-panel .popup-card.has-image img {
-    min-height: 190px;
-    height: 190px;
+    min-height: 0;
+    height: 100%;
   }
   #place-panel .popup-actions {
     flex-wrap: wrap;
@@ -2619,6 +2644,7 @@ var PLACE_LOCAL_IMAGE_MAP = {
 };
 
 var LOCAL_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp'];
+var REMOTE_IMAGE_BASE = 'https://mcielogil.github.io/reino-unido-mapa/';
 
 function uniqueList(list) {
   var seen = {};
@@ -2671,11 +2697,15 @@ function buildLocalImageCandidates(place) {
       return;
     }
     if (/\.(jpg|jpeg|png|webp)$/i.test(base)) {
-      candidates.push('./' + base.replace(/^\.?\//, ''));
+      var cleanFile = base.replace(/^\.?\//, '');
+      candidates.push(REMOTE_IMAGE_BASE + cleanFile);
+      candidates.push('./' + cleanFile);
       return;
     }
     LOCAL_IMAGE_EXTENSIONS.forEach(function(ext) {
-      candidates.push('./' + base.replace(/^\.?\//, '') + ext);
+      var cleanBase = base.replace(/^\.?\//, '');
+      candidates.push(REMOTE_IMAGE_BASE + cleanBase + ext);
+      candidates.push('./' + cleanBase + ext);
     });
   });
 
