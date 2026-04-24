@@ -1192,6 +1192,35 @@ body.place-panel-open { overflow: hidden; }
 .product-progress-bar { height:7px; border-radius:999px; background:rgba(15,14,12,.10); overflow:hidden; }
 .product-progress-fill { height:100%; width:0%; background:var(--olive); border-radius:999px; transition:width .25s ease; }
 .product-progress-note { margin-top:7px; font-family:'Playfair Display',serif; font-style:italic; font-size:12px; color:#5e554c; line-height:1.45; }
+
+/* VOZ DE LONDRES - progreso narrativo contextual, no checklist */
+.product-progress-card { display: none !important; }
+#london-voice {
+  position: fixed;
+  left: 18px;
+  bottom: 76px;
+  z-index: 1002;
+  width: min(360px, calc(100vw - 36px));
+  background: rgba(246,241,232,0.96);
+  border: 1px solid rgba(74,73,68,0.16);
+  border-left: 3px solid var(--red);
+  border-radius: 20px;
+  box-shadow: var(--shadow-soft);
+  padding: 15px 16px 14px;
+  pointer-events: auto;
+  transform: translateY(18px);
+  opacity: 0;
+  display: none;
+  transition: opacity .28s ease, transform .28s ease;
+}
+#london-voice.show { display: block; opacity: 1; transform: translateY(0); }
+.london-voice-kicker { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--red); margin-bottom:7px; }
+.london-voice-text { font-family:'Playfair Display',serif; font-style:italic; font-size:14.5px; line-height:1.62; color:#3f3832; padding-right:26px; }
+.london-voice-actions { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+.london-voice-action { border:1px solid rgba(74,73,68,.16); border-radius:999px; background:rgba(255,255,255,.64); padding:8px 11px; font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:.13em; text-transform:uppercase; color:#241d18; cursor:pointer; }
+.london-voice-action:hover { border-color:var(--red); color:var(--red); }
+#london-voice-close { position:absolute; top:8px; right:10px; width:26px; height:26px; border:0; border-radius:50%; background:transparent; color:#8a8074; cursor:pointer; font-size:18px; line-height:1; }
+#london-voice-close:hover { color:var(--red); }
 .place-practical-clean {
   display:grid;
   grid-template-columns: repeat(3, minmax(0,1fr));
@@ -1233,7 +1262,8 @@ body.place-panel-open { overflow: hidden; }
 .plan-hour-btn small { display:block; font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:#9c907e; line-height:1.45; }
 .plan-hour-btn:hover small { color:#d4c0a4; }
 @media (max-width: 768px) {
-  .product-progress-card { left: 12px; right: 12px; bottom: 70px; width:auto; }
+  #london-voice { left: 12px; right: 12px; bottom: 70px; width:auto; max-width:none; }
+  .london-voice-text { font-size:13.5px; line-height:1.55; }
   .place-side-clean { display:block; margin-top: 28px; }
   .place-practical-clean { grid-template-columns:1fr; gap:10px; margin:28px 0 32px; }
   .place-practical-row { min-height:66px; padding:16px 18px; }
@@ -1745,7 +1775,13 @@ body.goog-te-banner-frame.skiptranslate { top: 0 !important; }
 
  <div id="map"></div>
  <div id="plan-pick-layer"></div>
-  <div id="journey-progress" class="product-progress-card" aria-live="polite" onclick="openSavedPlaces()" title="Ver guardados"></div>
+  <div id="journey-progress" class="product-progress-card" aria-hidden="true"></div>
+  <div id="london-voice" aria-live="polite">
+    <button id="london-voice-close" type="button" onclick="dismissLondonVoice()" aria-label="Cerrar">×</button>
+    <div class="london-voice-kicker">Tu Londres</div>
+    <div id="london-voice-text" class="london-voice-text">No intentes ver Londres entera. Entrá por una puerta y dejá que la ciudad te lleve.</div>
+    <div id="london-voice-actions" class="london-voice-actions"></div>
+  </div>
  <div id="bottom-nav" style="position:fixed;bottom:0;left:0;right:0;z-index:1001;background:rgba(26,25,22,0.96);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.08);padding:12px 0 14px;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -8px 24px rgba(0,0,0,0.22);">
  <button class="bottom-nav-btn" onclick="document.getElementById('city-card').style.display='flex';cargarDesafios();">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#f3ecdf" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
@@ -3214,6 +3250,87 @@ function createPin(category) {
   personaje: "jimi-hendrix",
   lat: 51.5138, lng: -0.1403
 }
+,
+{
+        name: "Trafalgar Square",
+        category: "Histórico",
+        imageTitle: "Trafalgar Square y la columna de Nelson",
+        lugar: "Trafalgar Square no es solo una plaza. Es el punto donde Londres se mira a sí misma. Hay algo en la escala — en la columna, en los leones, en la apertura hacia el cielo — que hace que todo se sienta deliberado. Este es el lugar donde el poder no se esconde: se exhibe. Donde la ciudad decide qué recordar y cómo hacerlo.",
+        historia: "La plaza fue diseñada en el siglo XIX para conmemorar la victoria británica en la Batalla de Trafalgar de 1805, donde el almirante Horatio Nelson derrotó a las flotas francesa y española. Nelson murió en la batalla, pero Londres decidió levantarlo por encima de todos: una columna de más de cincuenta metros, cuatro leones de bronce y una plaza abierta para que la ciudad pudiera reunirse bajo su sombra. Desde entonces, Trafalgar Square fue escenario de celebraciones, protestas, manifestaciones, vigilias y duelo colectivo. Londres viene acá cuando quiere decir algo en voz alta.",
+        curiosidades: "<ul><li>La cuarta base de la plaza, conocida como Fourth Plinth, quedó vacía durante décadas. Hoy se usa para obras de arte contemporáneo temporales, como si la ciudad hubiera aceptado que no todo monumento tiene que quedarse quieto para siempre.</li><li>Los leones de bronce fueron diseñados por Edwin Landseer, un pintor de animales que nunca había esculpido un león monumental. Para estudiarlos usó un león muerto del zoológico de Londres.</li><li>Cada Navidad, Noruega regala el árbol que se instala en la plaza como agradecimiento por el apoyo británico durante la Segunda Guerra Mundial.</li><li>La National Gallery domina uno de los lados de la plaza: una de las mejores colecciones de pintura europea del mundo, gratuita y abierta como si fuera una extensión natural de la calle.</li></ul>",
+        paraLasTres: "Vengan caminando desde Westminster o desde Covent Garden, no en metro directo. Trafalgar funciona mejor cuando aparece al final de una calle. Si tienen tiempo, entren aunque sea veinte minutos a la National Gallery y busquen un solo cuadro — no intenten verla entera. Después siéntense en las escaleras de la plaza y miren quién pasa: turistas, manifestantes, estudiantes, músicos, oficinistas. Ese movimiento también es parte del monumento.",
+        comoVivirlo: "Mejor al atardecer, cuando las fuentes reflejan la luz y la plaza pierde un poco su dureza. Si hay protesta, no la esquiven automáticamente: Trafalgar fue hecha para eso. Es uno de los pocos lugares donde Londres deja ver su conversación pública en tiempo real.",
+        lat: 51.5080, lng: -0.1281
+      },
+{
+        name: "Piccadilly Circus",
+        category: "Cine y Cultura Pop",
+        imageTitle: "Luces de Piccadilly Circus de noche",
+        lugar: "Piccadilly no se contempla: se atraviesa. Pantallas, luces, taxis, gente que no se detiene. Es el lugar donde Londres deja de ser piedra y se vuelve flujo. No importa cuánto tiempo estés: siempre parece que llegaste en medio de algo. Hay plazas que piden silencio. Esta no. Esta pide que mires hacia arriba y aceptes un poco el ruido.",
+        historia: "Piccadilly Circus fue construido en 1819 como cruce entre grandes avenidas del West End. Su nombre viene de Piccadilly, una calle asociada a los piccadills, cuellos rígidos de moda en el siglo XVII, y de circus, no por circo sino por espacio circular. A comienzos del siglo XX llegaron los anuncios luminosos y el lugar cambió para siempre. Las primeras luces eléctricas aparecieron en 1908. Desde entonces, este cruce se convirtió en una imagen de Londres moderno: publicidad, teatro, tráfico, noche y exceso controlado.",
+        curiosidades: "<ul><li>La estatua central suele llamarse Eros, pero en realidad representa a Anteros, el amor correspondido. Londres, como siempre, decidió quedarse con el error más fácil de recordar.</li><li>Durante la Segunda Guerra Mundial, las luces se apagaron por el blackout. Volvieron después como una señal de que la ciudad seguía funcionando.</li><li>Piccadilly conecta con Shaftesbury Avenue, una de las grandes calles teatrales del West End. Si Londres tiene una vidriera nocturna, empieza por acá.</li><li>Es uno de esos lugares que casi nadie recomienda visitar con calma, pero todos recuerdan haber visto alguna vez.</li></ul>",
+        paraLasTres: "No vengan a buscar profundidad acá. Vengan a cambiar de pulso. Pasen de noche, después de Soho o antes de ir al teatro. Hagan la foto si quieren, pero después miren un minuto sin cámara: las pantallas, los buses, la gente que sale del metro, los grupos que se encuentran bajo la estatua. Piccadilly vale más como escena que como monumento.",
+        comoVivirlo: "De día puede decepcionar. De noche tiene sentido. No le dediquen una hora: dedíquenle diez minutos bien puestos, como pausa eléctrica entre dos lugares más densos.",
+        lat: 51.5101, lng: -0.1340
+      },
+{
+        name: "Soho",
+        category: "Barrios y Vida Local",
+        imageTitle: "Calles de Soho al anochecer",
+        lugar: "Soho no tiene una forma clara. Es ruido, luces, puertas que no sabés a dónde llevan, restaurantes mínimos, bares demasiado llenos, teatros cerca, risas en la vereda. Es donde Londres se relaja un poco — o se desordena. De día parece casi doméstico. De noche cambia de piel. No intenta parecer antiguo aunque lo sea. No intenta parecer respetable aunque tenga historia de sobra.",
+        historia: "Soho fue zona aristocrática en el siglo XVII, pero pronto se volvió demasiado mezclada para seguir siendo elegante. Llegaron inmigrantes franceses, italianos, griegos, chinos, artistas, músicos, trabajadores sexuales, editores, radicales, personas que no encajaban del todo en otros barrios. En el siglo XX fue centro de clubes de jazz, bares ilegales, teatros, cafés, cultura LGBTQ+ y vida nocturna. Durante décadas fue el lugar donde Londres ponía lo que necesitaba cerca pero no quería mirar demasiado de frente.",
+        curiosidades: "<ul><li>Old Compton Street es uno de los centros históricos de la vida LGBTQ+ londinense.</li><li>Soho tuvo algunos de los primeros restaurantes internacionales de Londres: italianos, franceses, chinos, griegos. Mucho antes de que la ciudad se vendiera como multicultural, Soho ya lo era por necesidad.</li><li>Karl Marx vivió cerca, en condiciones bastante miserables, mientras intentaba sobrevivir como periodista y pensador revolucionario.</li><li>En los años 50 y 60, los clubes de jazz de Soho fueron parte esencial de la vida musical londinense. Después llegaron el rock, la moda, el teatro alternativo y todo lo que no pedía permiso.</li></ul>",
+        paraLasTres: "Vayan sin ruta demasiado estricta. Empiecen en Carnaby o en Piccadilly y dejen que las calles las metan hacia adentro. Entren a una librería, miren menús, pasen por Old Compton Street, tomen algo si el lugar les da curiosidad. Soho no se visita como monumento: se merodea.",
+        comoVivirlo: "Mejor tarde o noche. Si están cansadas de iglesias, coronas y placas azules, Soho limpia el paladar. No porque sea liviano, sino porque recuerda que una ciudad también está hecha de deseo, hambre, música y gente hablando demasiado fuerte.",
+        lat: 51.5136, lng: -0.1365
+      },
+{
+        name: "The City — el Londres que calcula",
+        category: "Histórico",
+        imageTitle: "Rascacielos y calles antiguas de la City",
+        lugar: "Acá Londres no parece mirar al pasado. Acá calcula. Vidrio, acero, trajes oscuros, sombras largas entre edificios imposibles. Pero debajo — siempre debajo — está Roma. Este es el lugar donde la ciudad se volvió sistema: murallas, bancos, gremios, deuda, comercio, imperio, capital. La City no necesita caer simpática. Nunca lo necesitó.",
+        historia: "La City de Londres ocupa el núcleo original de Londinium, la ciudad fundada por los romanos en el año 43 d.C. Aunque hoy parece dominada por oficinas y rascacielos, sigue teniendo una identidad política única: su propia corporación, su propio Lord Mayor, su propia policía y tradiciones que sobreviven desde la Edad Media. Durante siglos fue el corazón comercial de Inglaterra. El Banco de Inglaterra se instaló aquí en 1694. Lloyd's, las aseguradoras marítimas, las casas de comercio y los mercados financieros hicieron de estas calles una maquinaria que movía barcos, deuda, riesgo e imperio.",
+        curiosidades: "<ul><li>Vive poca gente dentro de la City, pero trabajan cientos de miles durante la semana. De lunes a viernes parece una máquina; el fin de semana puede sentirse extrañamente vacía.</li><li>Algunas calles siguen trazados muy antiguos, incluso romanos o medievales. Por eso la zona parece menos ordenada de lo que sus edificios modernos prometen.</li><li>La City tiene dragones en sus límites. No son decoración casual: marcan la entrada a una jurisdicción histórica distinta.</li><li>Entre rascacielos como el Gherkin, el Cheesegrater o el Walkie Talkie aparecen iglesias de Christopher Wren, restos romanos y callejones que parecen no haber aceptado el siglo XXI.</li></ul>",
+        paraLasTres: "Caminen un día de semana al mediodía, cuando la City está en pleno movimiento. Empiecen cerca de Bank, miren el Banco de Inglaterra, crucen hacia Leadenhall Market y después busquen una iglesia pequeña entre edificios enormes. La gracia está en el contraste: Londres financiero arriba, Londres antiguo debajo.",
+        comoVivirlo: "No lo hagan como paseo romántico. Háganlo como lectura de poder. Acá no hay ternura: hay estructura. Si vienen un sábado o domingo, la quietud también dice algo — parece una ciudad abandonada por las personas que la usan.",
+        personaje: "benjamin-disraeli",
+        lat: 51.5133, lng: -0.0889
+      },
+{
+        name: "Hampstead Heath",
+        category: "Parques y Naturaleza",
+        imageTitle: "Vista de Londres desde Hampstead Heath",
+        lugar: "Esto no es un parque. Es un desborde. Caminos que no llevan a ningún lado claro, pasto alto, barro, estanques oscuros, árboles que no parecen puestos para decorar. Hampstead Heath es donde Londres deja de intentar ser elegante. Desde Parliament Hill, la ciudad aparece entera a lo lejos, como si por fin pudieras mirarla sin que te estuviera pidiendo nada.",
+        historia: "Hampstead Heath fue protegido como espacio público en el siglo XIX, cuando Londres crecía rápido y necesitaba aire antes de ahogarse en sí misma. A diferencia de Hyde Park o St. James's Park, nunca fue completamente domesticado. Conservó algo más salvaje: colinas, bosques, praderas, estanques para nadar y senderos irregulares. Escritores, artistas, vecinos y caminantes lo usaron durante siglos como lugar de escape. No está fuera de Londres, pero por momentos lo parece.",
+        curiosidades: "<ul><li>Parliament Hill tiene una de las vistas más famosas de la ciudad. Se ven St. Paul’s, la City, Canary Wharf, el Shard y buena parte del skyline moderno.</li><li>Los ponds de Hampstead son estanques naturales donde se puede nadar, incluso en invierno. Hay zonas separadas y una mixta.</li><li>Kenwood House, dentro del Heath, tiene una colección de arte gratuita y una casa blanca elegantísima que parece salida de otra vida.</li><li>El Heath aparece en novelas, poemas y películas porque cumple una función muy precisa: es el lugar donde Londres se permite volverse paisaje.</li></ul>",
+        paraLasTres: "Combínenlo con Highgate Cemetery. Primero cementerio, después subida a Parliament Hill. Es uno de los mejores cambios de tono posibles: de tumbas victorianas y musgo a una vista abierta de toda la ciudad. Lleven algo para comer y siéntense arriba sin apuro.",
+        comoVivirlo: "No vayan con zapatos delicados. Si llovió, hay barro. Mejor al atardecer o una mañana clara. Si están agotadas de museo, es el lugar correcto: no exige atención, la devuelve.",
+        personaje: "john-keats",
+        lat: 51.5608, lng: -0.1659
+      },
+{
+        name: "Regent’s Canal",
+        category: "Barrios y Vida Local",
+        imageTitle: "Barcazas en Regent’s Canal",
+        lugar: "El canal no apura. Corre paralelo a la ciudad, pero a otro ritmo. Barcazas, bicicletas, puentes bajos, gente que camina sin destino claro. Londres sigue pasando arriba — buses, calles, ruido — pero acá abajo todo parece haber bajado el volumen. Regent’s Canal es una forma de viajar lento sin salir de la ciudad.",
+        historia: "Regent’s Canal fue construido a comienzos del siglo XIX para conectar el Grand Union Canal con el Támesis y facilitar el transporte de carbón, madera, cal, alimentos y mercancías. Era infraestructura pura: agua como carretera industrial. Con el declive del transporte por canal, muchos tramos quedaron olvidados o degradados. Después fueron recuperándose como paseo, ruta ciclista, borde residencial y refugio urbano. Hoy une Camden, Regent’s Park, Little Venice, Islington y el East End con una lógica que no es la del metro ni la del auto: es la del cuerpo caminando.",
+        curiosidades: "<ul><li>Se puede caminar desde Camden hasta Little Venice siguiendo el agua, en uno de los paseos más tranquilos del norte de Londres.</li><li>Muchas barcazas son casas permanentes. Hay gente que vive literalmente en movimiento, cambiando de amarre cada pocas semanas.</li><li>El tramo cerca de Camden pasa por esclusas, mercados y puentes bajos donde la ciudad se vuelve casi teatral.</li><li>El canal fue durante mucho tiempo una espalda industrial de Londres. Hoy esa espalda se volvió uno de sus paseos más lindos.</li></ul>",
+        paraLasTres: "Hagan el tramo Camden a Little Venice si tienen energía, o Camden a Regent’s Park si quieren algo más corto. No hace falta convertirlo en excursión: el canal funciona mejor como transición entre dos planes. Caminen un rato, miren las barcazas, bajen el ritmo.",
+        comoVivirlo: "Ideal después de Camden o antes de Primrose Hill. No esperen grandes monumentos. Su valor es exactamente ese: no intenta impresionar. Solo acompaña.",
+        lat: 51.5399, lng: -0.1476
+      },
+{
+        name: "Primrose Hill",
+        category: "Parques y Naturaleza",
+        imageTitle: "Londres visto desde Primrose Hill",
+        lugar: "Subís sin darte cuenta. Y de golpe Londres aparece entera. No desde abajo, no desde adentro, no entre fachadas: desde afuera. Primrose Hill tiene algo de final de escena. La ciudad queda extendida enfrente y por un momento parece comprensible, aunque no lo sea.",
+        historia: "Primrose Hill fue incorporado como espacio público en el siglo XIX y forma parte del sistema de parques reales junto con Regent’s Park. Durante siglos fue una colina abierta al norte de la ciudad, usada para caminatas, reuniones, vistas, duelos y escapadas breves. A medida que Londres creció, la vista desde arriba se volvió cada vez más valiosa: una forma de entender la escala de la ciudad sin quedar atrapada dentro de ella.",
+        curiosidades: "<ul><li>Desde la cima se ve una línea completa del skyline londinense: St. Paul’s, la City, el Shard, Canary Wharf y el London Eye.</li><li>El barrio alrededor de Primrose Hill fue hogar de escritores, músicos y actores. Tiene una mezcla particular de calma cara, vida de barrio y mito cultural.</li><li>Muy cerca está Regent’s Canal, así que se puede armar un recorrido lento desde Camden, bordeando el agua y terminando arriba de la colina.</li><li>La cima tiene una inscripción de William Blake: una frase que convierte la vista en algo menos turístico y más raro, como si mirar también fuera una forma de revelación.</li></ul>",
+        paraLasTres: "Vayan después de Camden o del canal. Compren algo para tomar y suban sin apuro. No hay mucho que hacer arriba, y eso es exactamente lo bueno. Si el día está claro, quédense hasta que cambie la luz. Es un cierre perfecto para una tarde de barrio.",
+        comoVivirlo: "Mejor al atardecer. Si está nublado igual vale la pena, pero con cielo abierto la ciudad aparece como una maqueta viva. No lo traten como parada rápida: es un lugar para sentarse.",
+        personaje: "freddie-mercury",
+        lat: 51.5393, lng: -0.1608
+      }
 
     ];
 
@@ -3313,6 +3430,14 @@ var PLACE_LOCAL_IMAGE_MAP = {
   "Xi'an Impression — noodles sin maquillaje": "xi-an.jpg",
   "St. James’s Park — Pelicans": "st-james-pelicans.jpg",
   "St. James's Park — Pelicans": "st-james-pelicans.jpg",
+  "Trafalgar Square": "trafalgar-square.jpg",
+  "Piccadilly Circus": "piccadilly-circus.jpg",
+  "Soho": "soho-london.jpg",
+  "The City — el Londres que calcula": "city-london.jpg",
+  "Hampstead Heath": "hampstead-heath.jpg",
+  "Regent’s Canal": "regents-canal.jpg",
+  "Regent's Canal": "regents-canal.jpg",
+  "Primrose Hill": "primrose-hill.jpg",
 };
 
 var LOCAL_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp'];
@@ -3769,7 +3894,8 @@ window.toggleSavePlace = function(btn, nombre) {
     btn.textContent = 'Guardado';
     btn.classList.add('place-saved-pill');
   }
-  updateJourneyProgress();
+  var savedPlace = places.find(function(p){ return p.name === nombre; });
+  updateJourneyProgress('saved', savedPlace || null);
 };
 
 function getIntentTags(place) {
@@ -3810,16 +3936,291 @@ window.toggleIntentFilter = function(btn, intent) {
   });
   applyProductFilters();
   recommendByIntent(intent);
+  updateJourneyProgress('intent', null);
 };
 
-function updateJourneyProgress() {
-  var el = document.getElementById('journey-progress');
-  if (!el || !window.places || !places.length) return;
-  var visited = places.filter(function(p) { return localStorage.getItem(visitedStorageKey(p.name)); }).length;
-  var saved = places.filter(function(p) { return isPlaceSaved(p); }).length;
-  var pct = Math.round((visited / places.length) * 100);
-  el.innerHTML = '<div class="product-progress-title">Tu Londres</div><div class="product-progress-bar"><div class="product-progress-fill" style="width:' + pct + '%"></div></div><div class="product-progress-note">' + visited + ' lugares vividos · ' + saved + ' guardados. Volvé acá cuando quieras seguir el hilo.</div>';
+function updateJourneyProgress(reason, place) {
+  updateLondonVoice(reason || 'progress', place || null);
 }
+
+function londonVoiceDismissedKey() { return 'london-voice-dismissed-session'; }
+function dismissLondonVoice() {
+  sessionStorage.setItem(londonVoiceDismissedKey(), '1');
+  var card = document.getElementById('london-voice');
+  if (card) card.classList.remove('show');
+}
+function resetLondonVoiceForAction() {
+  sessionStorage.removeItem(londonVoiceDismissedKey());
+}
+function placeLayerName(place) {
+  if (!place) return 'classic';
+  var layers = typeof planLayerForPlace === 'function' ? planLayerForPlace(place) : [];
+  if (layers.indexOf('ambition') !== -1) return 'poder';
+  if (layers.indexOf('dark') !== -1) return 'grieta';
+  if (layers.indexOf('writers') !== -1) return 'voz';
+  if (layers.indexOf('living') !== -1) return 'vida';
+  return 'ciudad';
+}
+function visitedLayerCounts() {
+  var counts = { poder:0, grieta:0, voz:0, vida:0, ciudad:0, total:0, saved:0 };
+  if (!window.places) return counts;
+  places.forEach(function(p) {
+    if (typeof isPlaceSaved === 'function' && isPlaceSaved(p)) counts.saved += 1;
+    if (localStorage.getItem(visitedStorageKey(p.name))) {
+      counts.total += 1;
+      counts[placeLayerName(p)] = (counts[placeLayerName(p)] || 0) + 1;
+    }
+  });
+  return counts;
+}
+function strongestVisitedLayer(counts) {
+  var keys = ['poder','grieta','voz','vida'];
+  keys.sort(function(a,b){ return (counts[b]||0) - (counts[a]||0); });
+  return (counts[keys[0]] || 0) ? keys[0] : null;
+}
+function oppositeSuggestion(layer) {
+  if (layer === 'poder') return { label:'Ver una grieta', intent:'hidden' };
+  if (layer === 'grieta') return { label:'Volver a la calle', intent:'slow' };
+  if (layer === 'voz') return { label:'Buscar vida local', intent:'slow' };
+  if (layer === 'vida') return { label:'Entrar en la historia', intent:'emotion' };
+  return { label:'Ver algo oculto', intent:'hidden' };
+}
+function chooseVoiceLine(lines, seed) {
+  if (!lines || !lines.length) return '';
+  var source = String(seed || '') + '|' + new Date().toDateString();
+  var h = 0;
+  for (var i = 0; i < source.length; i++) h = ((h << 5) - h + source.charCodeAt(i)) | 0;
+  return lines[Math.abs(h) % lines.length];
+}
+
+var londonVoiceLines = {
+  start: [
+    'No intentes ver Londres entera. Entrá por una puerta y dejá que la ciudad te lleve.',
+    'La ciudad está intacta todavía. No la gastes corriendo.',
+    'Podrías empezar por cualquier lado. Pero no todos los lados llevan a la misma Londres.',
+    'Londres no se abre de golpe. Primero te deja tocar la puerta.',
+    'Antes de elegir un lugar, elegí un ritmo. Esta ciudad castiga el apuro.',
+    'No hace falta verlo todo. Hace falta mirar mejor.',
+    'La primera decisión del día no es dónde ir. Es qué tipo de ciudad querés escuchar.',
+    'Todavía no empezaste. Bien. La expectativa también es parte del viaje.'
+  ],
+  openPoder: [
+    'Entraste por el Londres del poder. No es amable, pero es honesto: piedra, ceremonia y decisiones que todavía hacen sombra.',
+    'Acá Londres convierte la violencia en arquitectura. Mirá despacio.',
+    'El poder rara vez susurra en esta ciudad. A veces levanta columnas, torres y cúpulas para no tener que explicarse.',
+    'Este lugar no pide cariño. Pide contexto.',
+    'Estás mirando la parte de Londres que aprendió a mandar y a justificarlo.',
+    'No todo lo solemne es noble. A veces es apenas miedo bien vestido.',
+    'La ciudad empezó muchas veces por acá: ordenando, castigando, coronando, cobrando.',
+    'Si esto te impresiona, perfecto. Para eso fue hecho.'
+  ],
+  openGrieta: [
+    'Acá Londres baja la voz. No todo lo importante está en los monumentos; algunas cosas esperan en una casa rara, un cementerio o un callejón.',
+    'Este es el Londres que no posa para la postal. Mejor así.',
+    'No vengas buscando una explicación limpia. Algunos lugares valen porque no cierran del todo.',
+    'La ciudad también se entiende por sus restos: puertas cerradas, nombres borrados, historias mal resueltas.',
+    'Acá el mapa se vuelve menos obediente.',
+    'Este lugar no necesita ser famoso para quedarse encima.',
+    'Londres guarda lo incómodo en rincones bastante precisos.',
+    'Ahora sí: la ciudad empieza a mostrar los dientes.'
+  ],
+  openVoz: [
+    'Este punto no se mira solo con los ojos. Se escucha: escritores, personajes, teatros y ecos que todavía cambian la forma de caminar.',
+    'Acá Londres habla con voces prestadas: algunas reales, otras inventadas, todas persistentes.',
+    'Las ciudades también se escriben. Algunas páginas quedaron pegadas a estas calles.',
+    'Este lugar tiene menos que ver con ver y más con oír lo que quedó flotando.',
+    'Seguí la voz. A veces entiende mejor la ciudad que el mapa.',
+    'La ficción también ocupa espacio. Londres lo sabe mejor que nadie.',
+    'No todo lo que importa ocurrió exactamente así. Pero igual dejó marca.',
+    'Acá una historia inventada puede pesar tanto como una piedra antigua.'
+  ],
+  openVida: [
+    'Bien. Saliste del mármol y entraste en la calle. A veces Londres se entiende mejor mirando cómo vive que leyendo una placa.',
+    'Acá la ciudad deja de explicarse y empieza a funcionar.',
+    'Esto no necesita solemnidad. Necesita hambre, tiempo y ojos abiertos.',
+    'Londres también es esto: una mesa, un mercado, una esquina, gente que no está actuando para nadie.',
+    'La historia pesa menos cuando la ciudad está ocupada viviendo.',
+    'Acá no hay que descifrar demasiado. Hay que quedarse un rato.',
+    'Entraste en el Londres que respira entre una obligación y otra.',
+    'No todo lo verdadero viene con placa azul.'
+  ],
+  openCiudad: [
+    'Este lugar abre una puerta. No hace falta entenderlo todo ahora: alcanza con mirar un poco más lento.',
+    'Hay puntos que no gritan. Igual ordenan el día.',
+    'No lo conviertas enseguida en dato. Primero dejá que tenga atmósfera.',
+    'A veces un lugar sirve porque cambia el ritmo, no porque resuelva la historia.',
+    'La ciudad también habla en transiciones.',
+    'Esto puede parecer una pausa. No lo subestimes.',
+    'Acá el recorrido toma aire.',
+    'No todos los lugares tienen que ser finales. Algunos son bisagras.'
+  ],
+  visitedFirst: [
+    'Primer punto marcado. No lo tomes como una lista: tomalo como la primera capa de tu Londres.',
+    'Ya hay una primera marca. La ciudad dejó de ser abstracta.',
+    'Esto ya es tuyo. Poco, todavía. Pero suficiente para empezar.',
+    'Primer hilo tomado. Ahora no lo sueltes corriendo.',
+    'La primera parada no completa nada. Abre una forma de mirar.',
+    'Bien. Ya no estás afuera del mapa.',
+    'La ciudad acaba de perder un poco de distancia.',
+    'Un punto no es un recorrido. Pero ya puede ser una promesa.'
+  ],
+  visitedPoder: [
+    'Ya viste cómo Londres construye autoridad. Ahora buscá una grieta: la ciudad se vuelve más interesante cuando deja de posar.',
+    'Tu Londres, por ahora, tiene piedra y mando. Le falta algo menos obediente.',
+    'Ya viste el decorado del poder. Ahora conviene mirar lo que ese decorado tapa.',
+    'El poder ordena la ciudad. Pero no la explica entera.',
+    'Bien: ya viste coronas, castigos o instituciones. Ahora buscá el murmullo.',
+    'Londres sabe mandar. La pregunta es qué pasa cuando nadie mira.',
+    'La autoridad deja monumentos. La vida deja manchas.',
+    'Te falta una calle que contradiga tanta ceremonia.'
+  ],
+  visitedGrieta: [
+    'Ya entraste por lo raro. No lo limpies demasiado: Londres también se cuenta desde lo que incomoda.',
+    'Tu Londres se está oscureciendo. Eso no es un problema; es una dirección.',
+    'Ya encontraste una grieta. Ahora decidí si querés seguir bajando o volver a la superficie.',
+    'Hay días en que la ciudad se entiende mejor desde sus sombras.',
+    'Lo raro ya empezó a ordenar tu mapa.',
+    'No todo lo que viste quiere ser explicado. Algunas cosas solo piden quedarse.',
+    'La ciudad te mostró una costura. No la cierres todavía.',
+    'Ahora sabés que Londres no solo conserva: también esconde.'
+  ],
+  visitedVoz: [
+    'Ya empezaste a seguir voces. Ahora el mapa no es solo distancia: es conversación entre épocas.',
+    'Tu Londres está lleno de ecos. Algunos vienen de libros; otros de escenarios; otros de gente que insistió.',
+    'Las voces empiezan a juntarse. El recorrido ya no es geográfico solamente.',
+    'Bien. Una ciudad leída camina distinto.',
+    'Seguiste una historia. Ahora buscá dónde se le opone otra.',
+    'La literatura no reemplaza la ciudad. La vuelve más peligrosa.',
+    'Ya hay fantasmas hablando. No todos llevan sábana.',
+    'Si el mapa empezó a sonar, vas bien.'
+  ],
+  visitedVida: [
+    'Ya viste cómo Londres respira. Si querés profundidad, ahora conviene cruzarlo con historia.',
+    'Tu Londres está vivo: mercados, parques, barrios. Ahora podés sumarle una herida histórica para que pese un poco más.',
+    'Ya saliste del museo. Bien. Pero la calle también tiene genealogía.',
+    'La ciudad comió, caminó, gritó, vendió cosas. Ahora preguntale de dónde viene.',
+    'Londres cotidiano no es menos histórico. Solo habla más bajo.',
+    'Hay vida suficiente. Ahora buscá una capa que la haga crujir.',
+    'El mapa se está volviendo habitable.',
+    'Bien: no todo fue solemnidad. Londres también necesitaba almorzar.'
+  ],
+  saved: [
+    'Lo guardaste. A veces el mejor recorrido no es el que se hace ahora, sino el que queda esperando el momento justo.',
+    'Guardado. Londres también se arma con deseos pendientes.',
+    'Eso queda esperando. No todo lo importante tiene que pasar hoy.',
+    'Lo apartaste del ruido. Buena señal.',
+    'Hay lugares que conviene guardar antes de entender por qué.',
+    'Ese punto ya empezó a formar parte de tu versión de la ciudad.',
+    'Guardarlo también es elegir un futuro.',
+    'Queda marcado. La ciudad sabe esperar.'
+  ],
+  plan: [
+    'Te armé un hilo, no una checklist. Si un lugar ya estaba vivido, queda marcado: no se borra de la historia.',
+    'El recorrido no intenta ganarle a Londres. Intenta entrarle por un costado.',
+    'No está pensado para completar. Está pensado para resonar.',
+    'Si algo queda muy cerca, aparece como desvío. No todo desvío es pérdida.',
+    'Esto no es eficiencia. Es una forma de no romper la ciudad en pedazos.',
+    'El plan ya tiene pulso. Ahora falta caminarlo sin ansiedad.',
+    'Algunos lugares sostienen el hilo aunque ya los hayas visto.',
+    'La ruta no manda. Propone.'
+  ],
+  intent: [
+    'Elegiste un tono. Ahora el mapa deja de ser neutral: empieza a mostrarte una versión de Londres.',
+    'Cambiaste la pregunta, y la ciudad cambia de cara.',
+    'El mapa no es objetivo. Nunca lo fue. Ahora al menos lo admite.',
+    'Bien. No estás buscando lugares: estás buscando una manera de entrar.',
+    'Una intención alcanza para mover todo el recorrido.',
+    'Londres tiene muchas capas. Elegir una no empobrece; enfoca.',
+    'El día acaba de tomar dirección.',
+    'No elegiste una categoría. Elegiste una temperatura.'
+  ],
+  progressFew: [
+    'Ya empezaste. Londres todavía está en superficie, pero el hilo existe. Seguí despacio.',
+    'Hay apenas unas marcas, pero ya empiezan a mirarse entre sí.',
+    'Todavía no hay mapa propio. Hay indicios.',
+    'No aceleres ahora. El principio necesita espacio.',
+    'La ciudad empezó a contestar, pero todavía no dijo lo importante.',
+    'Dos o tres puntos pueden ser suficientes si están bien escuchados.',
+    'Todavía estás eligiendo el idioma del día.',
+    'Seguí. Sin convertirlo en carrera.'
+  ],
+  progressMany: [
+    'Tu Londres ya empezó a tomar forma. No lo completes: escuchalo.',
+    'Ya hay una versión tuya de la ciudad. No coincide con ninguna guía, y eso es lo bueno.',
+    'El mapa empieza a parecer menos mapa y más memoria.',
+    'Ya caminaste lo evidente. Ahora buscá algo que no esté señalizado.',
+    'La ciudad se te está quedando encima. Bien.',
+    'No necesitás más puntos. Necesitás mejores conexiones.',
+    'Ahora Londres no es grande: es densa.',
+    'Lo visto empieza a pesar. Ese es el verdadero progreso.'
+  ]
+};
+
+function londonVoiceMessage(reason, place) {
+  var counts = visitedLayerCounts();
+  var layer = placeLayerName(place);
+  var seed = reason + '|' + (place ? place.name : '') + '|' + counts.total + '|' + counts.saved;
+  if (reason === 'open' && place) {
+    if (layer === 'poder') return chooseVoiceLine(londonVoiceLines.openPoder, seed);
+    if (layer === 'grieta') return chooseVoiceLine(londonVoiceLines.openGrieta, seed);
+    if (layer === 'voz') return chooseVoiceLine(londonVoiceLines.openVoz, seed);
+    if (layer === 'vida') return chooseVoiceLine(londonVoiceLines.openVida, seed);
+    return chooseVoiceLine(londonVoiceLines.openCiudad, seed);
+  }
+  if (reason === 'visited' && place) {
+    if (counts.total <= 1) return chooseVoiceLine(londonVoiceLines.visitedFirst, seed);
+    var strong = strongestVisitedLayer(counts);
+    if (strong === 'poder') return chooseVoiceLine(londonVoiceLines.visitedPoder, seed);
+    if (strong === 'grieta') return chooseVoiceLine(londonVoiceLines.visitedGrieta, seed);
+    if (strong === 'voz') return chooseVoiceLine(londonVoiceLines.visitedVoz, seed);
+    if (strong === 'vida') return chooseVoiceLine(londonVoiceLines.visitedVida, seed);
+    return 'Ya hay un hilo. No corras: lo importante no es sumar puntos, es que empiecen a responderse entre sí.';
+  }
+  if (reason === 'saved' && place) return chooseVoiceLine(londonVoiceLines.saved, seed);
+  if (reason === 'plan') return chooseVoiceLine(londonVoiceLines.plan, seed);
+  if (reason === 'intent') return chooseVoiceLine(londonVoiceLines.intent, seed);
+  if (counts.total === 0) return chooseVoiceLine(londonVoiceLines.start, seed);
+  if (counts.total < 3) return chooseVoiceLine(londonVoiceLines.progressFew, seed);
+  var strong2 = strongestVisitedLayer(counts);
+  if (strong2 === 'poder') return chooseVoiceLine(londonVoiceLines.visitedPoder, seed);
+  if (strong2 === 'grieta') return chooseVoiceLine(londonVoiceLines.visitedGrieta, seed);
+  if (strong2 === 'voz') return chooseVoiceLine(londonVoiceLines.visitedVoz, seed);
+  if (strong2 === 'vida') return chooseVoiceLine(londonVoiceLines.visitedVida, seed);
+  return chooseVoiceLine(londonVoiceLines.progressMany, seed);
+}
+function londonVoiceActions(reason, place) {
+  var counts = visitedLayerCounts();
+  var strong = strongestVisitedLayer(counts);
+  var suggestion = oppositeSuggestion(strong || placeLayerName(place));
+  var actions = [];
+  if (reason === 'open' && place) actions.push({ text:'Marcar vivido', run:function(){ var key = place.name.replace(/[^a-zA-Z0-9]/g,''); var fake = { textContent:'', style:{} }; marcarVisitado(fake, key); } });
+  actions.push({ text:suggestion.label, run:function(){ resetLondonVoiceForAction(); recommendByIntent(suggestion.intent); updateLondonVoice('intent', null); } });
+  actions.push({ text:'Plan con este hilo', run:function(){ resetLondonVoiceForAction(); activarModoPlan(); } });
+  return actions;
+}
+function showLondonVoice(text, actions) {
+  var card = document.getElementById('london-voice');
+  var body = document.getElementById('london-voice-text');
+  var wrap = document.getElementById('london-voice-actions');
+  if (!card || !body || !wrap) return;
+  body.textContent = text;
+  wrap.innerHTML = '';
+  (actions || []).slice(0,3).forEach(function(action) {
+    var btn = document.createElement('button');
+    btn.className = 'london-voice-action';
+    btn.type = 'button';
+    btn.textContent = action.text;
+    btn.onclick = action.run;
+    wrap.appendChild(btn);
+  });
+  card.classList.add('show');
+}
+function updateLondonVoice(reason, place) {
+  if (reason === 'open' || reason === 'visited' || reason === 'saved' || reason === 'plan' || reason === 'intent') resetLondonVoiceForAction();
+  if (sessionStorage.getItem(londonVoiceDismissedKey())) return;
+  showLondonVoice(londonVoiceMessage(reason, place), londonVoiceActions(reason, place));
+}
+setTimeout(function(){ updateLondonVoice('progress', null); }, 1600);
 
     window.toggleFilter = function(btn, filter) {
       if (activeFilters.has(filter)) activeFilters.delete(filter);
@@ -3953,6 +4354,7 @@ window.openPlacePanel = function(place) {
   panel.setAttribute('aria-hidden', 'false');
   document.body.classList.add('place-panel-open');
   inner.scrollTop = 0;
+  updateLondonVoice('open', place);
   hydratePopupImages(inner);
 };
 
@@ -5495,6 +5897,8 @@ function marcarVisitado(btn, nombre) {
      }));
     }
   }
+  var visitedPlace = allMarkers.find(function(o){ return o.place.name.replace(/[^a-zA-Z0-9]/g,'') === nombre; });
+  updateJourneyProgress(localStorage.getItem(key) ? 'visited' : 'progress', visitedPlace ? visitedPlace.place : null);
 }
   
 
@@ -5512,7 +5916,7 @@ function sortPlacesAsWalk(list,origin){ var remaining=list.slice(), sorted=[], c
 function seleccionarHoras(horas){ var builder=document.getElementById('manual-plan-builder'); if(builder) builder.style.display='none'; crearPlanRapido(horas, selectedPlanTheme || 'classic'); }
 function crearPlanRapido(horas,theme){ selectedPlanTheme=theme||selectedPlanTheme||'classic'; var origin=getPlanOriginLatLng(); var eligible=planEligiblePlaces().map(function(place){ var dist=map.distance(origin,[place.lat,place.lng]); var layers=planLayerForPlace(place); var layerBonus=layers.indexOf(selectedPlanTheme)!==-1?-900:0; var visitedPenalty=isVisitedPlace(place)?220:0; var tp=tipoPlan(place); var foodPenalty=(tp==='comida'||tp==='cerveza'||tp==='comida-bebida')?350:0; return {place:place,dist:dist,score:dist+layerBonus+visitedPenalty+foodPenalty};}).sort(function(a,b){return a.score-b.score;}); var limit=horas===2?3:horas===4?5:8; var selected=[]; eligible.forEach(function(item){ if(selected.length>=limit)return; if(selected.some(function(p){return map.distance([p.lat,p.lng],[item.place.lat,item.place.lng])<260;})) return; selected.push(item.place);}); if(selected.length<limit){ eligible.forEach(function(item){ if(selected.length>=limit)return; if(!selected.some(function(p){return p.name===item.place.name;})) selected.push(item.place);}); } selected=sortPlacesAsWalk(selected,origin); renderNarrativePlan(selected,horas,selectedPlanTheme,false); }
 function nearbyForPlanPlace(place,usedNames,theme){ var maxDist=850; var nearby=planEligiblePlaces().filter(function(p){ if(p.name===place.name)return false; if(usedNames[p.name])return false; var d=map.distance([place.lat,place.lng],[p.lat,p.lng]); return d<=maxDist; }).map(function(p){ var d=map.distance([place.lat,place.lng],[p.lat,p.lng]); var layerBonus=planLayerForPlace(p).indexOf(theme)!==-1?-220:0; return {place:p,dist:d,score:d+layerBonus};}).sort(function(a,b){return a.score-b.score;}).slice(0,2); nearby.forEach(function(obj){usedNames[obj.place.name]=true;}); return nearby; }
-function renderNarrativePlan(selectedPlaces,horas,theme,manual){ var result=document.getElementById('plan-result'); var status=document.getElementById('plan-status'); if(!result)return; if(status){status.style.display='none';status.textContent='';} var narrative=getPlanNarrative(theme,horas,manual); result.innerHTML=''; var horasTexto=manual?'A mi modo':(horas===2?'2 horas':horas===4?'4 horas':'día completo'); var head=document.createElement('div'); head.className='plan-narrative-head'; head.innerHTML='<div class="plan-narrative-kicker">Plan del día · '+horasTexto+'</div><div class="plan-narrative-title">'+narrative.title+'</div><div class="plan-narrative-copy">'+narrative.copy+'</div>'; result.appendChild(head); var usedNames={}; selectedPlaces.forEach(function(p){usedNames[p.name]=true;}); var time=horas===2?10*60:horas===4?10*60:9*60; if(manual) time=10*60; selectedPlaces.forEach(function(place,index){ var visited=isVisitedPlace(place); var tp=tipoPlan(place); var minutos=horas===2?35:horas===4?45:55; if(manual)minutos=45; if(tp==='comida')minutos+=30; if(tp==='comida-bebida')minutos+=35; if(tp==='cerveza')minutos+=20; if(index>0)time+=horas===2?12:horas===4?15:18; var hh=Math.floor(time/60), mm=time%60, hour=hh+':'+(mm<10?'0':'')+mm; time+=minutos; var card=document.createElement('div'); card.className='plan-zone-card'+(visited?' plan-place-visited':''); var meta=place.category+' · '+minutos+' min'+(visited?' · ya visitado':''); card.innerHTML='<div class="plan-zone-title">Parada '+(index+1)+'</div><div class="plan-main-place"><div class="plan-main-time">'+hour+'</div><div><div class="plan-main-name">'+place.name+'</div><div class="plan-main-meta">'+meta+'</div><div class="plan-main-bridge">'+bridgeForPlace(place,index,selectedPlaces.length,theme)+'</div>'+(visited?'<div class="plan-visited-note">✓ Ya lo viviste. Lo dejo porque sostiene el hilo.</div>':'')+'</div></div>'; card.querySelector('.plan-main-place').onclick=function(){openPlanPlace(place);}; var nearby=nearbyForPlanPlace(place,usedNames,theme); if(nearby.length){ var shell=document.createElement('div'); shell.className='nearby-shell'; shell.innerHTML='<div class="nearby-label">Muy cerca · misma zona, mismo pulso</div><div class="nearby-grid"></div>'; var grid=shell.querySelector('.nearby-grid'); nearby.forEach(function(obj){ var np=obj.place, nv=isVisitedPlace(np); var chip=document.createElement('button'); chip.className='nearby-chip'+(nv?' nearby-visited':''); chip.innerHTML='<div class="nearby-name">'+np.name+'</div><div class="nearby-meta">'+np.category+' · '+Math.round(obj.dist)+' m'+(nv?' · ya visitado':'')+'</div>'; chip.onclick=function(){openPlanPlace(np);}; grid.appendChild(chip);}); card.appendChild(shell);} result.appendChild(card); }); var close=document.createElement('div'); close.className='plan-closing-note'; close.textContent=manual?'Este recorrido no intenta corregirte. Intenta acompañar tu intuición y darle orden para que caminarlo no se vuelva una tarea.':'Si algo queda muy cerca, no lo trato como relleno: lo dejo al costado del camino para que decidas si el día te pide seguir o quedarte.'; result.appendChild(close); document.getElementById('plan-step1').style.display='block'; result.style.display='block'; document.getElementById('plan-panel').style.display='block'; }
+function renderNarrativePlan(selectedPlaces,horas,theme,manual){ var result=document.getElementById('plan-result'); var status=document.getElementById('plan-status'); if(!result)return; if(status){status.style.display='none';status.textContent='';} var narrative=getPlanNarrative(theme,horas,manual); result.innerHTML=''; var horasTexto=manual?'A mi modo':(horas===2?'2 horas':horas===4?'4 horas':'día completo'); var head=document.createElement('div'); head.className='plan-narrative-head'; head.innerHTML='<div class="plan-narrative-kicker">Plan del día · '+horasTexto+'</div><div class="plan-narrative-title">'+narrative.title+'</div><div class="plan-narrative-copy">'+narrative.copy+'</div>'; result.appendChild(head); var usedNames={}; selectedPlaces.forEach(function(p){usedNames[p.name]=true;}); var time=horas===2?10*60:horas===4?10*60:9*60; if(manual) time=10*60; selectedPlaces.forEach(function(place,index){ var visited=isVisitedPlace(place); var tp=tipoPlan(place); var minutos=horas===2?35:horas===4?45:55; if(manual)minutos=45; if(tp==='comida')minutos+=30; if(tp==='comida-bebida')minutos+=35; if(tp==='cerveza')minutos+=20; if(index>0)time+=horas===2?12:horas===4?15:18; var hh=Math.floor(time/60), mm=time%60, hour=hh+':'+(mm<10?'0':'')+mm; time+=minutos; var card=document.createElement('div'); card.className='plan-zone-card'+(visited?' plan-place-visited':''); var meta=place.category+' · '+minutos+' min'+(visited?' · ya visitado':''); card.innerHTML='<div class="plan-zone-title">Parada '+(index+1)+'</div><div class="plan-main-place"><div class="plan-main-time">'+hour+'</div><div><div class="plan-main-name">'+place.name+'</div><div class="plan-main-meta">'+meta+'</div><div class="plan-main-bridge">'+bridgeForPlace(place,index,selectedPlaces.length,theme)+'</div>'+(visited?'<div class="plan-visited-note">✓ Ya lo viviste. Lo dejo porque sostiene el hilo.</div>':'')+'</div></div>'; card.querySelector('.plan-main-place').onclick=function(){openPlanPlace(place);}; var nearby=nearbyForPlanPlace(place,usedNames,theme); if(nearby.length){ var shell=document.createElement('div'); shell.className='nearby-shell'; shell.innerHTML='<div class="nearby-label">Muy cerca · misma zona, mismo pulso</div><div class="nearby-grid"></div>'; var grid=shell.querySelector('.nearby-grid'); nearby.forEach(function(obj){ var np=obj.place, nv=isVisitedPlace(np); var chip=document.createElement('button'); chip.className='nearby-chip'+(nv?' nearby-visited':''); chip.innerHTML='<div class="nearby-name">'+np.name+'</div><div class="nearby-meta">'+np.category+' · '+Math.round(obj.dist)+' m'+(nv?' · ya visitado':'')+'</div>'; chip.onclick=function(){openPlanPlace(np);}; grid.appendChild(chip);}); card.appendChild(shell);} result.appendChild(card); }); var close=document.createElement('div'); close.className='plan-closing-note'; close.textContent=manual?'Este recorrido no intenta corregirte. Intenta acompañar tu intuición y darle orden para que caminarlo no se vuelva una tarea.':'Si algo queda muy cerca, no lo trato como relleno: lo dejo al costado del camino para que decidas si el día te pide seguir o quedarte.'; result.appendChild(close); document.getElementById('plan-step1').style.display='block'; result.style.display='block'; document.getElementById('plan-panel').style.display='block'; updateJourneyProgress('plan', selectedPlaces[0] || null); }
 function openPlanPlace(place){ if(!place)return; map.setView([place.lat,place.lng],16); if(typeof openPlacePanel==='function') openPlacePanel(place); else { var obj=allMarkers.find(function(o){return o.place.name===place.name;}); if(obj&&obj.marker)obj.marker.openPopup(); } }
 function activarModoPlan(){ horasPlan=0; puntoPlan=null; clearPlanPointMarker(); setPlanInteraction(false); document.getElementById('plan-panel').style.display='block'; document.getElementById('plan-step1').style.display='block'; document.getElementById('plan-result').style.display='none'; var builder=document.getElementById('manual-plan-builder'); if(builder) builder.style.display='none'; var status=document.getElementById('plan-status'); if(status){status.style.display='none'; status.textContent='';} }
 
