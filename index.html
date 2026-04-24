@@ -3979,11 +3979,11 @@ function strongestVisitedLayer(counts) {
   return (counts[keys[0]] || 0) ? keys[0] : null;
 }
 function oppositeSuggestion(layer) {
-  if (layer === 'poder') return { label:'Ver una grieta', intent:'hidden' };
-  if (layer === 'grieta') return { label:'Volver a la calle', intent:'slow' };
+  if (layer === 'poder') return { label:'Armar mi propio recorrido', intent:'hidden' };
+  if (layer === 'grieta') return { label:'Armar mi propio recorrido', intent:'slow' };
   if (layer === 'voz') return { label:'Buscar vida local', intent:'slow' };
   if (layer === 'vida') return { label:'Entrar en la historia', intent:'emotion' };
-  return { label:'Ver algo oculto', intent:'hidden' };
+  return { label:'Armar mi propio recorrido', intent:'hidden' };
 }
 function chooseVoiceLine(lines, seed) {
   if (!lines || !lines.length) return '';
