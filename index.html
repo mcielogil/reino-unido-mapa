@@ -925,6 +925,41 @@
         font-size:12px;
       }
       #mobile-filter-bar .filter-pip { opacity:0.9; }
+      #mobile-filter-bar .intent-btn {
+        width:auto;
+        min-width:max-content;
+        flex:0 0 auto;
+        padding:9px 12px;
+        font-size:12px;
+        border-radius:999px;
+        background: rgba(244,241,232,0.10);
+        border-color: rgba(244,241,232,0.24);
+        color:#f3ecdf;
+      }
+      #mobile-filter-bar .intent-btn span {
+        display:inline;
+        margin:0 0 0 6px;
+        font-size:9px;
+        color:#d4c0a4;
+        letter-spacing:0.10em;
+      }
+      #mobile-filter-bar .intent-btn.active {
+        background: rgba(200,146,10,0.22);
+        border-color: rgba(200,146,10,0.62);
+        color:#fff;
+      }
+      .mobile-filter-divider {
+        flex:0 0 auto;
+        align-self:center;
+        font-family:'DM Sans',sans-serif;
+        font-size:9px;
+        letter-spacing:0.16em;
+        text-transform:uppercase;
+        color:#c8920a;
+        padding:0 2px 0 8px;
+        opacity:.95;
+        white-space:nowrap;
+      }
       .sidebar-body { display:none; }
       .sidebar-top {
         position:fixed;
@@ -4494,7 +4529,30 @@ function renderMobileFilters() {
     btn.onclick = function() { toggleFilter(btn, filter); };
     bar.appendChild(btn);
   });
+
+  var divider = document.createElement('div');
+  divider.className = 'mobile-filter-divider';
+  divider.textContent = 'Intención';
+  bar.appendChild(divider);
+
+  [
+    { id: 'near', label: 'Estoy cerca', sub: 'decisión rápida' },
+    { id: 'emotion', label: 'Quiero emocionarme', sub: 'historia intensa' },
+    { id: 'slow', label: 'Quiero ir lento', sub: 'pausas' },
+    { id: 'hidden', label: 'Sorprendeme', sub: 'lugares raros' }
+  ].forEach(function(intent) {
+    var btn = document.createElement('button');
+    btn.className = 'intent-btn mobile-intent-btn';
+    btn.setAttribute('data-intent', intent.id);
+    btn.innerHTML = intent.label + '<span>' + intent.sub + '</span>';
+    btn.onclick = function() { toggleIntentFilter(btn, intent.id); };
+    bar.appendChild(btn);
+  });
   syncFilterButtons();
+  document.querySelectorAll('[data-intent]').forEach(function(el) {
+    if (activeIntentFilters && activeIntentFilters.has(el.getAttribute('data-intent'))) el.classList.add('active');
+    else el.classList.remove('active');
+  });
 }
 
 
