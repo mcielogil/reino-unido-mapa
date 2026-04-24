@@ -4318,6 +4318,9 @@ function showLondonVoice(text, actions) {
     wrap.appendChild(btn);
   });
   card.classList.add('show');
+  if ((window.__lppLang || localStorage.getItem('lpp_lang')) === 'en' && window.__lppTranslateElementTextNodes) {
+    setTimeout(function(){ window.__lppTranslateElementTextNodes(card); }, 30);
+  }
 }
 function updateLondonVoice(reason, place) {
   if (reason === 'open' || reason === 'visited' || reason === 'saved' || reason === 'plan' || reason === 'intent') resetLondonVoiceForAction();
@@ -6339,6 +6342,11 @@ function activarModoPlan(){ horasPlan=0; puntoPlan=null; clearPlanPointMarker();
     var placeClose = document.getElementById('place-panel-close');
     if (placeClose) placeClose.setAttribute('aria-label', ui('close'));
 
+    var voiceClose = document.getElementById('london-voice-close');
+    if (voiceClose) voiceClose.setAttribute('aria-label', ui('close'));
+    var voiceKicker = document.querySelector('#london-voice .london-voice-kicker');
+    if (voiceKicker) voiceKicker.textContent = currentLang === 'en' ? 'Your London' : 'Tu Londres';
+
     relabelFilterButtons('.filter-btn');
   }
 
@@ -6493,6 +6501,9 @@ function activarModoPlan(){ horasPlan=0; puntoPlan=null; clearPlanPointMarker();
     }
   }
 
+  window.__lppTranslateElementTextNodes = translateElementTextNodes;
+  window.__lppTranslateRuntimeText = translateText;
+
   function translateKnownContainers() {
     if (currentLang() !== 'en') return;
     [
@@ -6505,7 +6516,8 @@ function activarModoPlan(){ horasPlan=0; puntoPlan=null; clearPlanPointMarker();
       document.getElementById('search-results'),
       document.getElementById('search-results-mobile'),
       document.getElementById('nearby-panel'),
-      document.getElementById('bottom-sheet')
+      document.getElementById('bottom-sheet'),
+      document.getElementById('london-voice')
     ].forEach(function(el){ if (el) translateElementTextNodes(el); });
   }
 
