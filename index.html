@@ -1145,6 +1145,56 @@ body.place-panel-open { overflow: hidden; }
 }
 
 
+
+/* PRODUCT LAYER: slow-travel decisions without touching editorial copy */
+.intent-btn, .plan-theme-btn {
+  width: 100%;
+  background: rgba(255,255,255,0.46);
+  border: 1px solid rgba(74,73,68,0.13);
+  border-radius: 14px;
+  color: #3f3832;
+  cursor: pointer;
+  padding: 10px 12px;
+  text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  line-height: 1.35;
+  transition: all .2s ease;
+}
+.intent-btn.active, .plan-theme-btn.active {
+  background: rgba(212,50,28,0.10);
+  border-color: rgba(212,50,28,0.35);
+  color: #181410;
+}
+.intent-btn span, .plan-theme-btn span { display:block; font-size:9px; letter-spacing:.13em; text-transform:uppercase; color:#8a8074; margin-top:3px; }
+.product-progress-card {
+  position: fixed;
+  left: 18px;
+  bottom: 76px;
+  z-index: 1001;
+  width: min(300px, calc(100vw - 36px));
+  background: rgba(246,241,232,0.94);
+  border: 1px solid rgba(74,73,68,0.14);
+  border-radius: 18px;
+  box-shadow: var(--shadow-soft);
+  padding: 12px 14px;
+  pointer-events: auto;
+}
+.product-progress-title { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--red); margin-bottom:8px; }
+.product-progress-bar { height:7px; border-radius:999px; background:rgba(15,14,12,.10); overflow:hidden; }
+.product-progress-fill { height:100%; width:0%; background:var(--olive); border-radius:999px; transition:width .25s ease; }
+.product-progress-note { margin-top:7px; font-family:'Playfair Display',serif; font-style:italic; font-size:12px; color:#5e554c; line-height:1.45; }
+.place-context-grid { display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:10px; margin: 6px 0 28px; }
+.place-context-item { background:rgba(255,255,255,.54); border:1px solid rgba(74,73,68,.12); border-radius:16px; padding:12px; }
+.place-context-label { font-family:'DM Sans',sans-serif; font-size:8px; letter-spacing:.15em; text-transform:uppercase; color:#8a8074; margin-bottom:6px; }
+.place-context-value { font-family:'Playfair Display',serif; font-size:14px; line-height:1.35; color:#312a24; }
+.place-saved-pill { border-color:#c8920a !important; color:#a27708 !important; }
+.plan-route-line { height:6px; border-radius:999px; background:linear-gradient(90deg, rgba(212,50,28,.9), rgba(200,146,10,.65)); margin:16px 0 22px; }
+@media (max-width: 768px) {
+  .product-progress-card { left: 12px; right: 12px; bottom: 70px; width:auto; }
+  .place-context-grid { grid-template-columns:1fr; }
+}
+
 #lang-switch {
   position: fixed;
   top: 8px;
@@ -1272,6 +1322,13 @@ body.goog-te-banner-frame.skiptranslate { top: 0 !important; }
             Oculto y Curioso
           </button>
         </div>
+        <div class="sidebar-section-label" style="margin-top:14px;">Filtrar por intención</div>
+        <div class="intent-list" style="display:flex;flex-direction:column;gap:8px;">
+          <button class="intent-btn" data-intent="near" onclick="toggleIntentFilter(this,'near')">Estoy cerca<span>decisión rápida</span></button>
+          <button class="intent-btn" data-intent="emotion" onclick="toggleIntentFilter(this,'emotion')">Quiero emocionarme<span>historia intensa</span></button>
+          <button class="intent-btn" data-intent="light" onclick="toggleIntentFilter(this,'light')">Estoy cansada<span>menos esfuerzo</span></button>
+          <button class="intent-btn" data-intent="hidden" onclick="toggleIntentFilter(this,'hidden')">Sorprendeme<span>lugares raros</span></button>
+        </div>
       </div>
     </div>
   </div>
@@ -1295,7 +1352,8 @@ body.goog-te-banner-frame.skiptranslate { top: 0 !important; }
 
  <div id="map"></div>
  <div id="plan-pick-layer"></div>
-  <div id="bottom-nav" style="position:fixed;bottom:0;left:0;right:0;z-index:1001;background:rgba(26,25,22,0.96);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.08);padding:12px 0 14px;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -8px 24px rgba(0,0,0,0.22);">
+  <div id="journey-progress" class="product-progress-card" aria-live="polite"></div>
+ <div id="bottom-nav" style="position:fixed;bottom:0;left:0;right:0;z-index:1001;background:rgba(26,25,22,0.96);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.08);padding:12px 0 14px;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -8px 24px rgba(0,0,0,0.22);">
  <button class="bottom-nav-btn" onclick="document.getElementById('city-card').style.display='flex';cargarDesafios();">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#f3ecdf" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
     <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#f3ecdf;font-family:\'DM Sans\',sans-serif;">Londres</span>
@@ -1344,6 +1402,13 @@ body.goog-te-banner-frame.skiptranslate { top: 0 !important; }
   <div id="plan-step1">
     <div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:15px;color:#d4c0a4;margin-bottom:10px;">Elegí cuántas horas tienen y después tocá un punto del mapa.</div>
     <div style="font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9c907e;margin-bottom:20px;">Te armo un itinerario con lugares cerca de esa zona, no del centro que quedó visible.</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9c907e;margin:0 0 10px;">Elegí el pulso del recorrido</div>
+    <div id="plan-theme-list" style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:18px;">
+      <button class="plan-theme-btn active" data-plan-theme="ambition" onclick="seleccionarTemaPlan(this,'ambition')">Ambición inglesa<span>poder, piedra, coronas</span></button>
+      <button class="plan-theme-btn" data-plan-theme="dark" onclick="seleccionarTemaPlan(this,'dark')">Londres oscuro<span>muertos, secretos, rarezas</span></button>
+      <button class="plan-theme-btn" data-plan-theme="writers" onclick="seleccionarTemaPlan(this,'writers')">Escritores y fantasmas<span>libros, teatro, personajes</span></button>
+      <button class="plan-theme-btn" data-plan-theme="local" onclick="seleccionarTemaPlan(this,'local')">Vida de barrio<span>mercados, parques, caminar lento</span></button>
+    </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <button onclick="seleccionarHoras(2)" style="padding:12px 20px;border:1px solid #2a2926;background:transparent;color:var(--white);cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:12px;">2 horas</button>
       <button onclick="seleccionarHoras(4)" style="padding:12px 20px;border:1px solid #2a2926;background:transparent;color:var(--white);cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:12px;">4 horas</button>
@@ -3123,11 +3188,7 @@ function buildPopup(place) {
       if (activeFilters.has(filter)) activeFilters.delete(filter);
       else activeFilters.add(filter);
       syncFilterButtons();
-      allMarkers.forEach(function(obj) {
-        var show = obj.place.category === 'Baños Públicos' || activeFilters.has(obj.place.category);
-        if (show && !map.hasLayer(obj.marker)) map.addLayer(obj.marker);
-        if (!show && map.hasLayer(obj.marker)) map.removeLayer(obj.marker);
-      });
+      applyProductFilters();
     };
 
     window.speechSynthesis.onvoiceschanged = function() {
@@ -3181,6 +3242,104 @@ function placeSectionHtml(title, content, allowHtml) {
     '</section>';
 }
 
+
+function planTextMeta(place) {
+  return ((place.name || '') + ' ' + (place.category || '') + ' ' + (place.lugar || '') + ' ' + (place.historia || '') + ' ' + (place.curiosidades || '') + ' ' + (place.paraLasTres || '') + ' ' + (place.comoVivirlo || '')).toLowerCase();
+}
+
+function getVisitEstimate(place) {
+  var t = planTextMeta(place);
+  if (t.indexOf('tres horas') !== -1 || t.indexOf('3 horas') !== -1) return '3 h mínimo';
+  if (t.indexOf('dos horas') !== -1 || t.indexOf('2 horas') !== -1) return '2 h';
+  if (t.indexOf('una hora y media') !== -1) return '1 h 30';
+  if (t.indexOf('tour') !== -1) return '60-90 min';
+  if (place.category === 'Barrios y Vida Local' || place.category === 'Parques y Naturaleza') return '1-3 h';
+  return '45-90 min';
+}
+
+function getBestMoment(place) {
+  var t = planTextMeta(place);
+  if (t.indexOf('atardecer') !== -1) return 'Atardecer';
+  if (t.indexOf('amanecer') !== -1 || t.indexOf('temprano') !== -1 || t.indexOf('9 de la mañana') !== -1 || t.indexOf('10am') !== -1) return 'Mañana temprano';
+  if (t.indexOf('domingo') !== -1) return 'Domingo';
+  if (t.indexOf('viernes') !== -1 || t.indexOf('sábado') !== -1 || t.indexOf('sabado') !== -1) return 'Fin de semana';
+  if (t.indexOf('noche') !== -1) return 'Noche';
+  return 'Cuando tengas calma';
+}
+
+function getEffortLevel(place) {
+  var t = planTextMeta(place);
+  if (t.indexOf('528 escalones') !== -1 || t.indexOf('suban') !== -1 || t.indexOf('bicicleta') !== -1 || t.indexOf('zapatos cómodos') !== -1) return 'Alto';
+  if (t.indexOf('cola') !== -1 || t.indexOf('reserven') !== -1 || t.indexOf('anticipación') !== -1) return 'Medio';
+  return 'Bajo';
+}
+
+function isPlaceSaved(place) {
+  return !!localStorage.getItem('saved-' + normalizarNombreLugar(place.name));
+}
+
+window.toggleSavePlace = function(btn, nombre) {
+  var key = 'saved-' + normalizarNombreLugar(nombre);
+  if (localStorage.getItem(key)) {
+    localStorage.removeItem(key);
+    btn.textContent = 'Guardar para después';
+    btn.classList.remove('place-saved-pill');
+  } else {
+    localStorage.setItem(key, '1');
+    btn.textContent = 'Guardado';
+    btn.classList.add('place-saved-pill');
+  }
+  updateJourneyProgress();
+};
+
+function getIntentTags(place) {
+  var t = planTextMeta(place), tags = [];
+  if (place.category === 'Oculto y Curioso' || t.indexOf('secreto') !== -1 || t.indexOf('raro') !== -1 || t.indexOf('misterio') !== -1) tags.push('hidden');
+  if (place.category === 'Parques y Naturaleza' || t.indexOf('gratis') !== -1 || t.indexOf('tranquilo') !== -1 || t.indexOf('vacía') !== -1 || t.indexOf('vacia') !== -1) tags.push('light');
+  if (t.indexOf('ejecut') !== -1 || t.indexOf('murió') !== -1 || t.indexOf('sangre') !== -1 || t.indexOf('silencio') !== -1 || t.indexOf('cementerio') !== -1) tags.push('emotion');
+  tags.push('near');
+  return tags;
+}
+
+var activeIntentFilters = new Set();
+
+function passesProductFilters(obj) {
+  var byCategory = obj.place.category === 'Baños Públicos' || activeFilters.has(obj.place.category);
+  if (!byCategory) return false;
+  if (!activeIntentFilters.size) return true;
+  var tags = getIntentTags(obj.place);
+  var ok = false;
+  activeIntentFilters.forEach(function(tag) { if (tags.indexOf(tag) !== -1) ok = true; });
+  return ok;
+}
+
+function applyProductFilters() {
+  allMarkers.forEach(function(obj) {
+    var show = passesProductFilters(obj);
+    if (show && !map.hasLayer(obj.marker)) map.addLayer(obj.marker);
+    if (!show && map.hasLayer(obj.marker)) map.removeLayer(obj.marker);
+  });
+}
+
+window.toggleIntentFilter = function(btn, intent) {
+  if (activeIntentFilters.has(intent)) activeIntentFilters.delete(intent);
+  else activeIntentFilters.add(intent);
+  document.querySelectorAll('[data-intent]').forEach(function(el) {
+    if (activeIntentFilters.has(el.getAttribute('data-intent'))) el.classList.add('active');
+    else el.classList.remove('active');
+  });
+  applyProductFilters();
+};
+
+function updateJourneyProgress() {
+  var el = document.getElementById('journey-progress');
+  if (!el || !window.places || !places.length) return;
+  var visited = places.filter(function(p) { return localStorage.getItem(visitedStorageKey(p.name)); }).length;
+  var saved = places.filter(function(p) { return isPlaceSaved(p); }).length;
+  var pct = Math.round((visited / places.length) * 100);
+  el.innerHTML = '<div class="product-progress-title">Tu Londres</div><div class="product-progress-bar"><div class="product-progress-fill" style="width:' + pct + '%"></div></div><div class="product-progress-note">' + visited + ' lugares vividos · ' + saved + ' guardados. Volvé acá cuando quieras seguir el hilo.</div>';
+}
+
 function buildPlacePanel(place) {
   var imageUrl = getPlaceImageUrl(place);
   var imageCandidates = getPlaceImageCandidates(place);
@@ -3190,6 +3349,8 @@ function buildPlacePanel(place) {
   var isVisited = !!localStorage.getItem('v-' + visitKey);
   var audioText = JSON.stringify(cleanSpeechText(place.lugar || '')).replace(/"/g, '&quot;');
   var color = categoryColors[place.category] || '#888';
+  var saved = isPlaceSaved(place);
+  var contextHtml = '<div class="place-context-grid"><div class="place-context-item"><div class="place-context-label">Tiempo real</div><div class="place-context-value">' + getVisitEstimate(place) + '</div></div><div class="place-context-item"><div class="place-context-label">Mejor momento</div><div class="place-context-value">' + getBestMoment(place) + '</div></div><div class="place-context-item"><div class="place-context-label">Esfuerzo</div><div class="place-context-value">' + getEffortLevel(place) + '</div></div></div>';
 
   return '' +
     '<article class="place-article">' +
@@ -3204,6 +3365,7 @@ function buildPlacePanel(place) {
           '<h1 class="place-title-clean">' + escapeHtmlSafe(place.name) + '</h1>' +
           '<div class="place-audio-row"><button class="place-audio-clean" onclick="toggleAudio(this, ' + audioText + ')" aria-label="Escuchar">' + speakerIcon() + '</button><span class="place-audio-label">Escuchar historia</span></div>' +
           '<div class="place-intro-clean">' + (place.lugar || '') + '</div>' +
+          contextHtml +
           placeSectionHtml('Lo que pasó aquí', place.historia, false) +
           placeSectionHtml('Curiosidades', place.curiosidades, true) +
           placeSectionHtml('Vivirlo bien', getVivirloBienContent(place), false) +
@@ -3211,8 +3373,8 @@ function buildPlacePanel(place) {
         '<aside class="place-side-clean">' +
           '<div class="place-actions-clean">' +
             '<button class="place-action-clean primary" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">' + ((window.__lppUi && window.__lppUi('seeRoute')) || 'Ver ruta') + '</button>' +
-            '<button class="place-action-clean" onclick="marcarVisitado(this, \'' + visitKey + '\')" style="' + (isVisited ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (isVisited ? (window.__lppUi ? window.__lppUi('visited') : '✓ Visitado') : (window.__lppUi ? window.__lppUi('markVisited') : 'Marcar visitado')) + '</button>' +
-          '</div>' +
+            '<button class="place-action-clean ' + (saved ? 'place-saved-pill' : '') + '" onclick="toggleSavePlace(this, \'' + visitKey + '\')">' + (saved ? 'Guardado' : 'Guardar para después') + '</button>' +
+            '<button class="place-action-clean" onclick="marcarVisitado(this, \'' + visitKey + '\')" style="' + (isVisited ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (isVisited ? (window.__lppUi ? window.__lppUi('visited') : '✓ Visitado') : (window.__lppUi ? window.__lppUi('markVisited') : 'Marcar visitado')) + '</button>' +          '</div>' +
         '</aside>' +
       '</div>' +
     '</article>';
@@ -3481,6 +3643,13 @@ var modoPlan = false;
 var puntoPlan = null;
 var planPointMarker = null;
 var planPickLayer = null;
+var selectedPlanTheme = 'ambition';
+
+window.seleccionarTemaPlan = function(btn, theme) {
+  selectedPlanTheme = theme;
+  document.querySelectorAll('[data-plan-theme]').forEach(function(el) { el.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+};
 
 function normalizarNombreLugar(nombre) {
   return (nombre || '').replace(/[^a-zA-Z0-9]/g, '');
@@ -3739,6 +3908,11 @@ function scorePlanCandidate(obj, selected, horas) {
     if (cervezas === 0 && selected.length >= 4 && tipo === 'cerveza') score -= 120;
   }
 
+  var text = planTextMeta(obj.place);
+  if (selectedPlanTheme === 'ambition' && (text.indexOf('rey') !== -1 || text.indexOf('reina') !== -1 || text.indexOf('corona') !== -1 || text.indexOf('poder') !== -1 || obj.place.category === 'Histórico')) score -= 260;
+  if (selectedPlanTheme === 'dark' && (obj.place.category === 'Oculto y Curioso' || text.indexOf('cementerio') !== -1 || text.indexOf('ejecut') !== -1 || text.indexOf('secreto') !== -1)) score -= 280;
+  if (selectedPlanTheme === 'writers' && (text.indexOf('shakespeare') !== -1 || text.indexOf('dickens') !== -1 || text.indexOf('poeta') !== -1 || text.indexOf('libro') !== -1 || text.indexOf('teatro') !== -1)) score -= 280;
+  if (selectedPlanTheme === 'local' && (obj.place.category === 'Barrios y Vida Local' || obj.place.category === 'Parques y Naturaleza' || text.indexOf('mercado') !== -1 || text.indexOf('pub') !== -1)) score -= 260;
   return score;
 }
 
@@ -3816,7 +3990,9 @@ function renderPlanDesdePunto(latlng, horas) {
   status.textContent = '';
 
   var horasTexto = horas === 2 ? '2 horas' : horas === 4 ? '4 horas' : 'día completo';
-  result.innerHTML += '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:14px;color:#6a6860;margin-bottom:20px;">Plan para ' + horasTexto + ' — armado desde el pin que elegiste en el mapa.</div>';
+  var themeNames = { ambition: 'ambición inglesa', dark: 'Londres oscuro', writers: 'escritores y fantasmas', local: 'vida de barrio' };
+  result.innerHTML += '<div style="font-family:\'DM Sans\',sans-serif;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#c8920a;margin-bottom:8px;">No te optimicé el tiempo. Te armé una historia.</div>';
+  result.innerHTML += '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:15px;color:#d4c0a4;line-height:1.7;margin-bottom:8px;">Plan para ' + horasTexto + ' — ' + themeNames[selectedPlanTheme] + ', desde el pin que elegiste.</div><div class="plan-route-line"></div>';
 
   var tiempoAcum = 0;
   var horaInicio = horas === 2 ? 10 : horas === 4 ? 10 : 9;
@@ -4788,7 +4964,9 @@ function marcarVisitado(btn, nombre) {
      }));
     }
   }
+  updateJourneyProgress();
 }
+updateJourneyProgress();
   </script>
   <div id="map"></div>
   <div id="personajes-panel" style="display:none;position:fixed;inset:0;z-index:3500;background:#151311;flex-direction:column;overflow:hidden;">
