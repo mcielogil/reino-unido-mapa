@@ -3033,7 +3033,6 @@ function buildPopup(place) {
         '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'historia\')">Lo que Pasó Aquí</div>' +
         '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'curiosidades\')">Curiosidades</div>' +
         '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'para3\')">Vivirlo Bien</div>' +
-        '<div class="popup-tab" onclick="switchTab(\'' + id + '\',\'como\')">Cómo Vivirlo</div>' +
       '</div>';
   }
 
@@ -3062,9 +3061,9 @@ function buildPopup(place) {
 
   var historiaLabel = isToilet ? 'Info útil' : 'Lo que Pasó Aquí';
   var curiosidadesLabel = isToilet ? 'Acceso' : 'Curiosidades';
-  var para3Label = isToilet ? 'Cerca de acá' : 'Cómo Vivirlo';
-  var comoLabel = isToilet ? 'Cómo llegar' : 'Cómo Vivirlo';
-  var comoTexto = isToilet ? place.comoLlegar : place.comoVivirlo;
+  var para3Label = isToilet ? 'Cerca de acá' : 'Vivirlo Bien';
+  var comoLabel = isToilet ? 'Cómo llegar' : 'Vivirlo Bien';
+  var comoTexto = isToilet ? place.comoLlegar : (place.comoVivirlo || place['cómoVivirlo']);
 
   var historiaContent =
     '<div id="' + id + '-historia" class="popup-tab-content simple-content">' +
@@ -3081,7 +3080,7 @@ function buildPopup(place) {
   var para3Content =
     '<div id="' + id + '-para3" class="popup-tab-content simple-content">' +
       '<div class="tab-label">' + para3Label + '</div>' +
-      '<div class="tab-body"><p>' + place.paraLasTres + '</p></div>' +
+      '<div class="tab-body"><p>' + (isToilet ? place.paraLasTres : getVivirloBienContent(place)) + '</p></div>' +
     '</div>';
 
   var comoContent =
@@ -3098,7 +3097,7 @@ function buildPopup(place) {
   '<button class="popup-link-btn" onclick="marcarVisitado(this, \'" + visitKey + "\')" style="' + (isVisited ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (isVisited ? (window.__lppUi ? window.__lppUi('visited') : '✓ Visitado') : (window.__lppUi ? window.__lppUi('markVisited') : 'Marcar visitado')) + '</button>' +
   '</div>';
   return '<div class="popup-card' + (hasImage ? ' has-image' : '') + '" id="' + id + '">' +
-    header + tabs + lugarContent + historiaContent + curiosidadesContent + para3Content + comoContent + actions +
+    header + tabs + lugarContent + historiaContent + curiosidadesContent + para3Content + (isToilet ? comoContent : '') + actions +
     '</div>';
 }
 
@@ -3151,6 +3150,28 @@ function paragraphHtml(text) {
   return '<p>' + String(text).replace(/\n\n+/g, '</p><p>') + '</p>';
 }
 
+function normalizeSectionText(text) {
+  return String(text || '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&[^;]+;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+function getVivirloBienContent(place) {
+  var paraLasTres = (place.paraLasTres || '').trim();
+  var comoVivirlo = (place.comoVivirlo || place['cómoVivirlo'] || '').trim();
+  if (!paraLasTres) return comoVivirlo;
+  if (!comoVivirlo) return paraLasTres;
+  var paraNorm = normalizeSectionText(paraLasTres);
+  var comoNorm = normalizeSectionText(comoVivirlo);
+  if (paraNorm === comoNorm) return paraLasTres;
+  if (paraNorm.indexOf(comoNorm) !== -1) return paraLasTres;
+  if (comoNorm.indexOf(paraNorm) !== -1) return comoVivirlo;
+  return paraLasTres + '\n\n' + comoVivirlo;
+}
+
 function placeSectionHtml(title, content, allowHtml) {
   if (!content) return '';
   return '' +
@@ -3185,8 +3206,7 @@ function buildPlacePanel(place) {
           '<div class="place-intro-clean">' + (place.lugar || '') + '</div>' +
           placeSectionHtml('Lo que pasó aquí', place.historia, false) +
           placeSectionHtml('Curiosidades', place.curiosidades, true) +
-          placeSectionHtml('Vivirlo bien', place.paraLasTres, false) +
-          placeSectionHtml('Cómo vivirlo', place.comoVivirlo, false) +
+          placeSectionHtml('Vivirlo bien', getVivirloBienContent(place), false) +
         '</main>' +
         '<aside class="place-side-clean">' +
           '<div class="place-actions-clean">' +
