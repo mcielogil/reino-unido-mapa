@@ -3934,20 +3934,89 @@ window.toggleSavePlace = function(btn, nombre) {
 };
 
 function getIntentTags(place) {
+  // Cada lugar puede pertenecer a varias intenciones.
+  // Esto evita que la app muestre solo 1 o 2 puntos cuando alguien filtra por estado de ánimo.
+  var name = (place.name || '').toLowerCase();
+  var tagsByName = {
+    'torre de londres': ['emotion','hidden','near'],
+    'abadía de westminster': ['emotion','slow','near'],
+    'abadia de westminster': ['emotion','slow','near'],
+    'museo británico': ['emotion','hidden','slow','near'],
+    'museo britanico': ['emotion','hidden','slow','near'],
+    'palacio de buckingham': ['emotion','slow','near'],
+    'southwark: el londres de shakespeare': ['emotion','slow','hidden','near'],
+    'st. paul’s cathedral': ['emotion','slow','near'],
+    'st. paul\'s cathedral': ['emotion','slow','near'],
+    'king’s cross — andén 9¾': ['hidden','emotion','near'],
+    'king’s cross — anden 9¾': ['hidden','emotion','near'],
+    'notting hill y portobello road': ['slow','emotion','near'],
+    'borough market': ['slow','hidden','near'],
+    'brick lane y el east end': ['slow','hidden','emotion','near'],
+    'hyde park': ['slow','emotion','near'],
+    'highgate cemetery': ['emotion','hidden','slow','near'],
+    'dennis severs\' house': ['hidden','emotion','slow','near'],
+    'sir john soane’s museum': ['hidden','slow','emotion','near'],
+    'sir john soane\'s museum': ['hidden','slow','emotion','near'],
+    'tate modern': ['slow','hidden','near'],
+    'camden town': ['slow','hidden','emotion','near'],
+    '221b baker street — sherlock holmes': ['hidden','emotion','near'],
+    'pub the anchor — donde bebía shakespeare': ['slow','hidden','emotion','near'],
+    'pub the anchor — donde bebia shakespeare': ['slow','hidden','emotion','near'],
+    'callejón de jack the ripper — goulston street': ['hidden','emotion','near'],
+    'callejon de jack the ripper — goulston street': ['hidden','emotion','near'],
+    'postman’s park': ['emotion','slow','hidden','near'],
+    'postman\'s park': ['emotion','slow','hidden','near'],
+    'temple church': ['hidden','emotion','slow','near'],
+    'leadenhall market': ['hidden','slow','near'],
+    'bank of england museum': ['hidden','emotion','near'],
+    'st. james’s park': ['slow','emotion','near'],
+    'st. james\'s park': ['slow','emotion','near'],
+    'whitechapel y mary jane kelly': ['hidden','emotion','near'],
+    'abbey road': ['emotion','slow','hidden','near'],
+    'sherlock holmes museum': ['hidden','emotion','near'],
+    'little venice': ['slow','hidden','near'],
+    'columbia road flower market': ['slow','hidden','emotion','near'],
+    'neal’s yard': ['slow','hidden','near'],
+    'neal\'s yard': ['slow','hidden','near'],
+    'golden hind': ['hidden','emotion','near'],
+    'sky garden': ['slow','hidden','near'],
+    'barbican': ['slow','hidden','emotion','near'],
+    'wilton’s music hall': ['hidden','emotion','slow','near'],
+    'wilton\'s music hall': ['hidden','emotion','slow','near'],
+    'trafalgar square': ['emotion','slow','near'],
+    'piccadilly circus': ['hidden','emotion','near'],
+    'soho': ['hidden','emotion','slow','near'],
+    'the city': ['emotion','hidden','near'],
+    'hampstead heath': ['slow','emotion','hidden','near'],
+    'regent’s canal': ['slow','hidden','near'],
+    'regent\'s canal': ['slow','hidden','near'],
+    'primrose hill': ['slow','emotion','near']
+  };
+
+  var explicit = tagsByName[name];
+  if (explicit) return explicit.slice();
+
+  // Fallback por si se agregan lugares nuevos más adelante.
   var t = planTextMeta(place), tags = [];
-  if (place.category === 'Oculto y Curioso' || t.indexOf('secreto') !== -1 || t.indexOf('raro') !== -1 || t.indexOf('misterio') !== -1) tags.push('hidden');
-  if (place.category === 'Parques y Naturaleza' || place.category === 'Barrios y Vida Local' || t.indexOf('tranquilo') !== -1 || t.indexOf('vacía') !== -1 || t.indexOf('vacia') !== -1 || t.indexOf('caminen') !== -1) tags.push('slow');
-  if (t.indexOf('ejecut') !== -1 || t.indexOf('murió') !== -1 || t.indexOf('sangre') !== -1 || t.indexOf('silencio') !== -1 || t.indexOf('cementerio') !== -1 || t.indexOf('poets') !== -1) tags.push('emotion');
+  if (place.category === 'Oculto y Curioso' || t.indexOf('secreto') !== -1 || t.indexOf('raro') !== -1 || t.indexOf('misterio') !== -1 || t.indexOf('escond') !== -1) tags.push('hidden');
+  if (place.category === 'Parques y Naturaleza' || place.category === 'Barrios y Vida Local' || t.indexOf('tranquilo') !== -1 || t.indexOf('vacía') !== -1 || t.indexOf('vacia') !== -1 || t.indexOf('caminen') !== -1 || t.indexOf('sin apuro') !== -1) tags.push('slow');
+  if (t.indexOf('ejecut') !== -1 || t.indexOf('murió') !== -1 || t.indexOf('murio') !== -1 || t.indexOf('sangre') !== -1 || t.indexOf('silencio') !== -1 || t.indexOf('cementerio') !== -1 || t.indexOf('poets') !== -1 || t.indexOf('duelo') !== -1) tags.push('emotion');
+  if (!tags.length) tags.push('slow');
   tags.push('near');
-  return tags;
+  return Array.from(new Set(tags));
 }
 
 var activeIntentFilters = new Set();
 
 function passesProductFilters(obj) {
-  var byCategory = obj.place.category === 'Baños Públicos' || activeFilters.has(obj.place.category);
-  if (!byCategory) return false;
-  if (!activeIntentFilters.size) return true;
+  if (obj.place.category === 'Baños Públicos') return true;
+
+  // Si no hay intención activa, los filtros por categoría funcionan como siempre.
+  if (!activeIntentFilters.size) return activeFilters.has(obj.place.category);
+
+  // Si hay intención activa, la intención manda.
+  // Esto evita que el usuario active “Quiero ir lento” y vea solo uno o dos lugares
+  // porque una categoría previa seguía limitando el mapa.
   var tags = getIntentTags(obj.place);
   var ok = false;
   activeIntentFilters.forEach(function(tag) { if (tags.indexOf(tag) !== -1) ok = true; });
