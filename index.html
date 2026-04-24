@@ -1284,6 +1284,353 @@ body { top: 0 !important; }
 body.goog-te-banner-frame.skiptranslate { top: 0 !important; }
 .goog-te-gadget { font-size: 0 !important; color: transparent !important; }
 
+
+/* IMMEDIATE PRODUCT FIXES: onboarding, why card, saved places, stronger mobile plan */
+.place-why-clean {
+  margin: 8px 0 28px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.56);
+  border: 1px solid rgba(74,73,68,0.13);
+}
+.place-why-label {
+  font-family:'DM Sans',sans-serif;
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--red);
+  margin-bottom:10px;
+}
+.place-why-text {
+  font-family:'Playfair Display',serif;
+  font-size:18px;
+  line-height:1.72;
+  font-style:italic;
+  color:#3f3832;
+}
+#first-run-guide {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:3500;
+  background:rgba(15,14,12,0.62);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+#first-run-guide.open { display:flex; }
+.first-run-card {
+  width:min(560px, 100%);
+  max-height:calc(100vh - 40px);
+  overflow-y:auto;
+  background:var(--paper-solid);
+  color:#1d1714;
+  border-radius:24px;
+  box-shadow:0 30px 90px rgba(0,0,0,.46);
+  padding:30px;
+}
+.first-run-kicker,
+.plan-choice-kicker,
+.saved-panel-kicker {
+  font-family:'DM Sans',sans-serif;
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--red);
+  margin-bottom:12px;
+}
+.first-run-title,
+.saved-panel-title {
+  font-family:'Playfair Display',serif;
+  font-size:36px;
+  line-height:1;
+  letter-spacing:-.035em;
+  margin-bottom:14px;
+}
+.first-run-copy {
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:17px;
+  line-height:1.8;
+  color:#4b443d;
+  margin-bottom:22px;
+}
+.first-run-actions,
+.plan-choice-grid {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+.first-run-btn,
+.plan-choice-btn,
+.saved-place-btn {
+  border-radius:16px;
+  border:1px solid rgba(74,73,68,.16);
+  background:rgba(255,255,255,.66);
+  color:#1d1714;
+  cursor:pointer;
+  text-align:left;
+  padding:15px 16px;
+  font-family:'DM Sans',sans-serif;
+  font-size:12px;
+  line-height:1.45;
+}
+.first-run-btn strong,
+.plan-choice-btn strong,
+.saved-place-btn strong {
+  display:block;
+  font-family:'Playfair Display',serif;
+  font-size:20px;
+  line-height:1.1;
+  margin-bottom:5px;
+}
+.first-run-btn.primary,
+.plan-choice-btn.primary {
+  background:var(--red);
+  color:#fff;
+  border-color:var(--red);
+}
+.first-run-skip {
+  margin-top:16px;
+  border:0;
+  background:transparent;
+  color:#7b7166;
+  cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  font-size:10px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.plan-choice-shell {
+  margin: 20px 0 24px;
+  padding: 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(244,241,232,.16);
+  background: rgba(244,241,232,.06);
+}
+.plan-choice-title {
+  font-family:'Playfair Display',serif;
+  font-size:24px;
+  line-height:1.12;
+  color:#f4efe4;
+  margin-bottom:10px;
+}
+.plan-choice-copy {
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:14px;
+  line-height:1.75;
+  color:#d4c0a4;
+  margin-bottom:16px;
+}
+.plan-choice-btn {
+  background:rgba(244,241,232,.06);
+  border-color:rgba(244,241,232,.16);
+  color:#f4efe4;
+}
+.plan-choice-btn span,
+.saved-place-btn span {
+  display:block;
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#9c907e;
+  margin-top:5px;
+}
+#saved-panel {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:3002;
+  background:#151311;
+  color:#f4efe4;
+  overflow-y:auto;
+  padding:32px 24px 90px;
+}
+.saved-place-btn {
+  width:100%;
+  margin-bottom:10px;
+  background:rgba(244,241,232,.06);
+  border-color:rgba(244,241,232,.14);
+  color:#f4efe4;
+}
+@media (max-width:768px) {
+  .first-run-card { padding:24px 20px; border-radius:22px; }
+  .first-run-title, .saved-panel-title { font-size:31px; }
+  .first-run-copy { font-size:16px; }
+  .place-why-clean { margin-top: 6px; padding:16px; }
+  .place-why-text { font-size:16px; line-height:1.74; }
+  #plan-panel { padding:24px 18px 88px !important; }
+  .plan-choice-shell { padding:15px; }
+}
+
+
+
+/* EDITORIAL PLAN CARD: visible, non-invasive entry point */
+#editorial-plan-card {
+  display: none;
+  position: fixed;
+  left: 18px;
+  bottom: 148px;
+  z-index: 1200;
+  width: min(340px, calc(100vw - 36px));
+  background: rgba(246,241,232,0.96);
+  border: 1px solid rgba(74,73,68,0.16);
+  border-radius: 22px;
+  box-shadow: 0 22px 60px rgba(0,0,0,0.24);
+  padding: 18px 18px 16px;
+  color: #1d1714;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: planCardIn .55s cubic-bezier(.16,1,.3,1) both;
+}
+#editorial-plan-card.open { display: block; }
+@keyframes planCardIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.editorial-plan-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(15,14,12,0.07);
+  color: #5e554c;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+.editorial-plan-kicker {
+  font-family:'DM Sans',sans-serif;
+  font-size:9px;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--red);
+  margin-bottom:10px;
+  padding-right:28px;
+}
+.editorial-plan-title {
+  font-family:'Playfair Display',serif;
+  font-size:29px;
+  line-height:1.02;
+  letter-spacing:-.035em;
+  margin-bottom:10px;
+  color:#181410;
+}
+.editorial-plan-copy {
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:15px;
+  line-height:1.75;
+  color:#514940;
+  margin-bottom:15px;
+}
+.editorial-plan-actions {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:9px;
+}
+.editorial-plan-primary,
+.editorial-plan-secondary {
+  min-height:46px;
+  border-radius:15px;
+  cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+.editorial-plan-primary {
+  border:1px solid var(--red);
+  background:var(--red);
+  color:#fff;
+}
+.editorial-plan-primary:hover { background:var(--red-dark); }
+.editorial-plan-secondary {
+  border:1px solid rgba(74,73,68,0.16);
+  background:rgba(255,255,255,0.56);
+  color:#2a241f;
+}
+.editorial-plan-secondary:hover { border-color:rgba(200,146,10,.5); color:#8a6408; }
+.bottom-nav-btn.plan-attention svg,
+.bottom-nav-btn.plan-attention span {
+  color: var(--gold) !important;
+  stroke: var(--gold) !important;
+}
+.bottom-nav-btn.plan-attention {
+  animation: planNavGlow 2.6s ease-in-out 4;
+}
+@keyframes planNavGlow {
+  0%,100% { transform: translateY(0); filter: drop-shadow(0 0 0 rgba(200,146,10,0)); }
+  50% { transform: translateY(-2px); filter: drop-shadow(0 0 8px rgba(200,146,10,.55)); }
+}
+@media (max-width: 768px) {
+  #editorial-plan-card {
+    left: 12px;
+    right: 12px;
+    bottom: 86px;
+    width: auto;
+    padding: 16px 16px 14px;
+    border-radius: 20px;
+  }
+  .editorial-plan-title { font-size: 25px; }
+  .editorial-plan-copy { font-size: 14px; line-height: 1.65; margin-bottom: 13px; }
+  .editorial-plan-actions { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .editorial-plan-primary, .editorial-plan-secondary { min-height: 44px; font-size: 9px; letter-spacing:.13em; }
+}
+@media (max-width: 420px) {
+  .editorial-plan-actions { grid-template-columns: 1fr; }
+}
+
+
+
+/* PLAN DEL DIA - narrative route, manual mode and nearby clusters */
+.plan-mode-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:24px 0 22px; }
+.plan-hour-btn-manual { border-color:rgba(212,50,28,.55) !important; background:rgba(212,50,28,.10) !important; }
+.plan-layer-shell { margin:20px 0 24px; padding:18px; border-radius:22px; border:1px solid rgba(244,241,232,.16); background:rgba(244,241,232,.06); }
+.plan-layer-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+.plan-layer-btn { min-height:78px; border-radius:16px; border:1px solid rgba(244,241,232,.16); background:rgba(244,241,232,.05); color:#f4efe4; cursor:pointer; padding:12px 13px; text-align:left; font-family:'DM Sans',sans-serif; font-size:12px; line-height:1.25; }
+.plan-layer-btn span { display:block; margin-top:6px; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:#9c907e; line-height:1.35; }
+.plan-layer-btn.active { background:rgba(200,146,10,.16); border-color:rgba(200,146,10,.55); }
+.manual-plan-builder { margin:24px 0; padding:18px; border-radius:22px; border:1px solid rgba(212,50,28,.28); background:rgba(212,50,28,.07); }
+.manual-plan-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:16px; }
+.manual-place-btn { border-radius:16px; border:1px solid rgba(244,241,232,.14); background:rgba(244,241,232,.06); color:#f4efe4; cursor:pointer; padding:12px 13px; text-align:left; font-family:'DM Sans',sans-serif; font-size:12px; line-height:1.35; }
+.manual-place-btn span { display:block; margin-top:5px; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:#9c907e; }
+.manual-place-btn.selected { background:rgba(200,146,10,.18); border-color:rgba(200,146,10,.62); }
+.manual-place-btn.visited { opacity:.62; text-decoration:line-through; }
+.manual-plan-build-btn { width:100%; min-height:52px; margin-top:16px; border-radius:16px; border:1px solid var(--red); background:var(--red); color:#fff; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; }
+.plan-result-narrative { padding-bottom:80px; }
+.plan-narrative-head { margin:18px 0 26px; padding:22px; border-radius:22px; background:rgba(244,241,232,.07); border:1px solid rgba(244,241,232,.14); }
+.plan-narrative-kicker { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#c8920a; margin-bottom:10px; }
+.plan-narrative-title { font-family:'Playfair Display',serif; font-size:34px; line-height:1.02; letter-spacing:-.035em; color:#f4efe4; margin-bottom:14px; }
+.plan-narrative-copy { font-family:'Playfair Display',serif; font-style:italic; font-size:17px; line-height:1.82; color:#d4c0a4; max-width:760px; }
+.plan-zone-card { border-top:1px solid rgba(244,241,232,.14); padding:22px 0; }
+.plan-zone-title { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#c8920a; margin-bottom:12px; }
+.plan-main-place { display:grid; grid-template-columns:56px minmax(0,1fr); gap:14px; align-items:flex-start; cursor:pointer; }
+.plan-main-time { font-family:'DM Sans',sans-serif; font-size:10px; color:#c8920a; padding-top:4px; }
+.plan-main-name { font-family:'Playfair Display',serif; font-size:21px; line-height:1.12; color:#f4efe4; margin-bottom:6px; }
+.plan-main-meta { font-family:'DM Sans',sans-serif; font-size:10px; color:#9c907e; letter-spacing:.11em; text-transform:uppercase; line-height:1.5; }
+.plan-main-bridge { font-family:'Playfair Display',serif; font-style:italic; font-size:13px; line-height:1.7; color:#8f8476; margin-top:9px; max-width:760px; }
+.plan-place-visited .plan-main-name, .nearby-visited .nearby-name { text-decoration:line-through; opacity:.62; }
+.plan-visited-note { display:inline-block; margin-top:8px; font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:#4a6741; }
+.nearby-shell { margin:16px 0 0 70px; padding:14px; border-radius:18px; background:rgba(244,241,232,.045); border:1px solid rgba(244,241,232,.10); }
+.nearby-label { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:#c8920a; margin-bottom:10px; }
+.nearby-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.nearby-chip { border:1px solid rgba(244,241,232,.12); background:rgba(244,241,232,.05); color:#f4efe4; border-radius:14px; padding:11px 12px; cursor:pointer; text-align:left; }
+.nearby-name { font-family:'Playfair Display',serif; font-size:15px; line-height:1.15; margin-bottom:5px; }
+.nearby-meta { font-family:'DM Sans',sans-serif; font-size:9px; color:#9c907e; letter-spacing:.10em; text-transform:uppercase; line-height:1.45; }
+.plan-closing-note { margin-top:18px; padding:20px; border-radius:20px; border:1px solid rgba(200,146,10,.26); background:rgba(200,146,10,.08); font-family:'Playfair Display',serif; font-style:italic; font-size:15px; line-height:1.8; color:#d4c0a4; }
+@media (max-width:900px) { .plan-mode-grid, .plan-layer-grid, .manual-plan-list, .nearby-grid { grid-template-columns:1fr; } .plan-main-place { grid-template-columns:44px minmax(0,1fr); } .nearby-shell { margin-left:0; } .plan-narrative-title { font-size:29px; } .plan-narrative-copy { font-size:16px; } }
+@media (max-width:420px) { .plan-narrative-head { padding:18px; } .plan-main-name { font-size:19px; } .plan-zone-card { padding:18px 0; } }
+
 </style>
 </head>
 <body>
@@ -1398,19 +1745,23 @@ body.goog-te-banner-frame.skiptranslate { top: 0 !important; }
 
  <div id="map"></div>
  <div id="plan-pick-layer"></div>
-  <div id="journey-progress" class="product-progress-card" aria-live="polite"></div>
+  <div id="journey-progress" class="product-progress-card" aria-live="polite" onclick="openSavedPlaces()" title="Ver guardados"></div>
  <div id="bottom-nav" style="position:fixed;bottom:0;left:0;right:0;z-index:1001;background:rgba(26,25,22,0.96);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.08);padding:12px 0 14px;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -8px 24px rgba(0,0,0,0.22);">
  <button class="bottom-nav-btn" onclick="document.getElementById('city-card').style.display='flex';cargarDesafios();">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#f3ecdf" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
     <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#f3ecdf;font-family:\'DM Sans\',sans-serif;">Londres</span>
   </button>
- <button class="bottom-nav-btn" onclick="activarModoPlan()">
+ <button id="plan-nav-btn" class="bottom-nav-btn" onclick="activarModoPlan()">
   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#f3ecdf" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
   <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#f3ecdf;font-family:\'DM Sans\',sans-serif;">Plan del día</span>
 </button>
   <button class="bottom-nav-btn" onclick="abrirPersonajes()">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#f3ecdf" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.1-7 7-7s7 3 7 7"/></svg>
     <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#f3ecdf;font-family:\'DM Sans\',sans-serif;">Personajes</span>
+  </button>
+  <button class="bottom-nav-btn" onclick="openSavedPlaces()">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#f3ecdf" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    <span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#f3ecdf;font-family:'DM Sans',sans-serif;">Guardados</span>
   </button>
 </div>
 
@@ -1445,18 +1796,65 @@ body.goog-te-banner-frame.skiptranslate { top: 0 !important; }
     <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--white);letter-spacing:-0.02em;">Tu plan del día</div>
     <button onclick="document.getElementById('plan-panel').style.display='none';setPlanInteraction(false);clearPlanPointMarker();" style="background:transparent;border:1px solid rgba(244,241,232,0.18);color:#d4c0a4;cursor:pointer;padding:9px 14px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;border-radius:999px;">Cerrar</button>
   </div>
-  <div id="plan-step1" style="max-width:860px;">
-    <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:17px;color:#d4c0a4;margin-bottom:10px;line-height:1.7;">Elegí cuánto tiempo tienen y después tocá un punto del mapa.</div>
-    <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9c907e;margin-bottom:20px;line-height:1.7;">Te armo un itinerario caminable desde esa zona, con pausas reales y sin convertir Londres en una checklist.</div>
-    <div class="plan-hour-grid">
+  <div id="plan-step1" style="max-width:980px;">
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:#d4c0a4;margin-bottom:10px;line-height:1.75;">No intentes ver Londres entera. Elegí cuánto hilo querés tirar — o armalo a tu modo.</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9c907e;margin-bottom:22px;line-height:1.7;">El plan no borra lo que ya viviste: lo muestra tachado, porque igual forma parte del relato.</div>
+
+    <div class="plan-mode-grid">
       <button class="plan-hour-btn" onclick="seleccionarHoras(2)"><strong>2 horas</strong><small>Un recorte corto, cerca y con sentido.</small></button>
-      <button class="plan-hour-btn" onclick="seleccionarHoras(4)"><strong>4 horas</strong><small>Una secuencia con historia, pausa y desvío.</small></button>
-      <button class="plan-hour-btn" onclick="seleccionarHoras(8)"><strong>Día completo</strong><small>Un recorrido lento para quedarse mirando.</small></button>
+      <button class="plan-hour-btn" onclick="seleccionarHoras(4)"><strong>4 horas</strong><small>Una capa completa, caminable y con pausas.</small></button>
+      <button class="plan-hour-btn" onclick="seleccionarHoras(8)"><strong>Día completo</strong><small>Un recorrido lento, con desvíos y aire.</small></button>
+      <button class="plan-hour-btn plan-hour-btn-manual" onclick="abrirPlanManual()"><strong>A mi modo</strong><small>Elegís lugares; la app los ordena sin quitarles historia.</small></button>
     </div>
+
+    <div class="plan-layer-shell">
+      <div class="plan-choice-kicker">Capas narrativas</div>
+      <div class="plan-choice-title">También podés elegir desde dónde entrar.</div>
+      <div class="plan-choice-copy">No son categorías turísticas. Son formas de mirar la ciudad: poder, rareza, literatura o vida local.</div>
+      <div class="plan-layer-grid">
+        <button class="plan-layer-btn active" data-plan-theme="classic" onclick="seleccionarTemaPlan(this,'classic')">Clásico lento<span>la primera capa</span></button>
+        <button class="plan-layer-btn" data-plan-theme="ambition" onclick="seleccionarTemaPlan(this,'ambition')">Poder y piedra<span>corona, iglesia, castigo</span></button>
+        <button class="plan-layer-btn" data-plan-theme="writers" onclick="seleccionarTemaPlan(this,'writers')">Escritores y fantasmas<span>teatro, libros, voces</span></button>
+        <button class="plan-layer-btn" data-plan-theme="dark" onclick="seleccionarTemaPlan(this,'dark')">Raro y oscuro<span>secretos, cementerios, desvíos</span></button>
+        <button class="plan-layer-btn" data-plan-theme="living" onclick="seleccionarTemaPlan(this,'living')">Londres vivo<span>barrios, mercados, parques</span></button>
+      </div>
+    </div>
+
+    <div id="manual-plan-builder" class="manual-plan-builder" style="display:none;">
+      <div class="plan-choice-kicker">A mi modo</div>
+      <div class="plan-choice-title">Elegí tus lugares.</div>
+      <div class="plan-choice-copy">Después los ordeno para que tengan sentido caminando y para que la historia no quede rota. Los lugares ya visitados aparecen marcados, no desaparecen.</div>
+      <div id="manual-plan-list" class="manual-plan-list"></div>
+      <button class="manual-plan-build-btn" onclick="crearPlanManualSeleccionado()">Armar mi recorrido</button>
+    </div>
+
     <div id="plan-status" style="display:none;margin-top:18px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:#c8920a;line-height:1.7;"></div>
   </div>
-  <div id="plan-result" style="display:none;max-width:860px;"></div>
+  <div id="plan-result" class="plan-result-narrative" style="display:none;max-width:980px;"></div>
 </div>
+    
+<div id="editorial-plan-card" aria-live="polite">
+  <button class="editorial-plan-close" onclick="closeFirstRunGuide()" aria-label="Cerrar">×</button>
+  <div class="editorial-plan-kicker">Plan del día</div>
+  <div class="editorial-plan-title">Londres no se ve. Se recorre.</div>
+  <div class="editorial-plan-copy">Te propongo empezar por un camino: pocos lugares, caminables, con una historia que los una.</div>
+  <div class="editorial-plan-actions">
+    <button class="editorial-plan-primary" onclick="closeFirstRunGuide();crearPlanRapido(4,'slow')">Ver recorrido</button>
+    <button class="editorial-plan-secondary" onclick="closeFirstRunGuide();activarModoPlan()">Elegir capa</button>
+  </div>
+</div>
+
+<div id="saved-panel">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:24px;">
+    <div>
+      <div class="saved-panel-kicker">Tu Londres</div>
+      <div class="saved-panel-title">Lugares guardados</div>
+    </div>
+    <button onclick="document.getElementById('saved-panel').style.display='none'" style="background:transparent;border:1px solid rgba(244,241,232,0.18);color:#d4c0a4;cursor:pointer;padding:9px 14px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;border-radius:999px;">Cerrar</button>
+  </div>
+  <div id="saved-list"></div>
+</div>
+
     <button id="clear-route-btn" class="route-clear-btn" onclick="clearRoute()">
   Borrar ruta
 </button>
@@ -1481,7 +1879,7 @@ body.goog-te-banner-frame.skiptranslate { top: 0 !important; }
       if (langSwitch) langSwitch.classList.add('hidden');
       var o = document.getElementById('opening');
       o.classList.add('fade-out');
-      setTimeout(function() { o.style.display = 'none'; }, 1000);
+      setTimeout(function() { o.style.display = 'none'; showFirstRunGuideOnce(); }, 1000);
     }
 window.abrirSobre = function() {
   document.getElementById('envelope-screen').style.display = 'none';
@@ -3258,6 +3656,96 @@ function getVisitRhythm(place) {
   return 'Contemplativo';
 }
 
+function getWhyGo(place) {
+  var t = planTextMeta(place);
+  if (place.category === 'Histórico' && (t.indexOf('ejecut') !== -1 || t.indexOf('corona') !== -1 || t.indexOf('rey') !== -1 || t.indexOf('reina') !== -1)) return 'Vale la pena si querés sentir cómo el poder dejó marcas visibles en la ciudad.';
+  if (place.category === 'Oculto y Curioso') return 'Vale la pena si te gustan los lugares que no se entienden del todo a primera vista.';
+  if (place.category === 'Barrios y Vida Local') return 'Vale la pena si querés salir del monumento y ver cómo respira Londres en la calle.';
+  if (place.category === 'Parques y Naturaleza') return 'Vale la pena si necesitás bajar el ritmo sin salirte de la historia de la ciudad.';
+  if (place.category === 'Cine y Cultura Pop') return 'Vale la pena si te emociona cuando la ficción ocupa un lugar real.';
+  return 'Vale la pena si querés entender este punto antes de seguir caminando.';
+}
+
+function whyGoHtml(place) {
+  return '<div class="place-why-clean"><div class="place-why-label">Por qué ir</div><div class="place-why-text">' + getWhyGo(place) + '</div></div>';
+}
+
+function getPlanOriginLatLng() {
+  if (userMarker && userMarker.getLatLng) return userMarker.getLatLng();
+  return map.getCenter();
+}
+
+window.crearPlanRapido = function(horas, theme) {
+  selectedPlanTheme = theme || 'classic';
+  horasPlan = horas || 4;
+  puntoPlan = getPlanOriginLatLng();
+  clearPlanPointMarker();
+  createPlanPointMarker(puntoPlan);
+  setPlanInteraction(false);
+  document.getElementById('plan-panel').style.display = 'block';
+  document.getElementById('plan-step1').style.display = 'block';
+  renderPlanDesdePunto(puntoPlan, horasPlan);
+};
+
+window.closeFirstRunGuide = function() {
+  var guide = document.getElementById('editorial-plan-card');
+  if (!guide) return;
+  guide.classList.remove('open');
+  try { sessionStorage.setItem('lpp_seen_plan_card', '1'); } catch(e) {}
+};
+
+function showFirstRunGuideOnce() {
+  var guide = document.getElementById('editorial-plan-card');
+  if (!guide) return;
+  try {
+    if (sessionStorage.getItem('lpp_seen_plan_card')) return;
+  } catch(e) {}
+  setTimeout(function() {
+    guide.classList.add('open');
+    var nav = document.getElementById('plan-nav-btn');
+    if (nav) nav.classList.add('plan-attention');
+  }, 900);
+}
+
+window.openSavedPlaces = function() {
+  var panel = document.getElementById('saved-panel');
+  var list = document.getElementById('saved-list');
+  if (!panel || !list) return;
+  var savedPlaces = places.filter(function(p) { return isPlaceSaved(p); });
+  list.innerHTML = '';
+  if (!savedPlaces.length) {
+    list.innerHTML = '<div style="font-family:\'Playfair Display\',serif;font-style:italic;font-size:15px;line-height:1.8;color:#9c907e;">Todavía no guardaste lugares. Abrí cualquier punto y tocá “Guardar para después”.</div>';
+  } else {
+    savedPlaces.forEach(function(place) {
+      var btn = document.createElement('button');
+      btn.className = 'saved-place-btn';
+      btn.innerHTML = '<strong>' + place.name + '</strong><span>' + place.category + ' · ' + getVisitEstimate(place) + '</span>';
+      btn.onclick = function() {
+        panel.style.display = 'none';
+        map.setView([place.lat, place.lng], 16);
+        openPlacePanel(place);
+      };
+      list.appendChild(btn);
+    });
+  }
+  panel.style.display = 'block';
+};
+
+function recommendByIntent(intent) {
+  var candidates = allMarkers.filter(function(obj) { return getIntentTags(obj.place).indexOf(intent) !== -1 && obj.place.category !== 'Baños Públicos'; });
+  if (!candidates.length) return;
+  var origin = getPlanOriginLatLng();
+  candidates.sort(function(a, b) {
+    var da = map.distance(origin, [a.place.lat, a.place.lng]);
+    var db = map.distance(origin, [b.place.lat, b.place.lng]);
+    var bonusA = getVisitEstimate(a.place).indexOf('3') !== -1 ? 400 : 0;
+    var bonusB = getVisitEstimate(b.place).indexOf('3') !== -1 ? 400 : 0;
+    return (da - bonusA) - (db - bonusB);
+  });
+  var chosen = candidates[0];
+  if (chosen) map.setView([chosen.place.lat, chosen.place.lng], 15);
+}
+
 function practicalContextHtml(place) {
   return '<div class="place-practical-clean">' +
     '<div class="place-practical-row"><span class="place-practical-label">Tiempo real</span><span class="place-practical-value">' + getVisitEstimate(place) + '</span></div>' +
@@ -3321,6 +3809,7 @@ window.toggleIntentFilter = function(btn, intent) {
     else el.classList.remove('active');
   });
   applyProductFilters();
+  recommendByIntent(intent);
 };
 
 function updateJourneyProgress() {
@@ -3414,6 +3903,7 @@ function buildPlacePanel(place) {
           '<div class="place-kicker-row"><span class="place-dot" style="background:' + color + '"></span><span class="place-category-clean">' + escapeHtmlSafe(place.category) + '</span></div>' +
           '<h1 class="place-title-clean">' + escapeHtmlSafe(place.name) + '</h1>' +
           '<div class="place-audio-row"><button class="place-audio-clean" onclick="toggleAudio(this, ' + audioText + ')" aria-label="Escuchar">' + speakerIcon() + '</button><span class="place-audio-label">Escuchar historia</span></div>' +
+          whyGoHtml(place) +
           '<div class="place-intro-clean">' + (place.lugar || '') + '</div>' +
           practicalContextHtml(place) +
           placeSectionHtml('Lo que pasó aquí', place.historia, false) +
@@ -3856,15 +4346,7 @@ function activarModoPlan() {
 }
 
 function seleccionarHoras(horas) {
-  horasPlan = horas;
-  puntoPlan = null;
-  clearPlanPointMarker();
-  setPlanInteraction(true);
-
-  alert('Ahora tocá cualquier punto del mapa para plantar el pin y armar el recorrido desde esa zona.');
-
-  document.getElementById('plan-result').style.display = 'none';
-  document.getElementById('plan-panel').style.display = 'none';
+  crearPlanRapido(horas, selectedPlanTheme || 'classic');
 }
 
 function handlePlanMapPick(clientX, clientY) {
@@ -5014,7 +5496,27 @@ function marcarVisitado(btn, nombre) {
     }
   }
 }
-  </script>
+  
+
+/* PLAN DEL DIA V2 - one button per duration, manual mode, visited-but-visible, nearby clusters */
+var manualPlanNames = [];
+function isVisitedPlace(place) { return !!localStorage.getItem(visitedStorageKey(place.name)); }
+function planLayerForPlace(place) { var t=planTextMeta(place); var layers=[]; if(place.category==='Histórico'||t.indexOf('rey')!==-1||t.indexOf('reina')!==-1||t.indexOf('corona')!==-1||t.indexOf('poder')!==-1||t.indexOf('iglesia')!==-1) layers.push('ambition'); if(place.category==='Oculto y Curioso'||t.indexOf('cementerio')!==-1||t.indexOf('misterio')!==-1||t.indexOf('secreto')!==-1||t.indexOf('jack')!==-1) layers.push('dark'); if(t.indexOf('shakespeare')!==-1||t.indexOf('dickens')!==-1||t.indexOf('poeta')!==-1||t.indexOf('libro')!==-1||t.indexOf('teatro')!==-1||t.indexOf('sherlock')!==-1) layers.push('writers'); if(place.category==='Barrios y Vida Local'||place.category==='Parques y Naturaleza'||t.indexOf('mercado')!==-1||t.indexOf('pub')!==-1||t.indexOf('parque')!==-1) layers.push('living'); layers.push('classic'); return layers; }
+function getPlanNarrative(theme, horas, manual) { var tiempo=horas===2?'2 horas':horas===4?'4 horas':horas===8?'día completo':'a tu modo'; if(manual) return {title:'Tu Londres, ordenado para caminarlo.', copy:'Elegiste los puntos. Yo no los convierto en una lista: los pongo en una secuencia para que el cuerpo camine y la cabeza pueda unir las piezas. Si algo ya lo viviste, queda marcado. No se borra de la historia.'}; if(theme==='ambition') return {title:'El Londres que aprendió a mandar.', copy:'En '+tiempo+', entrás por la piedra dura: coronas, iglesias, palacios y lugares donde el poder decidió quién merecía ser recordado y quién debía desaparecer. No es el Londres amable. Es el que todavía sostiene el decorado.'}; if(theme==='writers') return {title:'El Londres que escribió para no morirse.', copy:'En '+tiempo+', el recorrido sigue voces: teatros, libros, personajes inventados y personas reales que dejaron algo escrito contra el ruido de la ciudad. No vas a perseguir monumentos; vas a perseguir ecos.'}; if(theme==='dark') return {title:'El Londres que esconde cosas.', copy:'En '+tiempo+', la ciudad baja la voz. Cementerios, callejones, casas raras, secretos mal cerrados. No todo tiene explicación y esa es parte de la gracia: Londres también se entiende por lo que no termina de decir.'}; if(theme==='living') return {title:'El Londres que todavía respira.', copy:'En '+tiempo+', salís del monumento y entrás en la calle: mercados, parques, barrios, comida, gente. Esta capa no te pide solemnidad. Te pide mirar cómo la ciudad sigue funcionando mientras carga dos mil años encima.'}; return {title:'Un hilo para empezar.', copy:'En '+tiempo+', no se trata de verlo todo. Se trata de entrar por una puerta clara, caminar con intención y dejar que los lugares se respondan entre sí. Pocos puntos, bien elegidos, con desvíos cerca si querés tirar un poco más del hilo.'}; }
+function bridgeForPlace(place,index,total,theme) { var name=place.name; if(index===0) return 'Empezá acá. No porque sea lo más cómodo, sino porque este punto abre el tono del recorrido.'; if(theme==='ambition') return 'Después de '+name+', el poder cambia de forma: a veces es piedra, a veces ceremonia, a veces amenaza silenciosa.'; if(theme==='writers') return 'Este punto funciona como una nota al margen: no explica la ciudad, pero la vuelve más legible.'; if(theme==='dark') return 'No vengas buscando una respuesta limpia. Este lugar suma una sombra más al mapa.'; if(theme==='living') return 'Acá el recorrido baja del pedestal y vuelve a la calle: mirar gente también es mirar historia.'; if(index===total-1) return 'Terminá acá sin apuro. El cierre no tiene que resolver el día; solo dejarlo resonando.'; return 'Este punto no está puesto para tacharlo. Está puesto para que el anterior y el siguiente conversen.'; }
+function planEligiblePlaces(){ return places.filter(function(p){ return p && p.lat && p.lng && p.category !== 'Baños Públicos'; }); }
+function placeByName(name){ return places.find(function(p){return p.name===name;}); }
+function abrirPlanManual(){ document.getElementById('plan-panel').style.display='block'; document.getElementById('plan-step1').style.display='block'; document.getElementById('plan-result').style.display='none'; var builder=document.getElementById('manual-plan-builder'); var list=document.getElementById('manual-plan-list'); if(!builder||!list)return; builder.style.display = builder.style.display === 'none' ? 'block':'none'; list.innerHTML=''; planEligiblePlaces().forEach(function(place){ var btn=document.createElement('button'); var visited=isVisitedPlace(place); btn.className='manual-place-btn'+(manualPlanNames.indexOf(place.name)!==-1?' selected':'')+(visited?' visited':''); btn.innerHTML=place.name+'<span>'+place.category+(visited?' · ya visitado':'')+'</span>'; btn.onclick=function(){ var i=manualPlanNames.indexOf(place.name); if(i===-1) manualPlanNames.push(place.name); else manualPlanNames.splice(i,1); btn.classList.toggle('selected');}; list.appendChild(btn); }); }
+function crearPlanManualSeleccionado(){ var selected=manualPlanNames.map(placeByName).filter(Boolean); if(selected.length<2){ var status=document.getElementById('plan-status'); if(status){status.style.display='block'; status.textContent='Elegí al menos dos lugares para que pueda armar un hilo. Uno solo es una visita; dos ya empiezan a ser recorrido.';} return;} selected=sortPlacesAsWalk(selected,getPlanOriginLatLng()); renderNarrativePlan(selected,0,selectedPlanTheme||'classic',true); }
+function sortPlacesAsWalk(list,origin){ var remaining=list.slice(), sorted=[], current=origin||getPlanOriginLatLng(); while(remaining.length){ remaining.sort(function(a,b){return map.distance(current,[a.lat,a.lng])-map.distance(current,[b.lat,b.lng]);}); var next=remaining.shift(); sorted.push(next); current=[next.lat,next.lng]; } return sorted; }
+function seleccionarHoras(horas){ var builder=document.getElementById('manual-plan-builder'); if(builder) builder.style.display='none'; crearPlanRapido(horas, selectedPlanTheme || 'classic'); }
+function crearPlanRapido(horas,theme){ selectedPlanTheme=theme||selectedPlanTheme||'classic'; var origin=getPlanOriginLatLng(); var eligible=planEligiblePlaces().map(function(place){ var dist=map.distance(origin,[place.lat,place.lng]); var layers=planLayerForPlace(place); var layerBonus=layers.indexOf(selectedPlanTheme)!==-1?-900:0; var visitedPenalty=isVisitedPlace(place)?220:0; var tp=tipoPlan(place); var foodPenalty=(tp==='comida'||tp==='cerveza'||tp==='comida-bebida')?350:0; return {place:place,dist:dist,score:dist+layerBonus+visitedPenalty+foodPenalty};}).sort(function(a,b){return a.score-b.score;}); var limit=horas===2?3:horas===4?5:8; var selected=[]; eligible.forEach(function(item){ if(selected.length>=limit)return; if(selected.some(function(p){return map.distance([p.lat,p.lng],[item.place.lat,item.place.lng])<260;})) return; selected.push(item.place);}); if(selected.length<limit){ eligible.forEach(function(item){ if(selected.length>=limit)return; if(!selected.some(function(p){return p.name===item.place.name;})) selected.push(item.place);}); } selected=sortPlacesAsWalk(selected,origin); renderNarrativePlan(selected,horas,selectedPlanTheme,false); }
+function nearbyForPlanPlace(place,usedNames,theme){ var maxDist=850; var nearby=planEligiblePlaces().filter(function(p){ if(p.name===place.name)return false; if(usedNames[p.name])return false; var d=map.distance([place.lat,place.lng],[p.lat,p.lng]); return d<=maxDist; }).map(function(p){ var d=map.distance([place.lat,place.lng],[p.lat,p.lng]); var layerBonus=planLayerForPlace(p).indexOf(theme)!==-1?-220:0; return {place:p,dist:d,score:d+layerBonus};}).sort(function(a,b){return a.score-b.score;}).slice(0,2); nearby.forEach(function(obj){usedNames[obj.place.name]=true;}); return nearby; }
+function renderNarrativePlan(selectedPlaces,horas,theme,manual){ var result=document.getElementById('plan-result'); var status=document.getElementById('plan-status'); if(!result)return; if(status){status.style.display='none';status.textContent='';} var narrative=getPlanNarrative(theme,horas,manual); result.innerHTML=''; var horasTexto=manual?'A mi modo':(horas===2?'2 horas':horas===4?'4 horas':'día completo'); var head=document.createElement('div'); head.className='plan-narrative-head'; head.innerHTML='<div class="plan-narrative-kicker">Plan del día · '+horasTexto+'</div><div class="plan-narrative-title">'+narrative.title+'</div><div class="plan-narrative-copy">'+narrative.copy+'</div>'; result.appendChild(head); var usedNames={}; selectedPlaces.forEach(function(p){usedNames[p.name]=true;}); var time=horas===2?10*60:horas===4?10*60:9*60; if(manual) time=10*60; selectedPlaces.forEach(function(place,index){ var visited=isVisitedPlace(place); var tp=tipoPlan(place); var minutos=horas===2?35:horas===4?45:55; if(manual)minutos=45; if(tp==='comida')minutos+=30; if(tp==='comida-bebida')minutos+=35; if(tp==='cerveza')minutos+=20; if(index>0)time+=horas===2?12:horas===4?15:18; var hh=Math.floor(time/60), mm=time%60, hour=hh+':'+(mm<10?'0':'')+mm; time+=minutos; var card=document.createElement('div'); card.className='plan-zone-card'+(visited?' plan-place-visited':''); var meta=place.category+' · '+minutos+' min'+(visited?' · ya visitado':''); card.innerHTML='<div class="plan-zone-title">Parada '+(index+1)+'</div><div class="plan-main-place"><div class="plan-main-time">'+hour+'</div><div><div class="plan-main-name">'+place.name+'</div><div class="plan-main-meta">'+meta+'</div><div class="plan-main-bridge">'+bridgeForPlace(place,index,selectedPlaces.length,theme)+'</div>'+(visited?'<div class="plan-visited-note">✓ Ya lo viviste. Lo dejo porque sostiene el hilo.</div>':'')+'</div></div>'; card.querySelector('.plan-main-place').onclick=function(){openPlanPlace(place);}; var nearby=nearbyForPlanPlace(place,usedNames,theme); if(nearby.length){ var shell=document.createElement('div'); shell.className='nearby-shell'; shell.innerHTML='<div class="nearby-label">Muy cerca · misma zona, mismo pulso</div><div class="nearby-grid"></div>'; var grid=shell.querySelector('.nearby-grid'); nearby.forEach(function(obj){ var np=obj.place, nv=isVisitedPlace(np); var chip=document.createElement('button'); chip.className='nearby-chip'+(nv?' nearby-visited':''); chip.innerHTML='<div class="nearby-name">'+np.name+'</div><div class="nearby-meta">'+np.category+' · '+Math.round(obj.dist)+' m'+(nv?' · ya visitado':'')+'</div>'; chip.onclick=function(){openPlanPlace(np);}; grid.appendChild(chip);}); card.appendChild(shell);} result.appendChild(card); }); var close=document.createElement('div'); close.className='plan-closing-note'; close.textContent=manual?'Este recorrido no intenta corregirte. Intenta acompañar tu intuición y darle orden para que caminarlo no se vuelva una tarea.':'Si algo queda muy cerca, no lo trato como relleno: lo dejo al costado del camino para que decidas si el día te pide seguir o quedarte.'; result.appendChild(close); document.getElementById('plan-step1').style.display='block'; result.style.display='block'; document.getElementById('plan-panel').style.display='block'; }
+function openPlanPlace(place){ if(!place)return; map.setView([place.lat,place.lng],16); if(typeof openPlacePanel==='function') openPlacePanel(place); else { var obj=allMarkers.find(function(o){return o.place.name===place.name;}); if(obj&&obj.marker)obj.marker.openPopup(); } }
+function activarModoPlan(){ horasPlan=0; puntoPlan=null; clearPlanPointMarker(); setPlanInteraction(false); document.getElementById('plan-panel').style.display='block'; document.getElementById('plan-step1').style.display='block'; document.getElementById('plan-result').style.display='none'; var builder=document.getElementById('manual-plan-builder'); if(builder) builder.style.display='none'; var status=document.getElementById('plan-status'); if(status){status.style.display='none'; status.textContent='';} }
+
+</script>
   <div id="map"></div>
   <div id="personajes-panel" style="display:none;position:fixed;inset:0;z-index:3500;background:#151311;flex-direction:column;overflow:hidden;">
   <div style="position:sticky;top:0;z-index:10;padding:20px 24px 16px;background:var(--black);border-bottom:1px solid #1e1d1a;display:flex;align-items:center;justify-content:space-between;">
