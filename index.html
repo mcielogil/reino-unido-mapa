@@ -4604,15 +4604,18 @@ function renderMobileFilters() {
 
   var divider = document.createElement('div');
   divider.className = 'mobile-filter-divider';
-  divider.textContent = 'Intención';
+  divider.textContent = (window.__lppIntentLabel ? window.__lppIntentLabel() : 'Intención');
   bar.appendChild(divider);
 
   [
-    { id: 'near', label: 'Estoy cerca', sub: 'decisión rápida' },
-    { id: 'emotion', label: 'Quiero emocionarme', sub: 'historia intensa' },
-    { id: 'slow', label: 'Quiero ir lento', sub: 'pausas' },
-    { id: 'hidden', label: 'Sorprendeme', sub: 'lugares raros' }
+    { id: 'near' },
+    { id: 'emotion' },
+    { id: 'slow' },
+    { id: 'hidden' }
   ].forEach(function(intent) {
+    var copy = window.__lppIntentCopy ? window.__lppIntentCopy(intent.id) : null;
+    intent.label = copy ? copy.label : intent.id;
+    intent.sub = copy ? copy.sub : '';
     var btn = document.createElement('button');
     btn.className = 'intent-btn mobile-intent-btn';
     btn.setAttribute('data-intent', intent.id);
@@ -6168,6 +6171,13 @@ function activarModoPlan(){ horasPlan=0; puntoPlan=null; clearPlanPointMarker();
       firstLocationNearby: 'Primero tocá el botón de ubicación (⊙)',
       distanceAway: (window.__lppUi ? window.__lppUi('distanceAway') : 'm de distancia'),
       pointChosen: (window.__lppUi ? window.__lppUi('pointChosen') : 'Punto elegido'),
+      intentLabel: 'Filtrar por intención',
+      intents: {
+        near: { label: 'Estoy cerca', sub: 'decisión rápida' },
+        emotion: { label: 'Quiero emocionarme', sub: 'historia intensa' },
+        slow: { label: 'Quiero ir lento', sub: 'pausas, mirar, caminar' },
+        hidden: { label: 'Sorprendeme', sub: 'lugares raros' }
+      },
       filters: {
         'Histórico': 'Histórico',
         'Cine y Cultura Pop': 'Cine y Cultura Pop',
@@ -6216,6 +6226,13 @@ function activarModoPlan(){ horasPlan=0; puntoPlan=null; clearPlanPointMarker();
       firstLocationNearby: 'Tap the location button first (⊙)',
       distanceAway: 'm away',
       pointChosen: 'Chosen point',
+      intentLabel: 'Filter by intention',
+      intents: {
+        near: { label: 'Near me', sub: 'quick decision' },
+        emotion: { label: 'I want to feel something', sub: 'intense history' },
+        slow: { label: 'I want to go slow', sub: 'pauses, looking, walking' },
+        hidden: { label: 'Surprise me', sub: 'strange places' }
+      },
       filters: {
         'Histórico': 'Historical',
         'Cine y Cultura Pop': 'Film & Pop Culture',
@@ -6255,6 +6272,15 @@ function activarModoPlan(){ horasPlan=0; puntoPlan=null; clearPlanPointMarker();
   }
 
   window.__lppUi = function(key) { return ui(key); };
+  window.__lppIntentCopy = function(id) {
+    var langCopy = UI_COPY[currentLang] || UI_COPY.es;
+    var fallback = UI_COPY.es;
+    return (langCopy.intents && langCopy.intents[id]) || (fallback.intents && fallback.intents[id]) || { label: id, sub: '' };
+  };
+  window.__lppIntentLabel = function() {
+    var langCopy = UI_COPY[currentLang] || UI_COPY.es;
+    return langCopy.intentLabel || UI_COPY.es.intentLabel || 'Intención';
+  };
   window.__lppLang = currentLang;
 
   function setActiveButtons() {
@@ -6289,6 +6315,24 @@ function activarModoPlan(){ horasPlan=0; puntoPlan=null; clearPlanPointMarker();
       btn.innerHTML = '';
       if (pip) btn.appendChild(pip);
       btn.appendChild(document.createTextNode(' ' + label));
+    });
+  }
+
+  function relabelIntentButtons() {
+    var langCopy = UI_COPY[currentLang] || UI_COPY.es;
+    document.querySelectorAll('.intent-list .intent-btn, #mobile-filter-bar .intent-btn').forEach(function(btn) {
+      var id = btn.getAttribute('data-intent');
+      var copy = (langCopy.intents && langCopy.intents[id]) || (UI_COPY.es.intents && UI_COPY.es.intents[id]);
+      if (!copy) return;
+      btn.innerHTML = copy.label + '<span>' + copy.sub + '</span>';
+    });
+    document.querySelectorAll('.mobile-filter-divider').forEach(function(divider) {
+      divider.textContent = langCopy.intentLabel || UI_COPY.es.intentLabel || 'Intención';
+    });
+    document.querySelectorAll('.sidebar-section-label').forEach(function(label) {
+      if ((label.textContent || '').trim() === 'Filtrar por intención' || (label.textContent || '').trim() === 'Filter by intention') {
+        label.textContent = langCopy.intentLabel || UI_COPY.es.intentLabel || 'Intención';
+      }
     });
   }
 
@@ -6364,6 +6408,12 @@ function activarModoPlan(){ horasPlan=0; puntoPlan=null; clearPlanPointMarker();
     if (voiceKicker) voiceKicker.textContent = currentLang === 'en' ? 'Your London' : 'Tu Londres';
 
     relabelFilterButtons('.filter-btn');
+    relabelIntentButtons();
+    if (typeof renderMobileFilters === 'function') {
+      renderMobileFilters();
+      relabelFilterButtons('.filter-btn');
+      relabelIntentButtons();
+    }
   }
 
   function persistLanguage(lang) {
