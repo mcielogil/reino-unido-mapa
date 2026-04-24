@@ -1373,6 +1373,8 @@ body.goog-te-banner-frame.skiptranslate { top: 0 !important; }
 </script>
 <script>
      function enterMap() {
+      var langSwitch = document.getElementById('lang-switch');
+      if (langSwitch) langSwitch.classList.add('hidden');
       var o = document.getElementById('opening');
       o.classList.add('fade-out');
       setTimeout(function() { o.style.display = 'none'; }, 1000);
@@ -3092,7 +3094,7 @@ function buildPopup(place) {
   var isVisited = !!localStorage.getItem('v-' + visitKey);
   var actions =
   '<div class="popup-actions">' +
-  '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">' + (window.__lppUi ? window.__lppUi('seeRoute') : 'Ver ruta') + '</button>' +
+  '<button class="popup-link-btn" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">' + ((window.__lppUi && window.__lppUi('seeRoute')) || 'Ver ruta') + '</button>' +
   '<button class="popup-link-btn" onclick="marcarVisitado(this, \'" + visitKey + "\')" style="' + (isVisited ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (isVisited ? (window.__lppUi ? window.__lppUi('visited') : '✓ Visitado') : (window.__lppUi ? window.__lppUi('markVisited') : 'Marcar visitado')) + '</button>' +
   '</div>';
   return '<div class="popup-card' + (hasImage ? ' has-image' : '') + '" id="' + id + '">' +
@@ -3188,7 +3190,7 @@ function buildPlacePanel(place) {
         '</main>' +
         '<aside class="place-side-clean">' +
           '<div class="place-actions-clean">' +
-            '<button class="place-action-clean primary" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">' + (window.__lppUi ? window.__lppUi('seeRoute') : 'Ver ruta') + '</button>' +
+            '<button class="place-action-clean primary" onclick="showRouteToPlace(' + place.lat + ',' + place.lng + ')">' + ((window.__lppUi && window.__lppUi('seeRoute')) || 'Ver ruta') + '</button>' +
             '<button class="place-action-clean" onclick="marcarVisitado(this, \'' + visitKey + '\')" style="' + (isVisited ? 'border-color:#4a6741;color:#4a6741' : '') + '">' + (isVisited ? (window.__lppUi ? window.__lppUi('visited') : '✓ Visitado') : (window.__lppUi ? window.__lppUi('markVisited') : 'Marcar visitado')) + '</button>' +
           '</div>' +
         '</aside>' +
@@ -4860,6 +4862,7 @@ function marcarVisitado(btn, nombre) {
       discoveredCollection: 'Colección descubierta',
       tapSeeMore: 'Tocá “Ver más” para abrir la carta completa.',
       seeMore: 'Ver más',
+      seeRoute: 'Ver ruta',
       markVisited: 'Marcar visitado',
       visited: '✓ Visitado',
       firstLocation: 'Primero tocá el botón de localización.',
@@ -4907,6 +4910,7 @@ function marcarVisitado(btn, nombre) {
       discoveredCollection: 'Discovered collection',
       tapSeeMore: 'Tap “See more” to open the full card.',
       seeMore: 'See more',
+      seeRoute: 'See route',
       markVisited: 'Mark visited',
       visited: '✓ Visited',
       firstLocation: 'Tap the location button first.',
@@ -4947,7 +4951,10 @@ function marcarVisitado(btn, nombre) {
   };
 
   function ui(key) {
-    return (UI_COPY[currentLang] || UI_COPY.es)[key];
+    var langCopy = UI_COPY[currentLang] || UI_COPY.es;
+    if (langCopy && langCopy[key] !== undefined && langCopy[key] !== null) return langCopy[key];
+    if (UI_COPY.es && UI_COPY.es[key] !== undefined && UI_COPY.es[key] !== null) return UI_COPY.es[key];
+    return '';
   }
 
   window.__lppUi = function(key) { return ui(key); };
