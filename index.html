@@ -5214,7 +5214,7 @@ function abrirPersonaje(id) {
           '</div>' +
           '<div style="display:flex;border-bottom:1px solid #1e1d1a;">' +
             ['historia','curiosidades','porque'].map(function(t) {
-              var labels = {historia:'Su voz', curiosidades:'Curiosidades', porque:'Por qué aquí'};
+              var labels = {historia:'En primera persona', curiosidades:'Curiosidades', porque:'Por qué aquí'};
               return '<button onclick="window._personajeTab=\'' + t + '\';abrirPersonaje(\'' + id + '\')" style="flex:1;padding:10px 4px;background:transparent;border:none;border-bottom:2px solid ' + (tab===t ? 'var(--red)' : 'transparent') + ';color:' + (tab===t ? '#fff' : '#3a3934') + ';cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;">' + labels[t] + '</button>';
             }).join('') +
           '</div>' +
